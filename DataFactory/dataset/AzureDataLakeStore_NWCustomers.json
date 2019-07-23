@@ -1,0 +1,25 @@
+{
+	"name": "AzureDataLakeStore_NWCustomers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BdlAzDataLake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureDataLakeStoreFile",
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"nullValue": "\\N",
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": false
+			},
+			"fileName": "Customers.csv",
+			"folderPath": "NorthWind"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,47 @@
+{
+	"name": "DailyGameData_Blob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "bdldftutorial",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"dsFileName": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "AzureBlob",
+		"structure": [
+			{
+				"name": "Player",
+				"type": "String"
+			},
+			{
+				"name": "Time",
+				"type": "String"
+			},
+			{
+				"name": "Points",
+				"type": "Int32"
+			}
+		],
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"nullValue": "\\N",
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": true
+			},
+			"fileName": {
+				"value": "@dataset().dsFileName",
+				"type": "Expression"
+			},
+			"folderPath": "adftutorial/gamedata/2016/test"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

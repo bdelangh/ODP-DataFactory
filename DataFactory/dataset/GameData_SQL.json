@@ -1,0 +1,29 @@
+{
+	"name": "GameData_SQL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "bdlsqldatadb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "player",
+				"type": "String"
+			},
+			{
+				"name": "time",
+				"type": "String"
+			},
+			{
+				"name": "points",
+				"type": "Int32"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[points]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

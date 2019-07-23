@@ -1,0 +1,113 @@
+{
+	"name": "NPL_Products",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "NPLABAPSystem",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SapEccResource",
+		"structure": [
+			{
+				"name": "CurrencyCode",
+				"type": "String"
+			},
+			{
+				"name": "Id",
+				"type": "String"
+			},
+			{
+				"name": "StockQuantity",
+				"type": "Int32"
+			},
+			{
+				"name": "Name",
+				"type": "String"
+			},
+			{
+				"name": "Description",
+				"type": "String"
+			},
+			{
+				"name": "SubCategoryId",
+				"type": "String"
+			},
+			{
+				"name": "SubCategoryName",
+				"type": "String"
+			},
+			{
+				"name": "MainCategoryId",
+				"type": "String"
+			},
+			{
+				"name": "MainCategoryName",
+				"type": "String"
+			},
+			{
+				"name": "SupplierId",
+				"type": "String"
+			},
+			{
+				"name": "SupplierName",
+				"type": "String"
+			},
+			{
+				"name": "LastModified",
+				"type": "DateTime"
+			},
+			{
+				"name": "Price",
+				"type": "Decimal"
+			},
+			{
+				"name": "DimensionHeight",
+				"type": "Decimal"
+			},
+			{
+				"name": "DimensionWidth",
+				"type": "Decimal"
+			},
+			{
+				"name": "DimensionDepth",
+				"type": "Decimal"
+			},
+			{
+				"name": "DimensionUnit",
+				"type": "String"
+			},
+			{
+				"name": "ImageUrl",
+				"type": "String"
+			},
+			{
+				"name": "QuantityUnit",
+				"type": "String"
+			},
+			{
+				"name": "MeasureUnit",
+				"type": "String"
+			},
+			{
+				"name": "AverageRating",
+				"type": "Decimal"
+			},
+			{
+				"name": "RatingCount",
+				"type": "Int32"
+			},
+			{
+				"name": "WeightMeasure",
+				"type": "Decimal"
+			},
+			{
+				"name": "WeightUnit",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"path": "Products"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

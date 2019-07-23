@@ -1,0 +1,15 @@
+{
+	"name": "S4HoData_getSalesOrdersByToken",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "S4HOData",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "ODataResource",
+		"typeProperties": {
+			"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190723092859_000029000')/ChangesAfter"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

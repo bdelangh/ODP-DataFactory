@@ -1,0 +1,7 @@
+{
+	"name": "NPLIntEngine",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "Self-Hosted Integration Runtime for the NPL - ABAP Dev System"
+	}
+}

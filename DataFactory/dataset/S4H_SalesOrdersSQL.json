@@ -1,0 +1,104 @@
+{
+	"name": "S4H_SalesOrdersSQL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "bdlsqldatadb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "SALESDOCUMENT",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SDDOCUMENTCATEGORY",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SALESDOCUMENTTYPE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SALESDOCUMENTPROCESSINGTYPE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CREATIONDATE",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "CREATIONTIME",
+				"type": "time",
+				"scale": 7
+			},
+			{
+				"name": "LASTCHANGEDATE",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "LASTCHANGEDATETIME",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "SALESORGANIZATION",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DISTRIBUTIONCHANNEL",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ORGANIZATIONDIVISION",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SALESGROUP",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SALESOFFICE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TRANSACTIONCURRENCY",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRICINGDATE",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "RETAILPROMOTION",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SALESDOCUMENTCONDITION",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ODQ_CHANGEMODE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ODQ_ENTITYCNTR",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[S4HSalesOrders]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

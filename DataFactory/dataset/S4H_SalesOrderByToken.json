@@ -1,0 +1,25 @@
+{
+	"name": "S4H_SalesOrderByToken",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "S4H_ODP",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Token": {
+				"type": "string",
+				"defaultValue": "D20190716141524_000029000"
+			}
+		},
+		"annotations": [],
+		"type": "SapEccResource",
+		"schema": [],
+		"typeProperties": {
+			"path": {
+				"value": "@concat('DeltaLinksOfAttrOfZBD_ISALESDOC_1(%27',dataset().Token, '%27)/ChangesAfter')",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

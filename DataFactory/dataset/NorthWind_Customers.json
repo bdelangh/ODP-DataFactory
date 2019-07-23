@@ -1,0 +1,15 @@
+{
+	"name": "NorthWind_Customers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SampleOData",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "ODataResource",
+		"typeProperties": {
+			"path": "Customers"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

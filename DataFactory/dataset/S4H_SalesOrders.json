@@ -1,0 +1,17 @@
+{
+	"name": "S4H_SalesOrders",
+	"properties": {
+		"description": "S4H - SAP CAL",
+		"linkedServiceName": {
+			"referenceName": "S4H_ODP",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SapEccResource",
+		"schema": [],
+		"typeProperties": {
+			"path": "AttrOfZBD_ISALESDOC_1"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,12 @@
+{
+	"name": "SampleOData",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "OData",
+		"typeProperties": {
+			"url": "https://services.odata.org/V3/Northwind/Northwind.svc/",
+			"authenticationType": "Anonymous"
+		}
+	}
+}

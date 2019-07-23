@@ -1,0 +1,29 @@
+{
+	"name": "Persons_SQL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "bdlsqldatadb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "PersonID",
+				"type": "Int32"
+			},
+			{
+				"name": "Name",
+				"type": "String"
+			},
+			{
+				"name": "LastModifytime",
+				"type": "DateTime"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[persons]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

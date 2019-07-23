@@ -1,0 +1,25 @@
+{
+	"name": "WaterMark_SQL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "bdlsqldatadb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "TableName",
+				"type": "String"
+			},
+			{
+				"name": "WatermarkValue",
+				"type": "DateTime"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[watermarktable]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

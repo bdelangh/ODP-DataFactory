@@ -1,0 +1,16 @@
+{
+	"name": "S4H_DeltaTokens",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "S4H_ODP",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SapEccResource",
+		"schema": [],
+		"typeProperties": {
+			"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

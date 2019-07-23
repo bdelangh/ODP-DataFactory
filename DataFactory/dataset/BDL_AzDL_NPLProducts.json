@@ -1,0 +1,25 @@
+{
+	"name": "BDL_AzDL_NPLProducts",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BdlAzDataLake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureDataLakeStoreFile",
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"nullValue": "\\N",
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": false
+			},
+			"fileName": "Products.csv",
+			"folderPath": "SAP/NPL"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

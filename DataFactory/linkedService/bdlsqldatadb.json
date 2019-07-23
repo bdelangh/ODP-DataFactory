@@ -1,0 +1,12 @@
+{
+	"name": "bdlsqldatadb",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=bdlsqldatadb.database.windows.net;initial catalog=bdl_DataDB;user id=bdelangh",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkJETFNBUERBVEFGQUNUXzQ1YjlhZDYyLTlmYzEtNGQ1Yi04YmJjLTczYTkxODE3ZWM2NCINCn0="
+		}
+	}
+}

@@ -1,0 +1,66 @@
+{
+	"name": "NPLProducts_To_SQL",
+	"properties": {
+		"activities": [
+			{
+				"name": "NPLProducts_To_SQL",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SapEccSource",
+						"query": "$filter=LastModified%20gt%20datetime%272018-01-01T00:00:00%27"
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": 10000
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0,
+					"translator": {
+						"type": "TabularTranslator",
+						"columnMappings": {
+							"Id": "id",
+							"CurrencyCode": "currencycode",
+							"StockQuantity": "stockquantity",
+							"Name": "name",
+							"Description": "description",
+							"SubCategoryId": "subcategoryid",
+							"SubCategoryName": "subcategoryname",
+							"MainCategoryId": "maincategoryid",
+							"MainCategoryName": "maincategoryname",
+							"SupplierId": "supplierid",
+							"SupplierName": "suppliername",
+							"LastModified": "lastmodified",
+							"Price": "price",
+							"QuantityUnit": "quantityunit",
+							"MeasureUnit": "measureunit"
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "NPL_Products",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "NPLProducts_SQL",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,14 @@
+{
+	"name": "BdlAzDataLake",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDataLakeStore",
+		"typeProperties": {
+			"dataLakeStoreUri": "https://bldazdatalakeadls.azuredatalakestore.net/webhdfs/v1",
+			"tenant": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+			"subscriptionId": "37d02782-ca89-46c0-abac-ef2c0ae81726",
+			"resourceGroupName": "bdl_azdatalake"
+		}
+	}
+}

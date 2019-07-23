@@ -1,0 +1,101 @@
+{
+	"name": "SAPDevCenter_ProductSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SAPDevCenter",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SapEccResource",
+		"structure": [
+			{
+				"name": "ProductID",
+				"type": "String"
+			},
+			{
+				"name": "TypeCode",
+				"type": "String"
+			},
+			{
+				"name": "Category",
+				"type": "String"
+			},
+			{
+				"name": "Name",
+				"type": "String"
+			},
+			{
+				"name": "NameLanguage",
+				"type": "String"
+			},
+			{
+				"name": "Description",
+				"type": "String"
+			},
+			{
+				"name": "DescriptionLanguage",
+				"type": "String"
+			},
+			{
+				"name": "SupplierID",
+				"type": "String"
+			},
+			{
+				"name": "SupplierName",
+				"type": "String"
+			},
+			{
+				"name": "TaxTarifCode",
+				"type": "Int16"
+			},
+			{
+				"name": "MeasureUnit",
+				"type": "String"
+			},
+			{
+				"name": "WeightMeasure",
+				"type": "Decimal"
+			},
+			{
+				"name": "WeightUnit",
+				"type": "String"
+			},
+			{
+				"name": "CurrencyCode",
+				"type": "String"
+			},
+			{
+				"name": "Price",
+				"type": "Decimal"
+			},
+			{
+				"name": "Width",
+				"type": "Decimal"
+			},
+			{
+				"name": "Depth",
+				"type": "Decimal"
+			},
+			{
+				"name": "Height",
+				"type": "Decimal"
+			},
+			{
+				"name": "DimUnit",
+				"type": "String"
+			},
+			{
+				"name": "CreatedAt",
+				"type": "DateTime"
+			},
+			{
+				"name": "ChangedAt",
+				"type": "DateTime"
+			}
+		],
+		"typeProperties": {
+			"path": "ProductSet"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
