@@ -254,7 +254,7 @@
 										},
 										"sink": {
 											"name": "CREATIONDATE",
-											"type": "DateTime"
+											"type": "String"
 										}
 									},
 									{
@@ -263,7 +263,7 @@
 										},
 										"sink": {
 											"name": "CREATIONTIME",
-											"type": "TimeSpan"
+											"type": "String"
 										}
 									},
 									{
@@ -272,7 +272,7 @@
 										},
 										"sink": {
 											"name": "LASTCHANGEDATE",
-											"type": "DateTime"
+											"type": "String"
 										}
 									},
 									{
@@ -281,7 +281,7 @@
 										},
 										"sink": {
 											"name": "LASTCHANGEDATETIME",
-											"type": "Decimal"
+											"type": "String"
 										}
 									},
 									{
@@ -344,7 +344,7 @@
 										},
 										"sink": {
 											"name": "PRICINGDATE",
-											"type": "DateTime"
+											"type": "String"
 										}
 									},
 									{
@@ -380,7 +380,7 @@
 										},
 										"sink": {
 											"name": "ODQ_ENTITYCNTR",
-											"type": "Decimal"
+											"type": "String"
 										}
 									}
 								]
