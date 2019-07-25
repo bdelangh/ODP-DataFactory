@@ -24,6 +24,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4HOData'"
 		},
+		"S4HRest_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4HRest'"
+		},
 		"S4H_ODP_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4H_ODP'"
@@ -43,10 +47,6 @@
 		"bdlsqldatadb_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
-		},
-		"S4HRest_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'S4HRest'"
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
@@ -144,6 +144,14 @@
 			"type": "string",
 			"defaultValue": "DEVELOPER"
 		},
+		"S4HRest_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4HRest_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "DEVELOPER"
+		},
 		"S4H_ODP_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
@@ -171,14 +179,6 @@
 		"SampleOData_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://services.odata.org/V3/Northwind/Northwind.svc/"
-		},
-		"S4HRest_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
-		},
-		"S4HRest_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "DEVELOPER"
 		},
 		"containerUri": {
 			"type": "string",
@@ -219,6 +219,9 @@
 					"S4HOData_password": {
 						"value": "[parameters('S4HOData_password')]"
 					},
+					"S4HRest_password": {
+						"value": "[parameters('S4HRest_password')]"
+					},
 					"S4H_ODP_password": {
 						"value": "[parameters('S4H_ODP_password')]"
 					},
@@ -233,9 +236,6 @@
 					},
 					"bdlsqldatadb_connectionString": {
 						"value": "[parameters('bdlsqldatadb_connectionString')]"
-					},
-					"S4HRest_password": {
-						"value": "[parameters('S4HRest_password')]"
 					},
 					"BdlAzDataLake_properties_typeProperties_dataLakeStoreUri": {
 						"value": "[parameters('BdlAzDataLake_properties_typeProperties_dataLakeStoreUri')]"
@@ -261,6 +261,12 @@
 					"S4HOData_properties_typeProperties_userName": {
 						"value": "[parameters('S4HOData_properties_typeProperties_userName')]"
 					},
+					"S4HRest_properties_typeProperties_url": {
+						"value": "[parameters('S4HRest_properties_typeProperties_url')]"
+					},
+					"S4HRest_properties_typeProperties_userName": {
+						"value": "[parameters('S4HRest_properties_typeProperties_userName')]"
+					},
 					"S4H_ODP_properties_typeProperties_url": {
 						"value": "[parameters('S4H_ODP_properties_typeProperties_url')]"
 					},
@@ -281,12 +287,6 @@
 					},
 					"SampleOData_properties_typeProperties_url": {
 						"value": "[parameters('SampleOData_properties_typeProperties_url')]"
-					},
-					"S4HRest_properties_typeProperties_url": {
-						"value": "[parameters('S4HRest_properties_typeProperties_url')]"
-					},
-					"S4HRest_properties_typeProperties_userName": {
-						"value": "[parameters('S4HRest_properties_typeProperties_userName')]"
 					},
 					"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 						"value": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName')]"

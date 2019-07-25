@@ -142,6 +142,24 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/S4HRest_GetUpdatedSO')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4HRest",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190725080121_000019000')/ChangesAfter",
+					"requestMethod": "GET"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/S4H_DeltaTokens')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -536,24 +554,6 @@
 				],
 				"typeProperties": {
 					"tableName": "[[dbo].[watermarktable]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HRest_GetUpdatedSO')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "S4HRest",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {
-					"relativeUrl": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190725080121_000019000')/ChangesAfter",
-					"requestMethod": "GET"
 				}
 			},
 			"dependsOn": []

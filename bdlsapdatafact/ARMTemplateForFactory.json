@@ -24,6 +24,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4HOData'"
 		},
+		"S4HRest_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4HRest'"
+		},
 		"S4H_ODP_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4H_ODP'"
@@ -43,10 +47,6 @@
 		"bdlsqldatadb_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
-		},
-		"S4HRest_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'S4HRest'"
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
@@ -144,6 +144,14 @@
 			"type": "string",
 			"defaultValue": "DEVELOPER"
 		},
+		"S4HRest_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4HRest_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "DEVELOPER"
+		},
 		"S4H_ODP_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
@@ -171,14 +179,6 @@
 		"SampleOData_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://services.odata.org/V3/Northwind/Northwind.svc/"
-		},
-		"S4HRest_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
-		},
-		"S4HRest_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "DEVELOPER"
 		}
 	},
 	"variables": {
@@ -1278,6 +1278,237 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/S4HRest_GetUpdatedSalesOrders')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetUpdatedSO_Rest",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"sqlWriterStoredProcedureName": "[[dbo].[spOverwriteS4HSO]",
+								"sqlWriterTableType": "S4HSalesOrder",
+								"storedProcedureTableTypeParameterName": "SalesOrders"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "d.results[0].SALESDOCUMENT"
+										},
+										"sink": {
+											"name": "SALESDOCUMENT",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SDDOCUMENTCATEGORY"
+										},
+										"sink": {
+											"name": "SDDOCUMENTCATEGORY",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESDOCUMENTTYPE"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTTYPE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESDOCUMENTPROCESSINGTYPE"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTPROCESSINGTYPE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].CREATIONDATE"
+										},
+										"sink": {
+											"name": "CREATIONDATE",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].CREATIONTIME"
+										},
+										"sink": {
+											"name": "CREATIONTIME",
+											"type": "TimeSpan"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].LASTCHANGEDATE"
+										},
+										"sink": {
+											"name": "LASTCHANGEDATE",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].LASTCHANGEDATETIME"
+										},
+										"sink": {
+											"name": "LASTCHANGEDATETIME",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESORGANIZATION"
+										},
+										"sink": {
+											"name": "SALESORGANIZATION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].DISTRIBUTIONCHANNEL"
+										},
+										"sink": {
+											"name": "DISTRIBUTIONCHANNEL",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].ORGANIZATIONDIVISION"
+										},
+										"sink": {
+											"name": "ORGANIZATIONDIVISION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESGROUP"
+										},
+										"sink": {
+											"name": "SALESGROUP",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESOFFICE"
+										},
+										"sink": {
+											"name": "SALESOFFICE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].TRANSACTIONCURRENCY"
+										},
+										"sink": {
+											"name": "TRANSACTIONCURRENCY",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].PRICINGDATE"
+										},
+										"sink": {
+											"name": "PRICINGDATE",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].RETAILPROMOTION"
+										},
+										"sink": {
+											"name": "RETAILPROMOTION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESDOCUMENTCONDITION"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTCONDITION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].ODQ_CHANGEMODE"
+										},
+										"sink": {
+											"name": "ODQ_CHANGEMODE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].ODQ_ENTITYCNTR"
+										},
+										"sink": {
+											"name": "ODQ_ENTITYCNTR",
+											"type": "Decimal"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "S4HRest_GetUpdatedSO",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "S4H_SalesOrdersSQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/S4HRest_GetUpdatedSO')]",
+				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrdersSQL')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SAPDevCenterProdSet_BdlAzDL')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1953,6 +2184,26 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/S4HRest_GetUpdatedSO')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4HRest",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190725080121_000019000')/ChangesAfter",
+					"requestMethod": "GET"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/S4HRest')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/S4H_DeltaTokens')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2442,6 +2693,26 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/S4HRest')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('S4HRest_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('S4HRest_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('S4HRest_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/S4H_ODP')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -2547,234 +2818,6 @@
 				"typeProperties": {}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HRest')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "RestService",
-				"typeProperties": {
-					"url": "[parameters('S4HRest_properties_typeProperties_url')]",
-					"enableServerCertificateValidation": true,
-					"authenticationType": "Basic",
-					"userName": "[parameters('S4HRest_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('S4HRest_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HRest_GetUpdatedSO')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "S4HRest",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {
-					"relativeUrl": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190725080121_000019000')/ChangesAfter",
-					"requestMethod": "GET"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/S4HRest')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HRest_GetUpdatedSalesOrders')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "GetUpdatedSO_Rest",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
-								"requestInterval": "00.00:00:00.010"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"sqlWriterStoredProcedureName": "[[dbo].[spOverwriteS4HSO]",
-								"sqlWriterTableType": "S4HSalesOrder",
-								"storedProcedureTableTypeParameterName": "SalesOrders"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "d.results[0].SALESDOCUMENT"
-										},
-										"sink": {
-											"name": "SALESDOCUMENT"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].SDDOCUMENTCATEGORY"
-										},
-										"sink": {
-											"name": "SDDOCUMENTCATEGORY"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].SALESDOCUMENTTYPE"
-										},
-										"sink": {
-											"name": "SALESDOCUMENTTYPE"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].SALESDOCUMENTPROCESSINGTYPE"
-										},
-										"sink": {
-											"name": "SALESDOCUMENTPROCESSINGTYPE"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].LASTCHANGEDATETIME"
-										},
-										"sink": {
-											"name": "LASTCHANGEDATETIME"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].SALESORGANIZATION"
-										},
-										"sink": {
-											"name": "SALESORGANIZATION"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].DISTRIBUTIONCHANNEL"
-										},
-										"sink": {
-											"name": "DISTRIBUTIONCHANNEL"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].ORGANIZATIONDIVISION"
-										},
-										"sink": {
-											"name": "ORGANIZATIONDIVISION"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].SALESGROUP"
-										},
-										"sink": {
-											"name": "SALESGROUP"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].SALESOFFICE"
-										},
-										"sink": {
-											"name": "SALESOFFICE"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].TRANSACTIONCURRENCY"
-										},
-										"sink": {
-											"name": "TRANSACTIONCURRENCY"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].PRICINGDATE"
-										},
-										"sink": {
-											"name": "PRICINGDATE"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].RETAILPROMOTION"
-										},
-										"sink": {
-											"name": "RETAILPROMOTION"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].SALESDOCUMENTCONDITION"
-										},
-										"sink": {
-											"name": "SALESDOCUMENTCONDITION"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].ODQ_CHANGEMODE"
-										},
-										"sink": {
-											"name": "ODQ_CHANGEMODE"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].ODQ_ENTITYCNTR"
-										},
-										"sink": {
-											"name": "ODQ_ENTITYCNTR"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "S4HRest_GetUpdatedSO",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "S4H_SalesOrdersSQL",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/S4HRest_GetUpdatedSO')]",
-				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrdersSQL')]"
-			]
 		}
 	]
 }

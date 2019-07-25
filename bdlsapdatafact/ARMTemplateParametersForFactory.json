@@ -17,6 +17,9 @@
 		"S4HOData_password": {
 			"value": ""
 		},
+		"S4HRest_password": {
+			"value": ""
+		},
 		"S4H_ODP_password": {
 			"value": ""
 		},
@@ -30,9 +33,6 @@
 			"value": ""
 		},
 		"bdlsqldatadb_connectionString": {
-			"value": ""
-		},
-		"S4HRest_password": {
 			"value": ""
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
@@ -107,6 +107,12 @@
 		"S4HOData_properties_typeProperties_userName": {
 			"value": "DEVELOPER"
 		},
+		"S4HRest_properties_typeProperties_url": {
+			"value": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4HRest_properties_typeProperties_userName": {
+			"value": "DEVELOPER"
+		},
 		"S4H_ODP_properties_typeProperties_url": {
 			"value": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
 		},
@@ -127,12 +133,6 @@
 		},
 		"SampleOData_properties_typeProperties_url": {
 			"value": "https://services.odata.org/V3/Northwind/Northwind.svc/"
-		},
-		"S4HRest_properties_typeProperties_url": {
-			"value": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
-		},
-		"S4HRest_properties_typeProperties_userName": {
-			"value": "DEVELOPER"
 		}
 	}
 }

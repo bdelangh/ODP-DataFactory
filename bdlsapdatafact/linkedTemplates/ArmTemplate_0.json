@@ -24,6 +24,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4HOData'"
 		},
+		"S4HRest_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4HRest'"
+		},
 		"S4H_ODP_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4H_ODP'"
@@ -43,10 +47,6 @@
 		"bdlsqldatadb_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
-		},
-		"S4HRest_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'S4HRest'"
 		},
 		"BdlAzDataLake_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
@@ -80,6 +80,14 @@
 			"type": "string",
 			"defaultValue": "DEVELOPER"
 		},
+		"S4HRest_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4HRest_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "DEVELOPER"
+		},
 		"S4H_ODP_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
@@ -107,14 +115,6 @@
 		"SampleOData_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://services.odata.org/V3/Northwind/Northwind.svc/"
-		},
-		"S4HRest_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
-		},
-		"S4HRest_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "DEVELOPER"
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
@@ -232,6 +232,26 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/S4HRest')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('S4HRest_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('S4HRest_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('S4HRest_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/S4H_ODP')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -335,26 +355,6 @@
 				"type": "SelfHosted",
 				"description": "Self-Hosted Integration Runtime for the NPL - ABAP Dev System",
 				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HRest')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "RestService",
-				"typeProperties": {
-					"url": "[parameters('S4HRest_properties_typeProperties_url')]",
-					"enableServerCertificateValidation": true,
-					"authenticationType": "Basic",
-					"userName": "[parameters('S4HRest_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('S4HRest_password')]"
-					}
-				}
 			},
 			"dependsOn": []
 		},
