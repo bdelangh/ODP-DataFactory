@@ -2660,6 +2660,7 @@
 									},
 									{
 										"source": {
+											"type": "DateTime",
 											"path": "d.results[0].CREATIONDATE"
 										},
 										"sink": {
