@@ -22,8 +22,8 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"sqlWriterStoredProcedureName": "[dbo].[spOverwriteS4HSO]",
-						"sqlWriterTableType": "S4HSalesOrder",
+						"sqlWriterStoredProcedureName": "[dbo].[spOverwriteS4HSOStr]",
+						"sqlWriterTableType": "S4HSalesOrderStr",
 						"storedProcedureTableTypeParameterName": "SalesOrders"
 					},
 					"enableStaging": false,
