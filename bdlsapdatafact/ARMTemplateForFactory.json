@@ -1,0 +1,2592 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory Name",
+			"defaultValue": "bdlsapdatafact"
+		},
+		"integrationRuntime_NPLIntEngine": {
+			"type": "string",
+			"metadata": "Integration Runtime Name",
+			"defaultValue": "NPLIntEngine"
+		},
+		"ADFTest_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ADFTest'"
+		},
+		"NPLABAPSystem_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'NPLABAPSystem'"
+		},
+		"S4HOData_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4HOData'"
+		},
+		"S4H_ODP_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4H_ODP'"
+		},
+		"SAPDevCenter_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SAPDevCenter'"
+		},
+		"SAPoData_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SAPoData'"
+		},
+		"bdldftutorial_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'bdldftutorial'"
+		},
+		"bdlsqldatadb_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
+		},
+		"S4HRest_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4HRest'"
+		},
+		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "Customers.csv"
+		},
+		"AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "NorthWind"
+		},
+		"BDL_AzDL_NPLProducts_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "Products.csv"
+		},
+		"BDL_AzDL_NPLProducts_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "SAP/NPL"
+		},
+		"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "DevCenterProdSet.csv"
+		},
+		"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "SAP/DevCenter"
+		},
+		"DailyGameData_Blob_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "@dataset().dsFileName"
+		},
+		"DailyGameData_Blob_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "adftutorial/gamedata/2016/test"
+		},
+		"InputDataSet_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "emp.txt"
+		},
+		"InputDataSet_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "adftutorial/input"
+		},
+		"OutputDataSet_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "output.txt"
+		},
+		"OutputDataSet_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "adftutorial/output"
+		},
+		"Persons_Incremental_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "@concat('Incremental-', pipeline().RunId, '.txt')"
+		},
+		"Persons_Incremental_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "adftutorial/persons"
+		},
+		"TransactionsBlob_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "transactions.txt"
+		},
+		"TransactionsBlob_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "adftutorial/transactions"
+		},
+		"BdlAzDataLake_properties_typeProperties_dataLakeStoreUri": {
+			"type": "string",
+			"defaultValue": "https://bldazdatalakeadls.azuredatalakestore.net/webhdfs/v1"
+		},
+		"BdlAzDataLake_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+		},
+		"BdlAzDataLake_properties_typeProperties_subscriptionId": {
+			"type": "string",
+			"defaultValue": "37d02782-ca89-46c0-abac-ef2c0ae81726"
+		},
+		"BdlAzDataLake_properties_typeProperties_resourceGroupName": {
+			"type": "string",
+			"defaultValue": "bdl_azdatalake"
+		},
+		"NPLABAPSystem_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://137.117.134.161:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/"
+		},
+		"NPLABAPSystem_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "DEVELOPER"
+		},
+		"S4HOData_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4HOData_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "DEVELOPER"
+		},
+		"S4H_ODP_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4H_ODP_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "Developer"
+		},
+		"SAPDevCenter_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://sapes5.sapdevcenter.com/sap/opu/odata/IWBEP/GWSAMPLE_BASIC/"
+		},
+		"SAPDevCenter_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "P2000006001"
+		},
+		"SAPoData_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://sapes5.sapdevcenter.com/sap/opu/odata/IWBEP/GWSAMPLE_BASIC/ProductSet/"
+		},
+		"SAPoData_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": " P2000006001"
+		},
+		"SampleOData_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://services.odata.org/V3/Northwind/Northwind.svc/"
+		},
+		"S4HRest_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4HRest_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "DEVELOPER"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/CopyDailyGameData')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CopyGameDataBlob_to_SQL",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BlobSource",
+								"recursive": false
+							},
+							"sink": {
+								"type": "SqlSink",
+								"writeBatchSize": 10000
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0,
+							"translator": {
+								"type": "TabularTranslator",
+								"columnMappings": {
+									"Player": "player",
+									"Time": "time",
+									"Points": "points"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DailyGameData_Blob",
+								"type": "DatasetReference",
+								"parameters": {
+									"dsFileName": {
+										"value": "@pipeline().parameters.bdlPipeLineFileName",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "GameData_SQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"parameters": {
+					"bdlPipeLineFileName": {
+						"type": "String",
+						"defaultValue": "test.csv"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DailyGameData_Blob')]",
+				"[concat(variables('factoryId'), '/datasets/GameData_SQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GetS4HSalesOrders')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetSalesOrders",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapEccSource"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SALESDOCUMENT",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESDOCUMENT",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SDDOCUMENTCATEGORY",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SDDOCUMENTCATEGORY",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESDOCUMENTTYPE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTTYPE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESDOCUMENTPROCESSINGTYPE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTPROCESSINGTYPE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "CREATIONDATE",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "CREATIONDATE",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "CREATIONTIME",
+											"type": "TimeSpan"
+										},
+										"sink": {
+											"name": "CREATIONTIME",
+											"type": "TimeSpan"
+										}
+									},
+									{
+										"source": {
+											"name": "LASTCHANGEDATE",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "LASTCHANGEDATE",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "LASTCHANGEDATETIME",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "LASTCHANGEDATETIME",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESORGANIZATION",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESORGANIZATION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "DISTRIBUTIONCHANNEL",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DISTRIBUTIONCHANNEL",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ORGANIZATIONDIVISION",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ORGANIZATIONDIVISION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESGROUP",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESGROUP",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESOFFICE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESOFFICE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "TRANSACTIONCURRENCY",
+											"type": "String"
+										},
+										"sink": {
+											"name": "TRANSACTIONCURRENCY",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "PRICINGDATE",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "PRICINGDATE",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RETAILPROMOTION",
+											"type": "String"
+										},
+										"sink": {
+											"name": "RETAILPROMOTION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESDOCUMENTCONDITION",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTCONDITION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ODQ_CHANGEMODE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ODQ_CHANGEMODE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ODQ_ENTITYCNTR",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "ODQ_ENTITYCNTR",
+											"type": "Decimal"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "S4H_SalesOrders",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "S4H_SalesOrdersSQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrders')]",
+				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrdersSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GetS4HSalesOrders_Delta')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Updated SalesOrders",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Get DeltaToken",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapEccSource"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"sqlWriterStoredProcedureName": "[[dbo].[spOverwriteS4HSO]",
+								"sqlWriterTableType": "S4HSalesOrder",
+								"storedProcedureTableTypeParameterName": "SalesOrders",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SALESDOCUMENT",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESDOCUMENT",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SDDOCUMENTCATEGORY",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SDDOCUMENTCATEGORY",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESDOCUMENTTYPE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTTYPE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESDOCUMENTPROCESSINGTYPE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTPROCESSINGTYPE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "CREATIONDATE",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "CREATIONDATE",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "CREATIONTIME",
+											"type": "TimeSpan"
+										},
+										"sink": {
+											"name": "CREATIONTIME",
+											"type": "TimeSpan"
+										}
+									},
+									{
+										"source": {
+											"name": "LASTCHANGEDATE",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "LASTCHANGEDATE",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "LASTCHANGEDATETIME",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "LASTCHANGEDATETIME",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESORGANIZATION",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESORGANIZATION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "DISTRIBUTIONCHANNEL",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DISTRIBUTIONCHANNEL",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ORGANIZATIONDIVISION",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ORGANIZATIONDIVISION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESGROUP",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESGROUP",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESOFFICE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESOFFICE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "TRANSACTIONCURRENCY",
+											"type": "String"
+										},
+										"sink": {
+											"name": "TRANSACTIONCURRENCY",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "PRICINGDATE",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "PRICINGDATE",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RETAILPROMOTION",
+											"type": "String"
+										},
+										"sink": {
+											"name": "RETAILPROMOTION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESDOCUMENTCONDITION",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTCONDITION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ODQ_CHANGEMODE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ODQ_CHANGEMODE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ODQ_ENTITYCNTR",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "ODQ_ENTITYCNTR",
+											"type": "Decimal"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "S4H_SalesOrderByToken",
+								"type": "DatasetReference",
+								"parameters": {
+									"Token": {
+										"value": "@activity('Get DeltaToken').output.DeltaToken",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "S4H_SalesOrdersSQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Get DeltaToken",
+						"type": "AzureFunctionActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"functionName": "GetODPDeltaToken",
+							"method": "GET",
+							"headers": {},
+							"body": {
+								"name": "Azure Function Call"
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "ADFTest",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrderByToken')]",
+				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrdersSQL')]",
+				"[concat(variables('factoryId'), '/linkedServices/ADFTest')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IncrementalPersons')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LookupOldWatermarkActivity",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlSource",
+								"sqlReaderQuery": "select * from watermarktable where TableName = 'persons';"
+							},
+							"dataset": {
+								"referenceName": "WaterMark_SQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "LookupNewWaterMarkActivity",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlSource",
+								"sqlReaderQuery": "select MAX(LastModifytime) as NewWatermarkvalue from persons"
+							},
+							"dataset": {
+								"referenceName": "Persons_SQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "IncrementalCopy",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "LookupNewWaterMarkActivity",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "LookupOldWatermarkActivity",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlSource",
+								"sqlReaderQuery": {
+									"value": "select * from persons where LastModifytime > '@{activity('LookupOldWatermarkActivity').output.firstrow.watermarkvalue}' and LastModifytime <= '@{activity('LookupNewWaterMarkActivity').output.firstRow.NewWatermarkvalue}';",
+									"type": "Expression"
+								}
+							},
+							"sink": {
+								"type": "BlobSink"
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "Persons_SQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Persons_Incremental",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "StoredProceduretoWriteWatermarkActivity",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "IncrementalCopy",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[sp_write_watermark]",
+							"storedProcedureParameters": {
+								"LastModifiedtime": {
+									"value": {
+										"value": "@{activity('LookupNewWaterMarkActivity').output.firstRow.NewWatermarkvalue}",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"TableName": {
+									"value": {
+										"value": "@{activity('LookupOldWaterMarkActivity').output.firstRow.TableName}",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "bdlsqldatadb",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/WaterMark_SQL')]",
+				"[concat(variables('factoryId'), '/datasets/Persons_SQL')]",
+				"[concat(variables('factoryId'), '/datasets/Persons_Incremental')]",
+				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NPLProducts_Incremental')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LookupWaterMark",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlSource",
+								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProducts';"
+							},
+							"dataset": {
+								"referenceName": "WaterMark_SQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "IncrementalCopy",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "LookupWaterMark",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapEccSource",
+								"query": {
+									"value": "$filter=LastModified%20gt%20datetime%27@{activity('LookupWaterMark').output.firstRow.WaterMarkValue}%27",
+									"type": "Expression"
+								}
+							},
+							"sink": {
+								"type": "SqlSink",
+								"writeBatchSize": 10000,
+								"sqlWriterStoredProcedureName": "[[dbo].[spOverwriteProducts]",
+								"sqlWriterTableType": "NPLProductsType"
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0,
+							"translator": {
+								"type": "TabularTranslator",
+								"columnMappings": {
+									"Id": "id",
+									"CurrencyCode": "currencycode",
+									"StockQuantity": "stockquantity",
+									"Name": "name",
+									"Description": "description",
+									"SubCategoryId": "subcategoryid",
+									"SubCategoryName": "subcategoryname",
+									"MainCategoryId": "maincategoryid",
+									"MainCategoryName": "maincategoryname",
+									"SupplierId": "supplierid",
+									"SupplierName": "suppliername",
+									"LastModified": "lastmodified",
+									"Price": "price",
+									"QuantityUnit": "quantityunit",
+									"MeasureUnit": "measureunit"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "NPL_Products",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "NPLProducts_SQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "UpdateWaterMark",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "IncrementalCopy",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[sp_write_watermark]",
+							"storedProcedureParameters": {
+								"LastModifiedtime": {
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"TableName": {
+									"value": "NPLProducts",
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "bdlsqldatadb",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/WaterMark_SQL')]",
+				"[concat(variables('factoryId'), '/datasets/NPL_Products')]",
+				"[concat(variables('factoryId'), '/datasets/NPLProducts_SQL')]",
+				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_DataLake')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "NPLProducts_To_DataLake",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapEccSource"
+							},
+							"sink": {
+								"type": "AzureDataLakeStoreSink"
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "NPL_Products",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "BDL_AzDL_NPLProducts",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/NPL_Products')]",
+				"[concat(variables('factoryId'), '/datasets/BDL_AzDL_NPLProducts')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_SQL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "NPLProducts_To_SQL",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapEccSource",
+								"query": "$filter=LastModified%20gt%20datetime%272018-01-01T00:00:00%27"
+							},
+							"sink": {
+								"type": "SqlSink",
+								"writeBatchSize": 10000
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0,
+							"translator": {
+								"type": "TabularTranslator",
+								"columnMappings": {
+									"Id": "id",
+									"CurrencyCode": "currencycode",
+									"StockQuantity": "stockquantity",
+									"Name": "name",
+									"Description": "description",
+									"SubCategoryId": "subcategoryid",
+									"SubCategoryName": "subcategoryname",
+									"MainCategoryId": "maincategoryid",
+									"MainCategoryName": "maincategoryname",
+									"SupplierId": "supplierid",
+									"SupplierName": "suppliername",
+									"LastModified": "lastmodified",
+									"Price": "price",
+									"QuantityUnit": "quantityunit",
+									"MeasureUnit": "measureunit"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "NPL_Products",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "NPLProducts_SQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/NPL_Products')]",
+				"[concat(variables('factoryId'), '/datasets/NPLProducts_SQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NorthwindCust_BdlAzDL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "NWCustomer_To_AzDLFile",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RelationalSource"
+							},
+							"sink": {
+								"type": "AzureDataLakeStoreSink"
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "NorthWind_Customers",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureDataLakeStore_NWCustomers",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/NorthWind_Customers')]",
+				"[concat(variables('factoryId'), '/datasets/AzureDataLakeStore_NWCustomers')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SAPDevCenterProdSet_BdlAzDL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ProductSet_SAPDev_BdlAzDL",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapEccSource"
+							},
+							"sink": {
+								"type": "AzureDataLakeStoreSink"
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "SAPDevCenter_ProductSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "BdlAzDL_SAPDev_ProductSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SAPDevCenter_ProductSet')]",
+				"[concat(variables('factoryId'), '/datasets/BdlAzDL_SAPDev_ProductSet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TransactionsfromBlobtoSQL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "TransactionsFromBlobToSQL",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BlobSource",
+								"recursive": true
+							},
+							"sink": {
+								"type": "SqlSink",
+								"writeBatchSize": 10000
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0,
+							"translator": {
+								"type": "TabularTranslator",
+								"columnMappings": {
+									"tdate": "tdate",
+									"amount": "amount"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "TransactionsBlob",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Transactions_SQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/TransactionsBlob')]",
+				"[concat(variables('factoryId'), '/datasets/Transactions_SQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tutorial')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BlobSource",
+								"recursive": true
+							},
+							"sink": {
+								"type": "BlobSink"
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "InputDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "OutputDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/InputDataSet')]",
+				"[concat(variables('factoryId'), '/datasets/OutputDataSet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStore_NWCustomers')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BdlAzDataLake",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureDataLakeStoreFile",
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
+					},
+					"fileName": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BdlAzDataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BDL_AzDL_NPLProducts')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BdlAzDataLake",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureDataLakeStoreFile",
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
+					},
+					"fileName": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BdlAzDataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BdlAzDL_SAPDev_ProductSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BdlAzDataLake",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureDataLakeStoreFile",
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
+					},
+					"fileName": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BdlAzDataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DailyGameData_Blob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdldftutorial",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"dsFileName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureBlob",
+				"structure": [
+					{
+						"name": "Player",
+						"type": "String"
+					},
+					{
+						"name": "Time",
+						"type": "String"
+					},
+					{
+						"name": "Points",
+						"type": "Int32"
+					}
+				],
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": true
+					},
+					"fileName": {
+						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_fileName')]",
+						"type": "Expression"
+					},
+					"folderPath": "[parameters('DailyGameData_Blob_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdldftutorial')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GameData_SQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlsqldatadb",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "player",
+						"type": "String"
+					},
+					{
+						"name": "time",
+						"type": "String"
+					},
+					{
+						"name": "points",
+						"type": "Int32"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[points]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/InputDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdldftutorial",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureBlob",
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"encodingName": null,
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
+					},
+					"fileName": "[parameters('InputDataSet_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('InputDataSet_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdldftutorial')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NPLProducts_SQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlsqldatadb",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "id",
+						"type": "String"
+					},
+					{
+						"name": "currencycode",
+						"type": "String"
+					},
+					{
+						"name": "stockquantity",
+						"type": "Int32"
+					},
+					{
+						"name": "name",
+						"type": "String"
+					},
+					{
+						"name": "description",
+						"type": "String"
+					},
+					{
+						"name": "subcategoryid",
+						"type": "String"
+					},
+					{
+						"name": "subcategoryname",
+						"type": "String"
+					},
+					{
+						"name": "maincategoryid",
+						"type": "String"
+					},
+					{
+						"name": "maincategoryname",
+						"type": "String"
+					},
+					{
+						"name": "supplierid",
+						"type": "String"
+					},
+					{
+						"name": "suppliername",
+						"type": "String"
+					},
+					{
+						"name": "lastmodified",
+						"type": "DateTime"
+					},
+					{
+						"name": "price",
+						"type": "Decimal"
+					},
+					{
+						"name": "quantityunit",
+						"type": "String"
+					},
+					{
+						"name": "measureunit",
+						"type": "String"
+					}
+				],
+				"typeProperties": {
+					"tableName": "Products"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NPL_Products')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NPLABAPSystem",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"structure": [
+					{
+						"name": "CurrencyCode",
+						"type": "String"
+					},
+					{
+						"name": "Id",
+						"type": "String"
+					},
+					{
+						"name": "StockQuantity",
+						"type": "Int32"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					},
+					{
+						"name": "Description",
+						"type": "String"
+					},
+					{
+						"name": "SubCategoryId",
+						"type": "String"
+					},
+					{
+						"name": "SubCategoryName",
+						"type": "String"
+					},
+					{
+						"name": "MainCategoryId",
+						"type": "String"
+					},
+					{
+						"name": "MainCategoryName",
+						"type": "String"
+					},
+					{
+						"name": "SupplierId",
+						"type": "String"
+					},
+					{
+						"name": "SupplierName",
+						"type": "String"
+					},
+					{
+						"name": "LastModified",
+						"type": "DateTime"
+					},
+					{
+						"name": "Price",
+						"type": "Decimal"
+					},
+					{
+						"name": "DimensionHeight",
+						"type": "Decimal"
+					},
+					{
+						"name": "DimensionWidth",
+						"type": "Decimal"
+					},
+					{
+						"name": "DimensionDepth",
+						"type": "Decimal"
+					},
+					{
+						"name": "DimensionUnit",
+						"type": "String"
+					},
+					{
+						"name": "ImageUrl",
+						"type": "String"
+					},
+					{
+						"name": "QuantityUnit",
+						"type": "String"
+					},
+					{
+						"name": "MeasureUnit",
+						"type": "String"
+					},
+					{
+						"name": "AverageRating",
+						"type": "Decimal"
+					},
+					{
+						"name": "RatingCount",
+						"type": "Int32"
+					},
+					{
+						"name": "WeightMeasure",
+						"type": "Decimal"
+					},
+					{
+						"name": "WeightUnit",
+						"type": "String"
+					}
+				],
+				"typeProperties": {
+					"path": "Products"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/NPLABAPSystem')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NorthWind_Customers')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SampleOData",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "ODataResource",
+				"typeProperties": {
+					"path": "Customers"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SampleOData')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OutputDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdldftutorial",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureBlob",
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
+					},
+					"fileName": "[parameters('OutputDataSet_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('OutputDataSet_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdldftutorial')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Persons_Incremental')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdldftutorial",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureBlob",
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
+					},
+					"fileName": {
+						"value": "[parameters('Persons_Incremental_properties_typeProperties_fileName')]",
+						"type": "Expression"
+					},
+					"folderPath": "[parameters('Persons_Incremental_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdldftutorial')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Persons_SQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlsqldatadb",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "PersonID",
+						"type": "Int32"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					},
+					{
+						"name": "LastModifytime",
+						"type": "DateTime"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[persons]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4H_DeltaTokens')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4H_ODP",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"schema": [],
+				"typeProperties": {
+					"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/S4H_ODP')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4H_SalesOrderByToken')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4H_ODP",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Token": {
+						"type": "string",
+						"defaultValue": "D20190716141524_000029000"
+					}
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"schema": [],
+				"typeProperties": {
+					"path": {
+						"value": "@concat('DeltaLinksOfAttrOfZBD_ISALESDOC_1(%27',dataset().Token, '%27)/ChangesAfter')",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/S4H_ODP')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4H_SalesOrders')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "S4H - SAP CAL",
+				"linkedServiceName": {
+					"referenceName": "S4H_ODP",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"schema": [],
+				"typeProperties": {
+					"path": "AttrOfZBD_ISALESDOC_1"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/S4H_ODP')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4H_SalesOrdersByDeltaToken')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4H_ODP",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"schema": [],
+				"typeProperties": {
+					"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190723092859_000029000')/ChangesAfter"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/S4H_ODP')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4H_SalesOrdersSQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlsqldatadb",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "SALESDOCUMENT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SDDOCUMENTCATEGORY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTPROCESSINGTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREATIONDATE",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "CREATIONTIME",
+						"type": "time",
+						"scale": 7
+					},
+					{
+						"name": "LASTCHANGEDATE",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "LASTCHANGEDATETIME",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 0
+					},
+					{
+						"name": "SALESORGANIZATION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DISTRIBUTIONCHANNEL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ORGANIZATIONDIVISION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESOFFICE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TRANSACTIONCURRENCY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PRICINGDATE",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "RETAILPROMOTION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTCONDITION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ODQ_CHANGEMODE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ODQ_ENTITYCNTR",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[S4HSalesOrders]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4HoData_getSalesOrdersByToken')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4HOData",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "ODataResource",
+				"typeProperties": {
+					"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190723092859_000029000')/ChangesAfter"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/S4HOData')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SAPDevCenter_ProductSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SAPDevCenter",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"structure": [
+					{
+						"name": "ProductID",
+						"type": "String"
+					},
+					{
+						"name": "TypeCode",
+						"type": "String"
+					},
+					{
+						"name": "Category",
+						"type": "String"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					},
+					{
+						"name": "NameLanguage",
+						"type": "String"
+					},
+					{
+						"name": "Description",
+						"type": "String"
+					},
+					{
+						"name": "DescriptionLanguage",
+						"type": "String"
+					},
+					{
+						"name": "SupplierID",
+						"type": "String"
+					},
+					{
+						"name": "SupplierName",
+						"type": "String"
+					},
+					{
+						"name": "TaxTarifCode",
+						"type": "Int16"
+					},
+					{
+						"name": "MeasureUnit",
+						"type": "String"
+					},
+					{
+						"name": "WeightMeasure",
+						"type": "Decimal"
+					},
+					{
+						"name": "WeightUnit",
+						"type": "String"
+					},
+					{
+						"name": "CurrencyCode",
+						"type": "String"
+					},
+					{
+						"name": "Price",
+						"type": "Decimal"
+					},
+					{
+						"name": "Width",
+						"type": "Decimal"
+					},
+					{
+						"name": "Depth",
+						"type": "Decimal"
+					},
+					{
+						"name": "Height",
+						"type": "Decimal"
+					},
+					{
+						"name": "DimUnit",
+						"type": "String"
+					},
+					{
+						"name": "CreatedAt",
+						"type": "DateTime"
+					},
+					{
+						"name": "ChangedAt",
+						"type": "DateTime"
+					}
+				],
+				"typeProperties": {
+					"path": "ProductSet"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SAPDevCenter')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TransactionsBlob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdldftutorial",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureBlob",
+				"structure": [
+					{
+						"name": "tdate",
+						"type": "DateTime"
+					},
+					{
+						"name": "amount",
+						"type": "Double"
+					}
+				],
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": true
+					},
+					"fileName": "[parameters('TransactionsBlob_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('TransactionsBlob_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdldftutorial')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Transactions_SQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlsqldatadb",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "tdate",
+						"type": "DateTime"
+					},
+					{
+						"name": "amount",
+						"type": "Decimal"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[transactions]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/WaterMark_SQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlsqldatadb",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "TableName",
+						"type": "String"
+					},
+					{
+						"name": "WatermarkValue",
+						"type": "DateTime"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[watermarktable]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ADFTest')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "https://bdladf.azurewebsites.net",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('ADFTest_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BdlAzDataLake')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDataLakeStore",
+				"typeProperties": {
+					"dataLakeStoreUri": "[parameters('BdlAzDataLake_properties_typeProperties_dataLakeStoreUri')]",
+					"tenant": "[parameters('BdlAzDataLake_properties_typeProperties_tenant')]",
+					"subscriptionId": "[parameters('BdlAzDataLake_properties_typeProperties_subscriptionId')]",
+					"resourceGroupName": "[parameters('BdlAzDataLake_properties_typeProperties_resourceGroupName')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NPLABAPSystem')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapEcc",
+				"typeProperties": {
+					"url": "[parameters('NPLABAPSystem_properties_typeProperties_url')]",
+					"username": "[parameters('NPLABAPSystem_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('NPLABAPSystem_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4HOData')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "OData",
+				"typeProperties": {
+					"url": "[parameters('S4HOData_properties_typeProperties_url')]",
+					"authenticationType": "Basic",
+					"userName": "[parameters('S4HOData_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('S4HOData_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4H_ODP')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "S4H SAP Call",
+				"annotations": [],
+				"type": "SapEcc",
+				"typeProperties": {
+					"url": "[parameters('S4H_ODP_properties_typeProperties_url')]",
+					"username": "[parameters('S4H_ODP_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('S4H_ODP_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SAPDevCenter')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapEcc",
+				"typeProperties": {
+					"url": "[parameters('SAPDevCenter_properties_typeProperties_url')]",
+					"username": "[parameters('SAPDevCenter_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SAPDevCenter_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SAPoData')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "OData",
+				"typeProperties": {
+					"url": "[parameters('SAPoData_properties_typeProperties_url')]",
+					"authenticationType": "Basic",
+					"userName": "[parameters('SAPoData_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SAPoData_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SampleOData')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "OData",
+				"typeProperties": {
+					"url": "[parameters('SampleOData_properties_typeProperties_url')]",
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/bdldftutorial')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('bdldftutorial_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/bdlsqldatadb')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('bdlsqldatadb_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/', parameters('integrationRuntime_NPLIntEngine'))]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"description": "Self-Hosted Integration Runtime for the NPL - ABAP Dev System",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4HRest')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('S4HRest_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('S4HRest_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('S4HRest_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4HRest_GetUpdatedSO')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4HRest",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190725080121_000019000')/ChangesAfter",
+					"requestMethod": "GET"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/S4HRest')]"
+			]
+		}
+	]
+}

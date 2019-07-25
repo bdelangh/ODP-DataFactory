@@ -1,0 +1,761 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory Name",
+			"defaultValue": "bdlsapdatafact"
+		},
+		"integrationRuntime_NPLIntEngine": {
+			"type": "string",
+			"metadata": "Integration Runtime Name",
+			"defaultValue": "NPLIntEngine"
+		},
+		"ADFTest_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ADFTest'"
+		},
+		"NPLABAPSystem_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'NPLABAPSystem'"
+		},
+		"S4HOData_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4HOData'"
+		},
+		"S4H_ODP_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4H_ODP'"
+		},
+		"SAPDevCenter_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SAPDevCenter'"
+		},
+		"SAPoData_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SAPoData'"
+		},
+		"bdldftutorial_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'bdldftutorial'"
+		},
+		"bdlsqldatadb_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
+		},
+		"S4HRest_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4HRest'"
+		},
+		"BdlAzDataLake_properties_typeProperties_dataLakeStoreUri": {
+			"type": "string",
+			"defaultValue": "https://bldazdatalakeadls.azuredatalakestore.net/webhdfs/v1"
+		},
+		"BdlAzDataLake_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+		},
+		"BdlAzDataLake_properties_typeProperties_subscriptionId": {
+			"type": "string",
+			"defaultValue": "37d02782-ca89-46c0-abac-ef2c0ae81726"
+		},
+		"BdlAzDataLake_properties_typeProperties_resourceGroupName": {
+			"type": "string",
+			"defaultValue": "bdl_azdatalake"
+		},
+		"NPLABAPSystem_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://137.117.134.161:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/"
+		},
+		"NPLABAPSystem_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "DEVELOPER"
+		},
+		"S4HOData_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4HOData_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "DEVELOPER"
+		},
+		"S4H_ODP_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4H_ODP_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "Developer"
+		},
+		"SAPDevCenter_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://sapes5.sapdevcenter.com/sap/opu/odata/IWBEP/GWSAMPLE_BASIC/"
+		},
+		"SAPDevCenter_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "P2000006001"
+		},
+		"SAPoData_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://sapes5.sapdevcenter.com/sap/opu/odata/IWBEP/GWSAMPLE_BASIC/ProductSet/"
+		},
+		"SAPoData_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": " P2000006001"
+		},
+		"SampleOData_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://services.odata.org/V3/Northwind/Northwind.svc/"
+		},
+		"S4HRest_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4HRest_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "DEVELOPER"
+		},
+		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "Customers.csv"
+		},
+		"AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "NorthWind"
+		},
+		"BDL_AzDL_NPLProducts_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "Products.csv"
+		},
+		"BDL_AzDL_NPLProducts_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "SAP/NPL"
+		},
+		"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "DevCenterProdSet.csv"
+		},
+		"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "SAP/DevCenter"
+		},
+		"DailyGameData_Blob_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "@dataset().dsFileName"
+		},
+		"DailyGameData_Blob_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "adftutorial/gamedata/2016/test"
+		},
+		"InputDataSet_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "emp.txt"
+		},
+		"InputDataSet_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "adftutorial/input"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/ADFTest')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "https://bdladf.azurewebsites.net",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('ADFTest_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BdlAzDataLake')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDataLakeStore",
+				"typeProperties": {
+					"dataLakeStoreUri": "[parameters('BdlAzDataLake_properties_typeProperties_dataLakeStoreUri')]",
+					"tenant": "[parameters('BdlAzDataLake_properties_typeProperties_tenant')]",
+					"subscriptionId": "[parameters('BdlAzDataLake_properties_typeProperties_subscriptionId')]",
+					"resourceGroupName": "[parameters('BdlAzDataLake_properties_typeProperties_resourceGroupName')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NPLABAPSystem')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapEcc",
+				"typeProperties": {
+					"url": "[parameters('NPLABAPSystem_properties_typeProperties_url')]",
+					"username": "[parameters('NPLABAPSystem_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('NPLABAPSystem_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4HOData')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "OData",
+				"typeProperties": {
+					"url": "[parameters('S4HOData_properties_typeProperties_url')]",
+					"authenticationType": "Basic",
+					"userName": "[parameters('S4HOData_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('S4HOData_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4H_ODP')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "S4H SAP Call",
+				"annotations": [],
+				"type": "SapEcc",
+				"typeProperties": {
+					"url": "[parameters('S4H_ODP_properties_typeProperties_url')]",
+					"username": "[parameters('S4H_ODP_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('S4H_ODP_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SAPDevCenter')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapEcc",
+				"typeProperties": {
+					"url": "[parameters('SAPDevCenter_properties_typeProperties_url')]",
+					"username": "[parameters('SAPDevCenter_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SAPDevCenter_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SAPoData')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "OData",
+				"typeProperties": {
+					"url": "[parameters('SAPoData_properties_typeProperties_url')]",
+					"authenticationType": "Basic",
+					"userName": "[parameters('SAPoData_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SAPoData_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SampleOData')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "OData",
+				"typeProperties": {
+					"url": "[parameters('SampleOData_properties_typeProperties_url')]",
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/bdldftutorial')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('bdldftutorial_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/bdlsqldatadb')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('bdlsqldatadb_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/', parameters('integrationRuntime_NPLIntEngine'))]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"description": "Self-Hosted Integration Runtime for the NPL - ABAP Dev System",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4HRest')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('S4HRest_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('S4HRest_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('S4HRest_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStore_NWCustomers')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BdlAzDataLake",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureDataLakeStoreFile",
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
+					},
+					"fileName": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BdlAzDataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BDL_AzDL_NPLProducts')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BdlAzDataLake",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureDataLakeStoreFile",
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
+					},
+					"fileName": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BdlAzDataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BdlAzDL_SAPDev_ProductSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BdlAzDataLake",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureDataLakeStoreFile",
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
+					},
+					"fileName": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BdlAzDataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DailyGameData_Blob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdldftutorial",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"dsFileName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureBlob",
+				"structure": [
+					{
+						"name": "Player",
+						"type": "String"
+					},
+					{
+						"name": "Time",
+						"type": "String"
+					},
+					{
+						"name": "Points",
+						"type": "Int32"
+					}
+				],
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": true
+					},
+					"fileName": {
+						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_fileName')]",
+						"type": "Expression"
+					},
+					"folderPath": "[parameters('DailyGameData_Blob_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdldftutorial')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GameData_SQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlsqldatadb",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "player",
+						"type": "String"
+					},
+					{
+						"name": "time",
+						"type": "String"
+					},
+					{
+						"name": "points",
+						"type": "Int32"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[points]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/InputDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdldftutorial",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureBlob",
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"encodingName": null,
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
+					},
+					"fileName": "[parameters('InputDataSet_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('InputDataSet_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdldftutorial')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NPLProducts_SQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlsqldatadb",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "id",
+						"type": "String"
+					},
+					{
+						"name": "currencycode",
+						"type": "String"
+					},
+					{
+						"name": "stockquantity",
+						"type": "Int32"
+					},
+					{
+						"name": "name",
+						"type": "String"
+					},
+					{
+						"name": "description",
+						"type": "String"
+					},
+					{
+						"name": "subcategoryid",
+						"type": "String"
+					},
+					{
+						"name": "subcategoryname",
+						"type": "String"
+					},
+					{
+						"name": "maincategoryid",
+						"type": "String"
+					},
+					{
+						"name": "maincategoryname",
+						"type": "String"
+					},
+					{
+						"name": "supplierid",
+						"type": "String"
+					},
+					{
+						"name": "suppliername",
+						"type": "String"
+					},
+					{
+						"name": "lastmodified",
+						"type": "DateTime"
+					},
+					{
+						"name": "price",
+						"type": "Decimal"
+					},
+					{
+						"name": "quantityunit",
+						"type": "String"
+					},
+					{
+						"name": "measureunit",
+						"type": "String"
+					}
+				],
+				"typeProperties": {
+					"tableName": "Products"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NPL_Products')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NPLABAPSystem",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"structure": [
+					{
+						"name": "CurrencyCode",
+						"type": "String"
+					},
+					{
+						"name": "Id",
+						"type": "String"
+					},
+					{
+						"name": "StockQuantity",
+						"type": "Int32"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					},
+					{
+						"name": "Description",
+						"type": "String"
+					},
+					{
+						"name": "SubCategoryId",
+						"type": "String"
+					},
+					{
+						"name": "SubCategoryName",
+						"type": "String"
+					},
+					{
+						"name": "MainCategoryId",
+						"type": "String"
+					},
+					{
+						"name": "MainCategoryName",
+						"type": "String"
+					},
+					{
+						"name": "SupplierId",
+						"type": "String"
+					},
+					{
+						"name": "SupplierName",
+						"type": "String"
+					},
+					{
+						"name": "LastModified",
+						"type": "DateTime"
+					},
+					{
+						"name": "Price",
+						"type": "Decimal"
+					},
+					{
+						"name": "DimensionHeight",
+						"type": "Decimal"
+					},
+					{
+						"name": "DimensionWidth",
+						"type": "Decimal"
+					},
+					{
+						"name": "DimensionDepth",
+						"type": "Decimal"
+					},
+					{
+						"name": "DimensionUnit",
+						"type": "String"
+					},
+					{
+						"name": "ImageUrl",
+						"type": "String"
+					},
+					{
+						"name": "QuantityUnit",
+						"type": "String"
+					},
+					{
+						"name": "MeasureUnit",
+						"type": "String"
+					},
+					{
+						"name": "AverageRating",
+						"type": "Decimal"
+					},
+					{
+						"name": "RatingCount",
+						"type": "Int32"
+					},
+					{
+						"name": "WeightMeasure",
+						"type": "Decimal"
+					},
+					{
+						"name": "WeightUnit",
+						"type": "String"
+					}
+				],
+				"typeProperties": {
+					"path": "Products"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/NPLABAPSystem')]"
+			]
+		}
+	]
+}

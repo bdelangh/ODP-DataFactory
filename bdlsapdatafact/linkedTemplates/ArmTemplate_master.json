@@ -1,0 +1,384 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory Name",
+			"defaultValue": "bdlsapdatafact"
+		},
+		"integrationRuntime_NPLIntEngine": {
+			"type": "string",
+			"metadata": "Integration Runtime Name",
+			"defaultValue": "NPLIntEngine"
+		},
+		"ADFTest_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ADFTest'"
+		},
+		"NPLABAPSystem_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'NPLABAPSystem'"
+		},
+		"S4HOData_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4HOData'"
+		},
+		"S4H_ODP_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4H_ODP'"
+		},
+		"SAPDevCenter_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SAPDevCenter'"
+		},
+		"SAPoData_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SAPoData'"
+		},
+		"bdldftutorial_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'bdldftutorial'"
+		},
+		"bdlsqldatadb_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
+		},
+		"S4HRest_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4HRest'"
+		},
+		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "Customers.csv"
+		},
+		"AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "NorthWind"
+		},
+		"BDL_AzDL_NPLProducts_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "Products.csv"
+		},
+		"BDL_AzDL_NPLProducts_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "SAP/NPL"
+		},
+		"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "DevCenterProdSet.csv"
+		},
+		"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "SAP/DevCenter"
+		},
+		"DailyGameData_Blob_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "@dataset().dsFileName"
+		},
+		"DailyGameData_Blob_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "adftutorial/gamedata/2016/test"
+		},
+		"InputDataSet_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "emp.txt"
+		},
+		"InputDataSet_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "adftutorial/input"
+		},
+		"OutputDataSet_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "output.txt"
+		},
+		"OutputDataSet_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "adftutorial/output"
+		},
+		"Persons_Incremental_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "@concat('Incremental-', pipeline().RunId, '.txt')"
+		},
+		"Persons_Incremental_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "adftutorial/persons"
+		},
+		"TransactionsBlob_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "transactions.txt"
+		},
+		"TransactionsBlob_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "adftutorial/transactions"
+		},
+		"BdlAzDataLake_properties_typeProperties_dataLakeStoreUri": {
+			"type": "string",
+			"defaultValue": "https://bldazdatalakeadls.azuredatalakestore.net/webhdfs/v1"
+		},
+		"BdlAzDataLake_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+		},
+		"BdlAzDataLake_properties_typeProperties_subscriptionId": {
+			"type": "string",
+			"defaultValue": "37d02782-ca89-46c0-abac-ef2c0ae81726"
+		},
+		"BdlAzDataLake_properties_typeProperties_resourceGroupName": {
+			"type": "string",
+			"defaultValue": "bdl_azdatalake"
+		},
+		"NPLABAPSystem_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://137.117.134.161:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/"
+		},
+		"NPLABAPSystem_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "DEVELOPER"
+		},
+		"S4HOData_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4HOData_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "DEVELOPER"
+		},
+		"S4H_ODP_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4H_ODP_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "Developer"
+		},
+		"SAPDevCenter_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://sapes5.sapdevcenter.com/sap/opu/odata/IWBEP/GWSAMPLE_BASIC/"
+		},
+		"SAPDevCenter_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "P2000006001"
+		},
+		"SAPoData_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://sapes5.sapdevcenter.com/sap/opu/odata/IWBEP/GWSAMPLE_BASIC/ProductSet/"
+		},
+		"SAPoData_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": " P2000006001"
+		},
+		"SampleOData_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://services.odata.org/V3/Northwind/Northwind.svc/"
+		},
+		"S4HRest_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4HRest_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "DEVELOPER"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas Token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"integrationRuntime_NPLIntEngine": {
+						"value": "[parameters('integrationRuntime_NPLIntEngine')]"
+					},
+					"ADFTest_functionKey": {
+						"value": "[parameters('ADFTest_functionKey')]"
+					},
+					"NPLABAPSystem_password": {
+						"value": "[parameters('NPLABAPSystem_password')]"
+					},
+					"S4HOData_password": {
+						"value": "[parameters('S4HOData_password')]"
+					},
+					"S4H_ODP_password": {
+						"value": "[parameters('S4H_ODP_password')]"
+					},
+					"SAPDevCenter_password": {
+						"value": "[parameters('SAPDevCenter_password')]"
+					},
+					"SAPoData_password": {
+						"value": "[parameters('SAPoData_password')]"
+					},
+					"bdldftutorial_connectionString": {
+						"value": "[parameters('bdldftutorial_connectionString')]"
+					},
+					"bdlsqldatadb_connectionString": {
+						"value": "[parameters('bdlsqldatadb_connectionString')]"
+					},
+					"S4HRest_password": {
+						"value": "[parameters('S4HRest_password')]"
+					},
+					"BdlAzDataLake_properties_typeProperties_dataLakeStoreUri": {
+						"value": "[parameters('BdlAzDataLake_properties_typeProperties_dataLakeStoreUri')]"
+					},
+					"BdlAzDataLake_properties_typeProperties_tenant": {
+						"value": "[parameters('BdlAzDataLake_properties_typeProperties_tenant')]"
+					},
+					"BdlAzDataLake_properties_typeProperties_subscriptionId": {
+						"value": "[parameters('BdlAzDataLake_properties_typeProperties_subscriptionId')]"
+					},
+					"BdlAzDataLake_properties_typeProperties_resourceGroupName": {
+						"value": "[parameters('BdlAzDataLake_properties_typeProperties_resourceGroupName')]"
+					},
+					"NPLABAPSystem_properties_typeProperties_url": {
+						"value": "[parameters('NPLABAPSystem_properties_typeProperties_url')]"
+					},
+					"NPLABAPSystem_properties_typeProperties_username": {
+						"value": "[parameters('NPLABAPSystem_properties_typeProperties_username')]"
+					},
+					"S4HOData_properties_typeProperties_url": {
+						"value": "[parameters('S4HOData_properties_typeProperties_url')]"
+					},
+					"S4HOData_properties_typeProperties_userName": {
+						"value": "[parameters('S4HOData_properties_typeProperties_userName')]"
+					},
+					"S4H_ODP_properties_typeProperties_url": {
+						"value": "[parameters('S4H_ODP_properties_typeProperties_url')]"
+					},
+					"S4H_ODP_properties_typeProperties_username": {
+						"value": "[parameters('S4H_ODP_properties_typeProperties_username')]"
+					},
+					"SAPDevCenter_properties_typeProperties_url": {
+						"value": "[parameters('SAPDevCenter_properties_typeProperties_url')]"
+					},
+					"SAPDevCenter_properties_typeProperties_username": {
+						"value": "[parameters('SAPDevCenter_properties_typeProperties_username')]"
+					},
+					"SAPoData_properties_typeProperties_url": {
+						"value": "[parameters('SAPoData_properties_typeProperties_url')]"
+					},
+					"SAPoData_properties_typeProperties_userName": {
+						"value": "[parameters('SAPoData_properties_typeProperties_userName')]"
+					},
+					"SampleOData_properties_typeProperties_url": {
+						"value": "[parameters('SampleOData_properties_typeProperties_url')]"
+					},
+					"S4HRest_properties_typeProperties_url": {
+						"value": "[parameters('S4HRest_properties_typeProperties_url')]"
+					},
+					"S4HRest_properties_typeProperties_userName": {
+						"value": "[parameters('S4HRest_properties_typeProperties_userName')]"
+					},
+					"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
+						"value": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName')]"
+					},
+					"AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath": {
+						"value": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath')]"
+					},
+					"BDL_AzDL_NPLProducts_properties_typeProperties_fileName": {
+						"value": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_fileName')]"
+					},
+					"BDL_AzDL_NPLProducts_properties_typeProperties_folderPath": {
+						"value": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_folderPath')]"
+					},
+					"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName": {
+						"value": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName')]"
+					},
+					"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath": {
+						"value": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath')]"
+					},
+					"DailyGameData_Blob_properties_typeProperties_fileName": {
+						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_fileName')]"
+					},
+					"DailyGameData_Blob_properties_typeProperties_folderPath": {
+						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_folderPath')]"
+					},
+					"InputDataSet_properties_typeProperties_fileName": {
+						"value": "[parameters('InputDataSet_properties_typeProperties_fileName')]"
+					},
+					"InputDataSet_properties_typeProperties_folderPath": {
+						"value": "[parameters('InputDataSet_properties_typeProperties_folderPath')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"OutputDataSet_properties_typeProperties_fileName": {
+						"value": "[parameters('OutputDataSet_properties_typeProperties_fileName')]"
+					},
+					"OutputDataSet_properties_typeProperties_folderPath": {
+						"value": "[parameters('OutputDataSet_properties_typeProperties_folderPath')]"
+					},
+					"Persons_Incremental_properties_typeProperties_fileName": {
+						"value": "[parameters('Persons_Incremental_properties_typeProperties_fileName')]"
+					},
+					"Persons_Incremental_properties_typeProperties_folderPath": {
+						"value": "[parameters('Persons_Incremental_properties_typeProperties_folderPath')]"
+					},
+					"TransactionsBlob_properties_typeProperties_fileName": {
+						"value": "[parameters('TransactionsBlob_properties_typeProperties_fileName')]"
+					},
+					"TransactionsBlob_properties_typeProperties_folderPath": {
+						"value": "[parameters('TransactionsBlob_properties_typeProperties_folderPath')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_1')]"
+			]
+		}
+	]
+}

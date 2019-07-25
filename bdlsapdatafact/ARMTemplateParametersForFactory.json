@@ -1,0 +1,138 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "bdlsapdatafact"
+		},
+		"integrationRuntime_NPLIntEngine": {
+			"value": "NPLIntEngine"
+		},
+		"ADFTest_functionKey": {
+			"value": ""
+		},
+		"NPLABAPSystem_password": {
+			"value": ""
+		},
+		"S4HOData_password": {
+			"value": ""
+		},
+		"S4H_ODP_password": {
+			"value": ""
+		},
+		"SAPDevCenter_password": {
+			"value": ""
+		},
+		"SAPoData_password": {
+			"value": ""
+		},
+		"bdldftutorial_connectionString": {
+			"value": ""
+		},
+		"bdlsqldatadb_connectionString": {
+			"value": ""
+		},
+		"S4HRest_password": {
+			"value": ""
+		},
+		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
+			"value": "Customers.csv"
+		},
+		"AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath": {
+			"value": "NorthWind"
+		},
+		"BDL_AzDL_NPLProducts_properties_typeProperties_fileName": {
+			"value": "Products.csv"
+		},
+		"BDL_AzDL_NPLProducts_properties_typeProperties_folderPath": {
+			"value": "SAP/NPL"
+		},
+		"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName": {
+			"value": "DevCenterProdSet.csv"
+		},
+		"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath": {
+			"value": "SAP/DevCenter"
+		},
+		"DailyGameData_Blob_properties_typeProperties_fileName": {
+			"value": "@dataset().dsFileName"
+		},
+		"DailyGameData_Blob_properties_typeProperties_folderPath": {
+			"value": "adftutorial/gamedata/2016/test"
+		},
+		"InputDataSet_properties_typeProperties_fileName": {
+			"value": "emp.txt"
+		},
+		"InputDataSet_properties_typeProperties_folderPath": {
+			"value": "adftutorial/input"
+		},
+		"OutputDataSet_properties_typeProperties_fileName": {
+			"value": "output.txt"
+		},
+		"OutputDataSet_properties_typeProperties_folderPath": {
+			"value": "adftutorial/output"
+		},
+		"Persons_Incremental_properties_typeProperties_fileName": {
+			"value": "@concat('Incremental-', pipeline().RunId, '.txt')"
+		},
+		"Persons_Incremental_properties_typeProperties_folderPath": {
+			"value": "adftutorial/persons"
+		},
+		"TransactionsBlob_properties_typeProperties_fileName": {
+			"value": "transactions.txt"
+		},
+		"TransactionsBlob_properties_typeProperties_folderPath": {
+			"value": "adftutorial/transactions"
+		},
+		"BdlAzDataLake_properties_typeProperties_dataLakeStoreUri": {
+			"value": "https://bldazdatalakeadls.azuredatalakestore.net/webhdfs/v1"
+		},
+		"BdlAzDataLake_properties_typeProperties_tenant": {
+			"value": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+		},
+		"BdlAzDataLake_properties_typeProperties_subscriptionId": {
+			"value": "37d02782-ca89-46c0-abac-ef2c0ae81726"
+		},
+		"BdlAzDataLake_properties_typeProperties_resourceGroupName": {
+			"value": "bdl_azdatalake"
+		},
+		"NPLABAPSystem_properties_typeProperties_url": {
+			"value": "http://137.117.134.161:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/"
+		},
+		"NPLABAPSystem_properties_typeProperties_username": {
+			"value": "DEVELOPER"
+		},
+		"S4HOData_properties_typeProperties_url": {
+			"value": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4HOData_properties_typeProperties_userName": {
+			"value": "DEVELOPER"
+		},
+		"S4H_ODP_properties_typeProperties_url": {
+			"value": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4H_ODP_properties_typeProperties_username": {
+			"value": "Developer"
+		},
+		"SAPDevCenter_properties_typeProperties_url": {
+			"value": "https://sapes5.sapdevcenter.com/sap/opu/odata/IWBEP/GWSAMPLE_BASIC/"
+		},
+		"SAPDevCenter_properties_typeProperties_username": {
+			"value": "P2000006001"
+		},
+		"SAPoData_properties_typeProperties_url": {
+			"value": "https://sapes5.sapdevcenter.com/sap/opu/odata/IWBEP/GWSAMPLE_BASIC/ProductSet/"
+		},
+		"SAPoData_properties_typeProperties_userName": {
+			"value": " P2000006001"
+		},
+		"SampleOData_properties_typeProperties_url": {
+			"value": "https://services.odata.org/V3/Northwind/Northwind.svc/"
+		},
+		"S4HRest_properties_typeProperties_url": {
+			"value": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+		},
+		"S4HRest_properties_typeProperties_userName": {
+			"value": "DEVELOPER"
+		}
+	}
+}
