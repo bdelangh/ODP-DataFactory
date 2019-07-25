@@ -1,0 +1,15 @@
+{
+	"name": "S4HRest_GetUpdatedSO",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "S4HRest",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190725080121_000019000')/ChangesAfter",
+			"requestMethod": "GET"
+		}
+	}
+}
