@@ -371,8 +371,7 @@
 											"path": "d.results[0].SALESDOCUMENT"
 										},
 										"sink": {
-											"name": "SALESDOCUMENT",
-											"type": "String"
+											"name": "SALESDOCUMENT"
 										}
 									},
 									{
@@ -380,8 +379,7 @@
 											"path": "d.results[0].SDDOCUMENTCATEGORY"
 										},
 										"sink": {
-											"name": "SDDOCUMENTCATEGORY",
-											"type": "String"
+											"name": "SDDOCUMENTCATEGORY"
 										}
 									},
 									{
@@ -389,8 +387,7 @@
 											"path": "d.results[0].SALESDOCUMENTTYPE"
 										},
 										"sink": {
-											"name": "SALESDOCUMENTTYPE",
-											"type": "String"
+											"name": "SALESDOCUMENTTYPE"
 										}
 									},
 									{
@@ -398,36 +395,7 @@
 											"path": "d.results[0].SALESDOCUMENTPROCESSINGTYPE"
 										},
 										"sink": {
-											"name": "SALESDOCUMENTPROCESSINGTYPE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"type": "DateTime",
-											"path": "d.results[0].CREATIONDATE"
-										},
-										"sink": {
-											"name": "CREATIONDATE",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].CREATIONTIME"
-										},
-										"sink": {
-											"name": "CREATIONTIME",
-											"type": "TimeSpan"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].LASTCHANGEDATE"
-										},
-										"sink": {
-											"name": "LASTCHANGEDATE",
-											"type": "DateTime"
+											"name": "SALESDOCUMENTPROCESSINGTYPE"
 										}
 									},
 									{
@@ -435,8 +403,7 @@
 											"path": "d.results[0].LASTCHANGEDATETIME"
 										},
 										"sink": {
-											"name": "LASTCHANGEDATETIME",
-											"type": "Decimal"
+											"name": "LASTCHANGEDATETIME"
 										}
 									},
 									{
@@ -444,8 +411,7 @@
 											"path": "d.results[0].SALESORGANIZATION"
 										},
 										"sink": {
-											"name": "SALESORGANIZATION",
-											"type": "String"
+											"name": "SALESORGANIZATION"
 										}
 									},
 									{
@@ -453,8 +419,7 @@
 											"path": "d.results[0].DISTRIBUTIONCHANNEL"
 										},
 										"sink": {
-											"name": "DISTRIBUTIONCHANNEL",
-											"type": "String"
+											"name": "DISTRIBUTIONCHANNEL"
 										}
 									},
 									{
@@ -462,8 +427,7 @@
 											"path": "d.results[0].ORGANIZATIONDIVISION"
 										},
 										"sink": {
-											"name": "ORGANIZATIONDIVISION",
-											"type": "String"
+											"name": "ORGANIZATIONDIVISION"
 										}
 									},
 									{
@@ -471,8 +435,7 @@
 											"path": "d.results[0].SALESGROUP"
 										},
 										"sink": {
-											"name": "SALESGROUP",
-											"type": "String"
+											"name": "SALESGROUP"
 										}
 									},
 									{
@@ -480,8 +443,7 @@
 											"path": "d.results[0].SALESOFFICE"
 										},
 										"sink": {
-											"name": "SALESOFFICE",
-											"type": "String"
+											"name": "SALESOFFICE"
 										}
 									},
 									{
@@ -489,8 +451,7 @@
 											"path": "d.results[0].TRANSACTIONCURRENCY"
 										},
 										"sink": {
-											"name": "TRANSACTIONCURRENCY",
-											"type": "String"
+											"name": "TRANSACTIONCURRENCY"
 										}
 									},
 									{
@@ -498,8 +459,7 @@
 											"path": "d.results[0].PRICINGDATE"
 										},
 										"sink": {
-											"name": "PRICINGDATE",
-											"type": "DateTime"
+											"name": "PRICINGDATE"
 										}
 									},
 									{
@@ -507,8 +467,7 @@
 											"path": "d.results[0].RETAILPROMOTION"
 										},
 										"sink": {
-											"name": "RETAILPROMOTION",
-											"type": "String"
+											"name": "RETAILPROMOTION"
 										}
 									},
 									{
@@ -516,8 +475,7 @@
 											"path": "d.results[0].SALESDOCUMENTCONDITION"
 										},
 										"sink": {
-											"name": "SALESDOCUMENTCONDITION",
-											"type": "String"
+											"name": "SALESDOCUMENTCONDITION"
 										}
 									},
 									{
@@ -525,8 +483,7 @@
 											"path": "d.results[0].ODQ_CHANGEMODE"
 										},
 										"sink": {
-											"name": "ODQ_CHANGEMODE",
-											"type": "String"
+											"name": "ODQ_CHANGEMODE"
 										}
 									},
 									{
@@ -534,8 +491,7 @@
 											"path": "d.results[0].ODQ_ENTITYCNTR"
 										},
 										"sink": {
-											"name": "ODQ_ENTITYCNTR",
-											"type": "Decimal"
+											"name": "ODQ_ENTITYCNTR"
 										}
 									}
 								]
