@@ -227,7 +227,7 @@
 				]
 			},
 			{
-				"name": "Web1",
+				"name": "GetNextDeltaToken",
 				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
@@ -239,7 +239,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190828122610_000029000')/ChangesAfter",
+					"url": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190828122610_000029000')/ChangesAfter?$format=json",
 					"method": "GET",
 					"authentication": {
 						"type": "Basic",
