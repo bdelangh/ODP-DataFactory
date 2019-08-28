@@ -225,6 +225,31 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190828122610_000029000')/ChangesAfter",
+					"method": "GET",
+					"authentication": {
+						"type": "Basic",
+						"username": "DEVELOPER",
+						"password": {
+							"type": "SecureString",
+							"value": "**********"
+						}
+					}
+				}
 			}
 		],
 		"annotations": []
