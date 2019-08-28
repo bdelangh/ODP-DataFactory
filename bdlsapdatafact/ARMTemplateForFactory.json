@@ -138,7 +138,7 @@
 		},
 		"S4HOData_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+			"defaultValue": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV"
 		},
 		"S4HOData_properties_typeProperties_userName": {
 			"type": "string",
@@ -146,7 +146,7 @@
 		},
 		"S4HRest_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+			"defaultValue": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV"
 		},
 		"S4HRest_properties_typeProperties_userName": {
 			"type": "string",
@@ -154,7 +154,7 @@
 		},
 		"S4H_ODP_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+			"defaultValue": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV"
 		},
 		"S4H_ODP_properties_typeProperties_username": {
 			"type": "string",
@@ -281,6 +281,9 @@
 							},
 							"sink": {
 								"type": "AzureSqlSink",
+								"sqlWriterStoredProcedureName": "[[dbo].[spOverwriteS4HSO]",
+								"sqlWriterTableType": "S4HSalesOrder",
+								"storedProcedureTableTypeParameterName": "SalesOrders",
 								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
@@ -414,6 +417,16 @@
 										},
 										"sink": {
 											"name": "SALESOFFICE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "PURCHASEORDERBYCUSTOMER",
+											"type": "String"
+										},
+										"sink": {
+											"name": "PURCHASEORDERBYCUSTOMER",
 											"type": "String"
 										}
 									},
@@ -2413,7 +2426,7 @@
 				"annotations": [],
 				"type": "ODataResource",
 				"typeProperties": {
-					"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190723092859_000029000')/ChangesAfter"
+					"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190828122610_000029000')/ChangesAfter"
 				}
 			},
 			"dependsOn": [

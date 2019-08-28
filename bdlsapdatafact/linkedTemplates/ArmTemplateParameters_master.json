@@ -102,19 +102,19 @@
 			"value": "DEVELOPER"
 		},
 		"S4HOData_properties_typeProperties_url": {
-			"value": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+			"value": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV"
 		},
 		"S4HOData_properties_typeProperties_userName": {
 			"value": "DEVELOPER"
 		},
 		"S4HRest_properties_typeProperties_url": {
-			"value": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+			"value": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV"
 		},
 		"S4HRest_properties_typeProperties_userName": {
 			"value": "DEVELOPER"
 		},
 		"S4H_ODP_properties_typeProperties_url": {
-			"value": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01"
+			"value": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV"
 		},
 		"S4H_ODP_properties_typeProperties_username": {
 			"value": "Developer"

@@ -359,7 +359,7 @@
 				"annotations": [],
 				"type": "ODataResource",
 				"typeProperties": {
-					"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190723092859_000029000')/ChangesAfter"
+					"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190828122610_000029000')/ChangesAfter"
 				}
 			},
 			"dependsOn": []
@@ -651,6 +651,9 @@
 							},
 							"sink": {
 								"type": "AzureSqlSink",
+								"sqlWriterStoredProcedureName": "[[dbo].[spOverwriteS4HSO]",
+								"sqlWriterTableType": "S4HSalesOrder",
+								"storedProcedureTableTypeParameterName": "SalesOrders",
 								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
@@ -784,6 +787,16 @@
 										},
 										"sink": {
 											"name": "SALESOFFICE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "PURCHASEORDERBYCUSTOMER",
+											"type": "String"
+										},
+										"sink": {
+											"name": "PURCHASEORDERBYCUSTOMER",
 											"type": "String"
 										}
 									},
