@@ -168,6 +168,16 @@
 							},
 							{
 								"source": {
+									"name": "PURCHASEORDERBYCUSTOMER",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PURCHASEORDERBYCUSTOMER",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"name": "TRANSACTIONCURRENCY",
 									"type": "String"
 								},
@@ -234,10 +244,7 @@
 						"referenceName": "S4H_SalesOrderByToken",
 						"type": "DatasetReference",
 						"parameters": {
-							"Token": {
-								"value": "@activity('Get DeltaToken').output.DeltaToken",
-								"type": "Expression"
-							}
+							"Token": "@activity('Get DeltaToken').output.DeltaToken"
 						}
 					}
 				],
