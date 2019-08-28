@@ -149,6 +149,15 @@
 							},
 							{
 								"source": {
+									"path": "d.results[0].PURCHASEORDERBYCUSTOMER"
+								},
+								"sink": {
+									"name": "PURCHASEORDERBYCUSTOMER",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"path": "d.results[0].TRANSACTIONCURRENCY"
 								},
 								"sink": {
