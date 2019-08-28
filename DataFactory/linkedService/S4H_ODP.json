@@ -6,9 +6,9 @@
 		"annotations": [],
 		"type": "SapEcc",
 		"typeProperties": {
-			"url": "http://52.178.28.134:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV_01",
+			"url": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV",
 			"username": "Developer",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkJETFNBUERBVEFGQUNUXzJhODBiNDUwLWU3MzgtNGRkNC04Y2Q0LWJlNDgwNDE4MGFkYSINCn0="
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkJETFNBUERBVEFGQUNUX2JmMTJjOTJjLWNlNTktNDY0NC1hMDc4LWYzZDA2N2Q5NzUyYyINCn0="
 		}
 	}
 }
