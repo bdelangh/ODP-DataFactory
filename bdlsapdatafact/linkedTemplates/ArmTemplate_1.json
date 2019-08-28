@@ -153,7 +153,7 @@
 				"annotations": [],
 				"type": "RestResource",
 				"typeProperties": {
-					"relativeUrl": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190725080121_000019000')/ChangesAfter",
+					"relativeUrl": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190828122610_000029000')/ChangesAfter",
 					"requestMethod": "GET"
 				}
 			},
