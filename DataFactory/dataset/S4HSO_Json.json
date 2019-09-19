@@ -1,0 +1,17 @@
+{
+	"name": "S4HSO_Json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SAPDataLake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "s4hana"
+			}
+		}
+	}
+}
