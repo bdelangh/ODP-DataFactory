@@ -1,0 +1,105 @@
+{
+	"name": "S4HSO_xsv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SAPDataLake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "test.csv",
+				"folderPath": "SalesOrders",
+				"fileSystem": "s4hana"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "SALESDOCUMENT",
+				"type": "String"
+			},
+			{
+				"name": "SDDOCUMENTCATEGORY",
+				"type": "String"
+			},
+			{
+				"name": "SALESDOCUMENTTYPE",
+				"type": "String"
+			},
+			{
+				"name": "SALESDOCUMENTPROCESSINGTYPE",
+				"type": "String"
+			},
+			{
+				"name": "CREATIONDATE",
+				"type": "String"
+			},
+			{
+				"name": "CREATIONTIME",
+				"type": "String"
+			},
+			{
+				"name": "LASTCHANGEDATE",
+				"type": "String"
+			},
+			{
+				"name": "LASTCHANGEDATETIME",
+				"type": "String"
+			},
+			{
+				"name": "SALESORGANIZATION",
+				"type": "String"
+			},
+			{
+				"name": "DISTRIBUTIONCHANNEL",
+				"type": "String"
+			},
+			{
+				"name": "ORAGANIZATIONDIVISION",
+				"type": "String"
+			},
+			{
+				"name": "SALESGROUP",
+				"type": "String"
+			},
+			{
+				"name": "SALESOFFICE",
+				"type": "String"
+			},
+			{
+				"name": "PURCHASEORDERBYCUSTOMER",
+				"type": "String"
+			},
+			{
+				"name": "TRANSACTIONCURRENCY",
+				"type": "String"
+			},
+			{
+				"name": "PRICINGDATA",
+				"type": "String"
+			},
+			{
+				"name": "RETAILPROMOTION",
+				"type": "String"
+			},
+			{
+				"name": "SALESDOCUMENTCONDITION",
+				"type": "String"
+			},
+			{
+				"name": "ODQ_CHANGEMODE",
+				"type": "String"
+			},
+			{
+				"name": "ODQ_ENTITYCNTR",
+				"type": "String"
+			}
+		]
+	}
+}
