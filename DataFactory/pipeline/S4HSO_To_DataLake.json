@@ -244,7 +244,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "S4HSO_xsv",
+						"referenceName": "S4HSO_csv",
 						"type": "DatasetReference"
 					}
 				]
