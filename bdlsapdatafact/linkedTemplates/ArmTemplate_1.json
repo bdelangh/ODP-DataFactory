@@ -710,7 +710,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "test2.csv",
+						"fileName": {
+							"value": "test_@formatDateTime().csv",
+							"type": "Expression"
+						},
 						"folderPath": "SalesOrders",
 						"fileSystem": "s4hana"
 					},
