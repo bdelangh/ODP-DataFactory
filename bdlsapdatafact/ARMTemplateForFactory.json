@@ -3202,7 +3202,7 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileName": {
-							"value": "test_@formatDateTime().csv",
+							"value": "@concat('test',utcnow())",
 							"type": "Expression"
 						},
 						"folderPath": "SalesOrders",
