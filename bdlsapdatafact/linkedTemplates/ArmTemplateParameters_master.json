@@ -35,6 +35,9 @@
 		"bdlsqldatadb_connectionString": {
 			"value": ""
 		},
+		"SAPDataLake_accountKey": {
+			"value": ""
+		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"value": "Customers.csv"
 		},
@@ -102,19 +105,19 @@
 			"value": "DEVELOPER"
 		},
 		"S4HOData_properties_typeProperties_url": {
-			"value": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV"
+			"value": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"
 		},
 		"S4HOData_properties_typeProperties_userName": {
 			"value": "DEVELOPER"
 		},
 		"S4HRest_properties_typeProperties_url": {
-			"value": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV"
+			"value": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"
 		},
 		"S4HRest_properties_typeProperties_userName": {
 			"value": "DEVELOPER"
 		},
 		"S4H_ODP_properties_typeProperties_url": {
-			"value": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV"
+			"value": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"
 		},
 		"S4H_ODP_properties_typeProperties_username": {
 			"value": "Developer"
@@ -133,6 +136,9 @@
 		},
 		"SampleOData_properties_typeProperties_url": {
 			"value": "https://services.odata.org/V3/Northwind/Northwind.svc/"
+		},
+		"SAPDataLake_properties_typeProperties_url": {
+			"value": "https://sapdatalake.dfs.core.windows.net"
 		},
 		"containerUri": {
 			"value": ""
