@@ -687,6 +687,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"folderPath": "SalesOrders",
 						"fileSystem": "s4hana"
 					}
 				},

@@ -898,7 +898,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"name": "[concat(parameters('factoryName'), '/S4HSO_To_DataLake')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -927,7 +927,7 @@
 								"formatSettings": {
 									"type": "JsonWriteSettings",
 									"quoteAllText": true,
-									"filePattern": "setOfObjects"
+									"filePattern": "arrayOfObjects"
 								}
 							},
 							"enableStaging": false,
