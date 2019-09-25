@@ -23,6 +23,9 @@
 		"S4H_ODP_password": {
 			"value": ""
 		},
+		"SAPDataLake_accountKey": {
+			"value": ""
+		},
 		"SAPDevCenter_password": {
 			"value": ""
 		},
@@ -33,9 +36,6 @@
 			"value": ""
 		},
 		"bdlsqldatadb_connectionString": {
-			"value": ""
-		},
-		"SAPDataLake_accountKey": {
 			"value": ""
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
@@ -122,6 +122,9 @@
 		"S4H_ODP_properties_typeProperties_username": {
 			"value": "Developer"
 		},
+		"SAPDataLake_properties_typeProperties_url": {
+			"value": "https://sapdatalake.dfs.core.windows.net"
+		},
 		"SAPDevCenter_properties_typeProperties_url": {
 			"value": "https://sapes5.sapdevcenter.com/sap/opu/odata/IWBEP/GWSAMPLE_BASIC/"
 		},
@@ -136,9 +139,6 @@
 		},
 		"SampleOData_properties_typeProperties_url": {
 			"value": "https://services.odata.org/V3/Northwind/Northwind.svc/"
-		},
-		"SAPDataLake_properties_typeProperties_url": {
-			"value": "https://sapdatalake.dfs.core.windows.net"
 		},
 		"containerUri": {
 			"value": ""

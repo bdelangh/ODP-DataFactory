@@ -32,6 +32,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4H_ODP'"
 		},
+		"SAPDataLake_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'SAPDataLake'"
+		},
 		"SAPDevCenter_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SAPDevCenter'"
@@ -47,10 +51,6 @@
 		"bdlsqldatadb_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
-		},
-		"SAPDataLake_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'SAPDataLake'"
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
@@ -164,6 +164,10 @@
 			"type": "string",
 			"defaultValue": "Developer"
 		},
+		"SAPDataLake_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://sapdatalake.dfs.core.windows.net"
+		},
 		"SAPDevCenter_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://sapes5.sapdevcenter.com/sap/opu/odata/IWBEP/GWSAMPLE_BASIC/"
@@ -183,10 +187,6 @@
 		"SampleOData_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://services.odata.org/V3/Northwind/Northwind.svc/"
-		},
-		"SAPDataLake_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://sapdatalake.dfs.core.windows.net"
 		},
 		"containerUri": {
 			"type": "string",
@@ -233,6 +233,9 @@
 					"S4H_ODP_password": {
 						"value": "[parameters('S4H_ODP_password')]"
 					},
+					"SAPDataLake_accountKey": {
+						"value": "[parameters('SAPDataLake_accountKey')]"
+					},
 					"SAPDevCenter_password": {
 						"value": "[parameters('SAPDevCenter_password')]"
 					},
@@ -244,9 +247,6 @@
 					},
 					"bdlsqldatadb_connectionString": {
 						"value": "[parameters('bdlsqldatadb_connectionString')]"
-					},
-					"SAPDataLake_accountKey": {
-						"value": "[parameters('SAPDataLake_accountKey')]"
 					},
 					"BdlAzDataLake_properties_typeProperties_dataLakeStoreUri": {
 						"value": "[parameters('BdlAzDataLake_properties_typeProperties_dataLakeStoreUri')]"
@@ -284,6 +284,9 @@
 					"S4H_ODP_properties_typeProperties_username": {
 						"value": "[parameters('S4H_ODP_properties_typeProperties_username')]"
 					},
+					"SAPDataLake_properties_typeProperties_url": {
+						"value": "[parameters('SAPDataLake_properties_typeProperties_url')]"
+					},
 					"SAPDevCenter_properties_typeProperties_url": {
 						"value": "[parameters('SAPDevCenter_properties_typeProperties_url')]"
 					},
@@ -298,9 +301,6 @@
 					},
 					"SampleOData_properties_typeProperties_url": {
 						"value": "[parameters('SampleOData_properties_typeProperties_url')]"
-					},
-					"SAPDataLake_properties_typeProperties_url": {
-						"value": "[parameters('SAPDataLake_properties_typeProperties_url')]"
 					},
 					"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 						"value": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName')]"
