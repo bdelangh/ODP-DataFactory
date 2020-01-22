@@ -4,12 +4,12 @@
 	"parameters": {
 		"factoryName": {
 			"type": "string",
-			"metadata": "Data Factory Name",
+			"metadata": "Data Factory name",
 			"defaultValue": "bdlsapdatafact"
 		},
 		"integrationRuntime_NPLIntEngine": {
 			"type": "string",
-			"metadata": "Integration Runtime Name",
+			"metadata": "Integration runtime name",
 			"defaultValue": "NPLIntEngine"
 		},
 		"ADFTest_functionKey": {
@@ -2045,7 +2045,7 @@
 						"nullValue": "\\N",
 						"treatEmptyAsNull": true,
 						"skipLineCount": 0,
-						"firstRowAsHeader": false
+						"firstRowAsHeader": true
 					},
 					"fileName": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_fileName')]",
 					"folderPath": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_folderPath')]"
