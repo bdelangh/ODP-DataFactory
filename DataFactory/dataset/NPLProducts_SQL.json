@@ -70,7 +70,7 @@
 			}
 		],
 		"typeProperties": {
-			"tableName": "Products"
+			"tableName": "NPLProducts"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"

@@ -16,8 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "SapEccSource",
-						"query": "$filter=LastModified%20gt%20datetime%272018-01-01T00:00:00%27"
+						"type": "SapEccSource"
 					},
 					"sink": {
 						"type": "SqlSink",
