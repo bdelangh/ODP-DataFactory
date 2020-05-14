@@ -1035,7 +1035,8 @@
 								"type": "SqlSink",
 								"writeBatchSize": 10000,
 								"sqlWriterStoredProcedureName": "[[dbo].[spOverwriteProducts]",
-								"sqlWriterTableType": "NPLProductsType"
+								"sqlWriterTableType": "NPLProductsType",
+								"storedProcedureTableTypeParameterName": "Products"
 							},
 							"enableStaging": false,
 							"dataIntegrationUnits": 0,
