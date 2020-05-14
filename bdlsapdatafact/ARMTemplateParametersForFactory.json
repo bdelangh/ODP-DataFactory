@@ -5,9 +5,6 @@
 		"factoryName": {
 			"value": "bdlsapdatafact"
 		},
-		"integrationRuntime_NPLIntEngine": {
-			"value": "NPLIntEngine"
-		},
 		"ADFTest_functionKey": {
 			"value": ""
 		},

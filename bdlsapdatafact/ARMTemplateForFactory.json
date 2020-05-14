@@ -7,11 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "bdlsapdatafact"
 		},
-		"integrationRuntime_NPLIntEngine": {
-			"type": "string",
-			"metadata": "Integration runtime name",
-			"defaultValue": "NPLIntEngine"
-		},
 		"ADFTest_functionKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'functionKey' of 'ADFTest'"
@@ -1201,8 +1196,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "SapEccSource",
-								"query": "$filter=LastModified%20gt%20datetime%272018-01-01T00:00:00%27"
+								"type": "SapEccSource"
 							},
 							"sink": {
 								"type": "SqlSink",
@@ -2272,7 +2266,7 @@
 					}
 				],
 				"typeProperties": {
-					"tableName": "Products"
+					"tableName": "NPLProducts"
 				}
 			},
 			"dependsOn": [
@@ -3290,7 +3284,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/', parameters('integrationRuntime_NPLIntEngine'))]",
+			"name": "[concat(parameters('factoryName'), '/NPLIntEngine')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
 			"properties": {

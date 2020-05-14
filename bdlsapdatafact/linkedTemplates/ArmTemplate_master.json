@@ -7,11 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "bdlsapdatafact"
 		},
-		"integrationRuntime_NPLIntEngine": {
-			"type": "string",
-			"metadata": "Integration runtime name",
-			"defaultValue": "NPLIntEngine"
-		},
 		"ADFTest_functionKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'functionKey' of 'ADFTest'"
@@ -214,9 +209,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"integrationRuntime_NPLIntEngine": {
-						"value": "[parameters('integrationRuntime_NPLIntEngine')]"
 					},
 					"ADFTest_functionKey": {
 						"value": "[parameters('ADFTest_functionKey')]"

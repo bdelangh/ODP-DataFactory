@@ -7,11 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "bdlsapdatafact"
 		},
-		"integrationRuntime_NPLIntEngine": {
-			"type": "string",
-			"metadata": "Integration runtime name",
-			"defaultValue": "NPLIntEngine"
-		},
 		"ADFTest_functionKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'functionKey' of 'ADFTest'"
@@ -373,7 +368,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/', parameters('integrationRuntime_NPLIntEngine'))]",
+			"name": "[concat(parameters('factoryName'), '/NPLIntEngine')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -658,7 +653,7 @@
 					}
 				],
 				"typeProperties": {
-					"tableName": "Products"
+					"tableName": "NPLProducts"
 				}
 			},
 			"dependsOn": [
