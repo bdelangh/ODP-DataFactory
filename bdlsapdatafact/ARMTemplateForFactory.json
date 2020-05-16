@@ -1125,6 +1125,9 @@
 						}
 					}
 				],
+				"folder": {
+					"name": "NPLProducts"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -1178,6 +1181,9 @@
 						]
 					}
 				],
+				"folder": {
+					"name": "NPLProducts"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -1237,6 +1243,9 @@
 						]
 					}
 				],
+				"folder": {
+					"name": "NPLProducts"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -1309,6 +1318,9 @@
 						]
 					}
 				],
+				"folder": {
+					"name": "NPLProducts"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
