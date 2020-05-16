@@ -46,6 +46,9 @@
 				]
 			}
 		],
+		"folder": {
+			"name": "NPLProducts"
+		},
 		"annotations": []
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
