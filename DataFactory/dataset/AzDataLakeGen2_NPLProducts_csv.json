@@ -10,7 +10,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "products.csv",
+				"fileName": {
+					"value": "@concat('products_', utcnow(),'.csv')",
+					"type": "Expression"
+				},
 				"folderPath": "NPL",
 				"fileSystem": "sap"
 			},
