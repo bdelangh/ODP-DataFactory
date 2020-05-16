@@ -3435,7 +3435,7 @@
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "Lookup Watermark Table",
+								"activity": "LookupWaterMark",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -3484,7 +3484,7 @@
 						]
 					},
 					{
-						"name": "Lookup Watermark Table",
+						"name": "LookupWaterMark",
 						"type": "Lookup",
 						"dependsOn": [],
 						"policy": {
