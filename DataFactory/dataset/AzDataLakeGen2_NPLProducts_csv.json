@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "products.csv",
+					"value": "@concat('products_', formatDateTime(utcnow()),'.csv')",
 					"type": "Expression"
 				},
 				"folderPath": "NPL",
