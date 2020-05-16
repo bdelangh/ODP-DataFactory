@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'functionKey' of 'ADFTest'"
 		},
+		"AzDataLakeGen2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzDataLakeGen2'"
+		},
 		"NPLABAPSystem_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'NPLABAPSystem'"
@@ -46,6 +50,10 @@
 		"bdlsqldatadb_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
+		},
+		"AzDataLakeGen2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://azdatalakegen2bdl.dfs.core.windows.net"
 		},
 		"BdlAzDataLake_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
@@ -150,14 +158,6 @@
 		"DailyGameData_Blob_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "adftutorial/gamedata/2016/test"
-		},
-		"InputDataSet_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "emp.txt"
-		},
-		"InputDataSet_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "adftutorial/input"
 		}
 	},
 	"variables": {
@@ -176,6 +176,23 @@
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('ADFTest_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzDataLakeGen2_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzDataLakeGen2_accountKey')]"
 					}
 				}
 			},
@@ -379,6 +396,34 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLProducts_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "products.csv",
+						"folderPath": "NPL",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStore_NWCustomers')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -543,117 +588,6 @@
 				],
 				"typeProperties": {
 					"tableName": "[[dbo].[points]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/InputDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdldftutorial",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureBlob",
-				"typeProperties": {
-					"format": {
-						"type": "TextFormat",
-						"columnDelimiter": ",",
-						"rowDelimiter": "",
-						"nullValue": "\\N",
-						"encodingName": null,
-						"treatEmptyAsNull": true,
-						"skipLineCount": 0,
-						"firstRowAsHeader": false
-					},
-					"fileName": "[parameters('InputDataSet_properties_typeProperties_fileName')]",
-					"folderPath": "[parameters('InputDataSet_properties_typeProperties_folderPath')]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/bdldftutorial')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPLProducts_SQL')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdlsqldatadb",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"structure": [
-					{
-						"name": "id",
-						"type": "String"
-					},
-					{
-						"name": "currencycode",
-						"type": "String"
-					},
-					{
-						"name": "stockquantity",
-						"type": "Int32"
-					},
-					{
-						"name": "name",
-						"type": "String"
-					},
-					{
-						"name": "description",
-						"type": "String"
-					},
-					{
-						"name": "subcategoryid",
-						"type": "String"
-					},
-					{
-						"name": "subcategoryname",
-						"type": "String"
-					},
-					{
-						"name": "maincategoryid",
-						"type": "String"
-					},
-					{
-						"name": "maincategoryname",
-						"type": "String"
-					},
-					{
-						"name": "supplierid",
-						"type": "String"
-					},
-					{
-						"name": "suppliername",
-						"type": "String"
-					},
-					{
-						"name": "lastmodified",
-						"type": "DateTime"
-					},
-					{
-						"name": "price",
-						"type": "Decimal"
-					},
-					{
-						"name": "quantityunit",
-						"type": "String"
-					},
-					{
-						"name": "measureunit",
-						"type": "String"
-					}
-				],
-				"typeProperties": {
-					"tableName": "NPLProducts"
 				}
 			},
 			"dependsOn": [
