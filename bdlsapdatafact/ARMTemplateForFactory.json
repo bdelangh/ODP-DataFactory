@@ -520,6 +520,9 @@
 						]
 					}
 				],
+				"folder": {
+					"name": "S4H"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -813,6 +816,9 @@
 						}
 					}
 				],
+				"folder": {
+					"name": "S4H"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -1254,6 +1260,147 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_DataLake2_Incr')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Get Product Deltas based on LastModified dates",
+				"activities": [
+					{
+						"name": "Incremental NPLProducts_To_DataLake",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "LookupWaterMark",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapEccSource",
+								"query": {
+									"value": "$filter=LastModified%20gt%20datetime%27@{activity('LookupWaterMark').output.firstRow.WaterMarkValue}%27",
+									"type": "Expression"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "NPL_Products",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzDataLakeGen2_NPLProducts_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "LookupWaterMark",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProductsDL';",
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "WaterMark_SQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Update Watermark",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Incremental NPLProducts_To_DataLake",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[sp_write_watermark]",
+							"storedProcedureParameters": {
+								"LastModifiedtime": {
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"TableName": {
+									"value": "NPLProductsDL",
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "bdlsqldatadb",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"folder": {
+					"name": "NPLProducts"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/NPL_Products')]",
+				"[concat(variables('factoryId'), '/datasets/AzDataLakeGen2_NPLProducts_csv')]",
+				"[concat(variables('factoryId'), '/datasets/WaterMark_SQL')]",
+				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_SQL')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1638,6 +1785,9 @@
 						}
 					}
 				],
+				"folder": {
+					"name": "S4H"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -1901,6 +2051,9 @@
 						]
 					}
 				],
+				"folder": {
+					"name": "S4H"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -1952,6 +2105,9 @@
 						]
 					}
 				],
+				"folder": {
+					"name": "SAP Dev Center"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -2644,6 +2800,9 @@
 					"referenceName": "SAPDataLake",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "S4H"
+				},
 				"annotations": [],
 				"type": "Json",
 				"typeProperties": {
@@ -2782,6 +2941,9 @@
 					"referenceName": "S4H_ODP",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "S4H"
+				},
 				"annotations": [],
 				"type": "SapEccResource",
 				"schema": [],
@@ -2808,6 +2970,9 @@
 						"defaultValue": "D20190716141524_000029000"
 					}
 				},
+				"folder": {
+					"name": "S4H"
+				},
 				"annotations": [],
 				"type": "SapEccResource",
 				"schema": [],
@@ -2832,6 +2997,9 @@
 					"referenceName": "S4H_ODP",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "S4H"
+				},
 				"annotations": [],
 				"type": "SapEccResource",
 				"schema": [],
@@ -2852,6 +3020,9 @@
 					"referenceName": "S4H_ODP",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "S4H"
+				},
 				"annotations": [],
 				"type": "SapEccResource",
 				"schema": [],
@@ -2871,6 +3042,9 @@
 				"linkedServiceName": {
 					"referenceName": "bdlsqldatadb",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
@@ -2979,6 +3153,9 @@
 				"linkedServiceName": {
 					"referenceName": "S4HOData",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
 				},
 				"annotations": [],
 				"type": "ODataResource",
@@ -3422,144 +3599,6 @@
 				"typeProperties": {}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_DataLake2_Incr')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Get Product Deltas based on LastModified dates",
-				"activities": [
-					{
-						"name": "Incremental NPLProducts_To_DataLake",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "LookupWaterMark",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapEccSource",
-								"query": "$filter=LastModified%20gt%20datetime%27@{activity('LookupWaterMark').output.firstRow.WaterMarkValue}%27"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"dataIntegrationUnits": 0
-						},
-						"inputs": [
-							{
-								"referenceName": "NPL_Products",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "AzDataLakeGen2_NPLProducts_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "LookupWaterMark",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProductsDL';",
-								"queryTimeout": "02:00:00"
-							},
-							"dataset": {
-								"referenceName": "WaterMark_SQL",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Update Watermark",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Incremental NPLProducts_To_DataLake",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[sp_write_watermark]",
-							"storedProcedureParameters": {
-								"LastModifiedtime": {
-									"value": {
-										"value": "@utcnow()",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"TableName": {
-									"value": "NPLProductsDL",
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "bdlsqldatadb",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"folder": {
-					"name": "NPLProducts"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/NPL_Products')]",
-				"[concat(variables('factoryId'), '/datasets/AzDataLakeGen2_NPLProducts_csv')]",
-				"[concat(variables('factoryId'), '/datasets/WaterMark_SQL')]",
-				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
-			]
 		}
 	]
 }

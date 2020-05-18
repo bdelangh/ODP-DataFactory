@@ -398,6 +398,9 @@
 					"referenceName": "SAPDataLake",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "S4H"
+				},
 				"annotations": [],
 				"type": "Json",
 				"typeProperties": {
@@ -532,6 +535,9 @@
 					"referenceName": "S4H_ODP",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "S4H"
+				},
 				"annotations": [],
 				"type": "SapEccResource",
 				"schema": [],
@@ -556,6 +562,9 @@
 						"defaultValue": "D20190716141524_000029000"
 					}
 				},
+				"folder": {
+					"name": "S4H"
+				},
 				"annotations": [],
 				"type": "SapEccResource",
 				"schema": [],
@@ -578,6 +587,9 @@
 					"referenceName": "S4H_ODP",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "S4H"
+				},
 				"annotations": [],
 				"type": "SapEccResource",
 				"schema": [],
@@ -596,6 +608,9 @@
 					"referenceName": "S4H_ODP",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "S4H"
+				},
 				"annotations": [],
 				"type": "SapEccResource",
 				"schema": [],
@@ -613,6 +628,9 @@
 				"linkedServiceName": {
 					"referenceName": "bdlsqldatadb",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
@@ -719,6 +737,9 @@
 				"linkedServiceName": {
 					"referenceName": "S4HOData",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
 				},
 				"annotations": [],
 				"type": "ODataResource",
