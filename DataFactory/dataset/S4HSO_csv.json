@@ -5,6 +5,9 @@
 			"referenceName": "SAPDataLake",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "S4H"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {

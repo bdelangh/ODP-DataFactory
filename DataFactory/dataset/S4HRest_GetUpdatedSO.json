@@ -5,6 +5,9 @@
 			"referenceName": "S4HRest",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "S4H"
+		},
 		"annotations": [],
 		"type": "RestResource",
 		"typeProperties": {

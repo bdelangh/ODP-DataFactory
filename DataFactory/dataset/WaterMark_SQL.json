@@ -5,6 +5,9 @@
 			"referenceName": "bdlsqldatadb",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "NPL"
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"structure": [

@@ -5,6 +5,9 @@
 			"referenceName": "BdlAzDataLake",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "NPL"
+		},
 		"annotations": [],
 		"type": "AzureDataLakeStoreFile",
 		"typeProperties": {

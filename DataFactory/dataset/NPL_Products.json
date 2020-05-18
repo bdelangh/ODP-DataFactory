@@ -5,6 +5,9 @@
 			"referenceName": "NPLABAPSystem",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "NPL"
+		},
 		"annotations": [],
 		"type": "SapEccResource",
 		"structure": [
