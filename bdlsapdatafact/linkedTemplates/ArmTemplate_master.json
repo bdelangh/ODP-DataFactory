@@ -83,22 +83,6 @@
 			"type": "string",
 			"defaultValue": "adftutorial/gamedata/2016/test"
 		},
-		"InputDataSet_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "emp.txt"
-		},
-		"InputDataSet_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "adftutorial/input"
-		},
-		"OutputDataSet_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "output.txt"
-		},
-		"OutputDataSet_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "adftutorial/output"
-		},
 		"Persons_Incremental_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "@concat('Incremental-', pipeline().RunId, '.txt')"
@@ -106,14 +90,6 @@
 		"Persons_Incremental_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "adftutorial/persons"
-		},
-		"TransactionsBlob_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "transactions.txt"
-		},
-		"TransactionsBlob_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "adftutorial/transactions"
 		},
 		"AzDataLakeGen2_properties_typeProperties_url": {
 			"type": "string",
@@ -350,29 +326,11 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"InputDataSet_properties_typeProperties_fileName": {
-						"value": "[parameters('InputDataSet_properties_typeProperties_fileName')]"
-					},
-					"InputDataSet_properties_typeProperties_folderPath": {
-						"value": "[parameters('InputDataSet_properties_typeProperties_folderPath')]"
-					},
-					"OutputDataSet_properties_typeProperties_fileName": {
-						"value": "[parameters('OutputDataSet_properties_typeProperties_fileName')]"
-					},
-					"OutputDataSet_properties_typeProperties_folderPath": {
-						"value": "[parameters('OutputDataSet_properties_typeProperties_folderPath')]"
-					},
 					"Persons_Incremental_properties_typeProperties_fileName": {
 						"value": "[parameters('Persons_Incremental_properties_typeProperties_fileName')]"
 					},
 					"Persons_Incremental_properties_typeProperties_folderPath": {
 						"value": "[parameters('Persons_Incremental_properties_typeProperties_folderPath')]"
-					},
-					"TransactionsBlob_properties_typeProperties_fileName": {
-						"value": "[parameters('TransactionsBlob_properties_typeProperties_fileName')]"
-					},
-					"TransactionsBlob_properties_typeProperties_folderPath": {
-						"value": "[parameters('TransactionsBlob_properties_typeProperties_folderPath')]"
 					}
 				}
 			},

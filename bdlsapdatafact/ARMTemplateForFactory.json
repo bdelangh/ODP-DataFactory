@@ -83,22 +83,6 @@
 			"type": "string",
 			"defaultValue": "adftutorial/gamedata/2016/test"
 		},
-		"InputDataSet_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "emp.txt"
-		},
-		"InputDataSet_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "adftutorial/input"
-		},
-		"OutputDataSet_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "output.txt"
-		},
-		"OutputDataSet_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "adftutorial/output"
-		},
 		"Persons_Incremental_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "@concat('Incremental-', pipeline().RunId, '.txt')"
@@ -106,14 +90,6 @@
 		"Persons_Incremental_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "adftutorial/persons"
-		},
-		"TransactionsBlob_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "transactions.txt"
-		},
-		"TransactionsBlob_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "adftutorial/transactions"
 		},
 		"AzDataLakeGen2_properties_typeProperties_url": {
 			"type": "string",
@@ -1519,6 +1495,9 @@
 						]
 					}
 				],
+				"folder": {
+					"name": "NorthWind"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -2116,118 +2095,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/TransactionsfromBlobtoSQL')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "TransactionsFromBlobToSQL",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BlobSource",
-								"recursive": true
-							},
-							"sink": {
-								"type": "SqlSink",
-								"writeBatchSize": 10000
-							},
-							"enableStaging": false,
-							"dataIntegrationUnits": 0,
-							"translator": {
-								"type": "TabularTranslator",
-								"columnMappings": {
-									"tdate": "tdate",
-									"amount": "amount"
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "TransactionsBlob",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "Transactions_SQL",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/TransactionsBlob')]",
-				"[concat(variables('factoryId'), '/datasets/Transactions_SQL')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/tutorial')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy Data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BlobSource",
-								"recursive": true
-							},
-							"sink": {
-								"type": "BlobSink"
-							},
-							"enableStaging": false,
-							"dataIntegrationUnits": 0
-						},
-						"inputs": [
-							{
-								"referenceName": "InputDataSet",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "OutputDataSet",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/InputDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/OutputDataSet')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLProducts_csv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2263,6 +2130,30 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLProducts_json')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "products.json",
+						"fileSystem": "sap"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStore_NWCustomers')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2270,6 +2161,9 @@
 				"linkedServiceName": {
 					"referenceName": "BdlAzDataLake",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NorthWind"
 				},
 				"annotations": [],
 				"type": "AzureDataLakeStoreFile",
@@ -2437,36 +2331,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/InputDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdldftutorial",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureBlob",
-				"typeProperties": {
-					"format": {
-						"type": "TextFormat",
-						"columnDelimiter": ",",
-						"rowDelimiter": "",
-						"nullValue": "\\N",
-						"encodingName": null,
-						"treatEmptyAsNull": true,
-						"skipLineCount": 0,
-						"firstRowAsHeader": false
-					},
-					"fileName": "[parameters('InputDataSet_properties_typeProperties_fileName')]",
-					"folderPath": "[parameters('InputDataSet_properties_typeProperties_folderPath')]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/bdldftutorial')]"
 			]
 		},
 		{
@@ -2682,6 +2546,9 @@
 					"referenceName": "SampleOData",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "NorthWind"
+				},
 				"annotations": [],
 				"type": "ODataResource",
 				"typeProperties": {
@@ -2690,35 +2557,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SampleOData')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/OutputDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdldftutorial",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureBlob",
-				"typeProperties": {
-					"format": {
-						"type": "TextFormat",
-						"columnDelimiter": ",",
-						"rowDelimiter": "",
-						"nullValue": "\\N",
-						"treatEmptyAsNull": true,
-						"skipLineCount": 0,
-						"firstRowAsHeader": false
-					},
-					"fileName": "[parameters('OutputDataSet_properties_typeProperties_fileName')]",
-					"folderPath": "[parameters('OutputDataSet_properties_typeProperties_folderPath')]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/bdldftutorial')]"
 			]
 		},
 		{
@@ -3294,74 +3132,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SAPDevCenter')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TransactionsBlob')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdldftutorial",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureBlob",
-				"structure": [
-					{
-						"name": "tdate",
-						"type": "DateTime"
-					},
-					{
-						"name": "amount",
-						"type": "Double"
-					}
-				],
-				"typeProperties": {
-					"format": {
-						"type": "TextFormat",
-						"columnDelimiter": ",",
-						"rowDelimiter": "",
-						"nullValue": "\\N",
-						"treatEmptyAsNull": true,
-						"skipLineCount": 0,
-						"firstRowAsHeader": true
-					},
-					"fileName": "[parameters('TransactionsBlob_properties_typeProperties_fileName')]",
-					"folderPath": "[parameters('TransactionsBlob_properties_typeProperties_folderPath')]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/bdldftutorial')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Transactions_SQL')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdlsqldatadb",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"structure": [
-					{
-						"name": "tdate",
-						"type": "DateTime"
-					},
-					{
-						"name": "amount",
-						"type": "Decimal"
-					}
-				],
-				"typeProperties": {
-					"tableName": "[[dbo].[transactions]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
 			]
 		},
 		{

@@ -62,29 +62,11 @@
 		"DailyGameData_Blob_properties_typeProperties_folderPath": {
 			"value": "adftutorial/gamedata/2016/test"
 		},
-		"InputDataSet_properties_typeProperties_fileName": {
-			"value": "emp.txt"
-		},
-		"InputDataSet_properties_typeProperties_folderPath": {
-			"value": "adftutorial/input"
-		},
-		"OutputDataSet_properties_typeProperties_fileName": {
-			"value": "output.txt"
-		},
-		"OutputDataSet_properties_typeProperties_folderPath": {
-			"value": "adftutorial/output"
-		},
 		"Persons_Incremental_properties_typeProperties_fileName": {
 			"value": "@concat('Incremental-', pipeline().RunId, '.txt')"
 		},
 		"Persons_Incremental_properties_typeProperties_folderPath": {
 			"value": "adftutorial/persons"
-		},
-		"TransactionsBlob_properties_typeProperties_fileName": {
-			"value": "transactions.txt"
-		},
-		"TransactionsBlob_properties_typeProperties_folderPath": {
-			"value": "adftutorial/transactions"
 		},
 		"AzDataLakeGen2_properties_typeProperties_url": {
 			"value": "https://azdatalakegen2bdl.dfs.core.windows.net"
