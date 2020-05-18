@@ -404,6 +404,9 @@
 					"referenceName": "AzDataLakeGen2",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "NPL"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -465,6 +468,9 @@
 					"referenceName": "BdlAzDataLake",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "NPL"
+				},
 				"annotations": [],
 				"type": "AzureDataLakeStoreFile",
 				"typeProperties": {
@@ -493,6 +499,9 @@
 				"linkedServiceName": {
 					"referenceName": "BdlAzDataLake",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "SAP Dev Center"
 				},
 				"annotations": [],
 				"type": "AzureDataLakeStoreFile",
