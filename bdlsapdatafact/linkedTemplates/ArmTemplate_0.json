@@ -439,6 +439,9 @@
 					"referenceName": "AzDataLakeGen2",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "NPL"
+				},
 				"annotations": [],
 				"type": "Json",
 				"typeProperties": {
