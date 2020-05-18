@@ -5,6 +5,9 @@
 			"referenceName": "SampleOData",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "NorthWind"
+		},
 		"annotations": [],
 		"type": "ODataResource",
 		"typeProperties": {

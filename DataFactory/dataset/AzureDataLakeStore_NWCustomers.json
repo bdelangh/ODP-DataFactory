@@ -5,6 +5,9 @@
 			"referenceName": "BdlAzDataLake",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "NorthWind"
+		},
 		"annotations": [],
 		"type": "AzureDataLakeStoreFile",
 		"typeProperties": {

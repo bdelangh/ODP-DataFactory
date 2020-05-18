@@ -38,6 +38,9 @@
 				]
 			}
 		],
+		"folder": {
+			"name": "NorthWind"
+		},
 		"annotations": []
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
