@@ -5,6 +5,9 @@
 			"referenceName": "S4H_ODP",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "S4H"
+		},
 		"annotations": [],
 		"type": "SapEccResource",
 		"schema": [],

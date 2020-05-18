@@ -38,6 +38,9 @@
 				]
 			}
 		],
+		"folder": {
+			"name": "SAP Dev Center"
+		},
 		"annotations": []
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"

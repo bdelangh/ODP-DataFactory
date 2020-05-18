@@ -280,6 +280,9 @@
 				}
 			}
 		],
+		"folder": {
+			"name": "S4H"
+		},
 		"annotations": []
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"

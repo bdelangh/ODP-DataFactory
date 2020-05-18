@@ -11,6 +11,9 @@
 				"defaultValue": "D20190716141524_000029000"
 			}
 		},
+		"folder": {
+			"name": "S4H"
+		},
 		"annotations": [],
 		"type": "SapEccResource",
 		"schema": [],

@@ -252,6 +252,9 @@
 				}
 			}
 		],
+		"folder": {
+			"name": "S4H"
+		},
 		"annotations": []
 	}
 }

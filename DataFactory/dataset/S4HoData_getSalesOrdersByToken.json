@@ -5,6 +5,9 @@
 			"referenceName": "S4HOData",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "S4H"
+		},
 		"annotations": [],
 		"type": "ODataResource",
 		"typeProperties": {
