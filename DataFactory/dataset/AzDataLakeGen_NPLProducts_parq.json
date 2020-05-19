@@ -1,0 +1,21 @@
+{
+	"name": "AzDataLakeGen_NPLProducts_parq",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzDataLakeGen2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "products.parquet",
+				"folderPath": "NPL",
+				"fileSystem": "sap"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
