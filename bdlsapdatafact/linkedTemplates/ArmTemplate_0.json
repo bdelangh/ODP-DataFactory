@@ -448,6 +448,7 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileName": "products.json",
+						"folderPath": "NPL",
 						"fileSystem": "sap"
 					}
 				},
