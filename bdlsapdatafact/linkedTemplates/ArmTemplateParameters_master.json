@@ -38,6 +38,9 @@
 		"bdlsqldatadb_connectionString": {
 			"value": ""
 		},
+		"adfdatabricks_accessToken": {
+			"value": ""
+		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"value": "Customers.csv"
 		},
@@ -67,6 +70,9 @@
 		},
 		"Persons_Incremental_properties_typeProperties_folderPath": {
 			"value": "adftutorial/persons"
+		},
+		"ADFTest_properties_typeProperties_functionAppUrl": {
+			"value": "https://bdladf.azurewebsites.net"
 		},
 		"AzDataLakeGen2_properties_typeProperties_url": {
 			"value": "https://azdatalakegen2bdl.dfs.core.windows.net"

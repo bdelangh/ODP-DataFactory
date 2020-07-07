@@ -7,6 +7,22 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "bdlsapdatafact"
 		},
+		"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "DevCenterProdSet.csv"
+		},
+		"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "SAP/DevCenter"
+		},
+		"DailyGameData_Blob_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "@dataset().dsFileName"
+		},
+		"DailyGameData_Blob_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "adftutorial/gamedata/2016/test"
+		},
 		"Persons_Incremental_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "@concat('Incremental-', pipeline().RunId, '.txt')"
@@ -20,6 +36,85 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/BdlAzDL_SAPDev_ProductSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BdlAzDataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "SAP Dev Center"
+				},
+				"annotations": [],
+				"type": "AzureDataLakeStoreFile",
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
+					},
+					"fileName": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DailyGameData_Blob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdldftutorial",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"dsFileName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureBlob",
+				"structure": [
+					{
+						"name": "Player",
+						"type": "String"
+					},
+					{
+						"name": "Time",
+						"type": "String"
+					},
+					{
+						"name": "Points",
+						"type": "Int32"
+					}
+				],
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": true
+					},
+					"fileName": {
+						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_fileName')]",
+						"type": "Expression"
+					},
+					"folderPath": "[parameters('DailyGameData_Blob_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/GameData_SQL')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -853,38 +948,14 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen_NPLProducts_parq')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "products.parquet",
-						"folderPath": "NPL",
-						"fileSystem": "sap"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/CopyDailyGameData')]",
+			"name": "[concat(parameters('factoryName'), '/ADFPipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "CopyGameDataBlob_to_SQL",
-						"type": "Copy",
+						"name": "MergeDeltaProducts",
+						"type": "DatabricksNotebook",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
@@ -895,319 +966,20 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"source": {
-								"type": "BlobSource",
-								"recursive": false
-							},
-							"sink": {
-								"type": "SqlSink",
-								"writeBatchSize": 10000
-							},
-							"enableStaging": false,
-							"dataIntegrationUnits": 0,
-							"translator": {
-								"type": "TabularTranslator",
-								"columnMappings": {
-									"Player": "player",
-									"Time": "time",
-									"Points": "points"
-								}
-							}
+							"notebookPath": "/Users/badelang@microsoft.com/ADFMerge"
 						},
-						"inputs": [
-							{
-								"referenceName": "DailyGameData_Blob",
-								"type": "DatasetReference",
-								"parameters": {
-									"dsFileName": {
-										"value": "@pipeline().parameters.bdlPipeLineFileName",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "GameData_SQL",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"parameters": {
-					"bdlPipeLineFileName": {
-						"type": "String",
-						"defaultValue": "test.csv"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/GameData_SQL')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/GetS4HSalesOrders')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "GetSalesOrders",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapEccSource"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"sqlWriterStoredProcedureName": "[[dbo].[spOverwriteS4HSO]",
-								"sqlWriterTableType": "S4HSalesOrder",
-								"storedProcedureTableTypeParameterName": "SalesOrders",
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "SALESDOCUMENT",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESDOCUMENT",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SDDOCUMENTCATEGORY",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SDDOCUMENTCATEGORY",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESDOCUMENTTYPE",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESDOCUMENTTYPE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESDOCUMENTPROCESSINGTYPE",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESDOCUMENTPROCESSINGTYPE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "CREATIONDATE",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "CREATIONDATE",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "CREATIONTIME",
-											"type": "TimeSpan"
-										},
-										"sink": {
-											"name": "CREATIONTIME",
-											"type": "TimeSpan"
-										}
-									},
-									{
-										"source": {
-											"name": "LASTCHANGEDATE",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "LASTCHANGEDATE",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "LASTCHANGEDATETIME",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "LASTCHANGEDATETIME",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESORGANIZATION",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESORGANIZATION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "DISTRIBUTIONCHANNEL",
-											"type": "String"
-										},
-										"sink": {
-											"name": "DISTRIBUTIONCHANNEL",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ORGANIZATIONDIVISION",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ORGANIZATIONDIVISION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESGROUP",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESGROUP",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESOFFICE",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESOFFICE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "PURCHASEORDERBYCUSTOMER",
-											"type": "String"
-										},
-										"sink": {
-											"name": "PURCHASEORDERBYCUSTOMER",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "TRANSACTIONCURRENCY",
-											"type": "String"
-										},
-										"sink": {
-											"name": "TRANSACTIONCURRENCY",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "PRICINGDATE",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "PRICINGDATE",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "RETAILPROMOTION",
-											"type": "String"
-										},
-										"sink": {
-											"name": "RETAILPROMOTION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESDOCUMENTCONDITION",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESDOCUMENTCONDITION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ODQ_CHANGEMODE",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ODQ_CHANGEMODE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ODQ_ENTITYCNTR",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "ODQ_ENTITYCNTR",
-											"type": "Decimal"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "S4H_SalesOrders",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "S4H_SalesOrdersSQL",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
+						"linkedServiceName": {
+							"referenceName": "adfdatabricks",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
 				"folder": {
-					"name": "S4H"
+					"name": "NPLProducts"
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrders')]",
-				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrdersSQL')]"
-			]
+			"dependsOn": []
 		}
 	]
 }

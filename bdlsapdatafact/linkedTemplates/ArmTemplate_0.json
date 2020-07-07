@@ -51,6 +51,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
 		},
+		"adfdatabricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'adfdatabricks'"
+		},
+		"ADFTest_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://bdladf.azurewebsites.net"
+		},
 		"AzDataLakeGen2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://azdatalakegen2bdl.dfs.core.windows.net"
@@ -142,22 +150,6 @@
 		"BDL_AzDL_NPLProducts_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "SAP/NPL"
-		},
-		"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "DevCenterProdSet.csv"
-		},
-		"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "SAP/DevCenter"
-		},
-		"DailyGameData_Blob_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "@dataset().dsFileName"
-		},
-		"DailyGameData_Blob_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "adftutorial/gamedata/2016/test"
 		}
 	},
 	"variables": {
@@ -172,7 +164,7 @@
 				"annotations": [],
 				"type": "AzureFunction",
 				"typeProperties": {
-					"functionAppUrl": "https://bdladf.azurewebsites.net",
+					"functionAppUrl": "[parameters('ADFTest_properties_typeProperties_functionAppUrl')]",
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('ADFTest_functionKey')]"
@@ -396,6 +388,24 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/adfdatabricks')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-1659125483491971.11.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('adfdatabricks_accessToken')]"
+					},
+					"existingClusterId": "0702-145622-joust399"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLProducts_csv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -453,6 +463,35 @@
 					}
 				},
 				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen_NPLProducts_parq')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "products.parquet",
+						"folderPath": "NPL",
+						"fileSystem": "sap"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
@@ -520,89 +559,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/BdlAzDataLake')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/BdlAzDL_SAPDev_ProductSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BdlAzDataLake",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "SAP Dev Center"
-				},
-				"annotations": [],
-				"type": "AzureDataLakeStoreFile",
-				"typeProperties": {
-					"format": {
-						"type": "TextFormat",
-						"columnDelimiter": ",",
-						"rowDelimiter": "",
-						"nullValue": "\\N",
-						"treatEmptyAsNull": true,
-						"skipLineCount": 0,
-						"firstRowAsHeader": false
-					},
-					"fileName": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName')]",
-					"folderPath": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath')]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BdlAzDataLake')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DailyGameData_Blob')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdldftutorial",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"dsFileName": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "AzureBlob",
-				"structure": [
-					{
-						"name": "Player",
-						"type": "String"
-					},
-					{
-						"name": "Time",
-						"type": "String"
-					},
-					{
-						"name": "Points",
-						"type": "Int32"
-					}
-				],
-				"typeProperties": {
-					"format": {
-						"type": "TextFormat",
-						"columnDelimiter": ",",
-						"rowDelimiter": "",
-						"nullValue": "\\N",
-						"treatEmptyAsNull": true,
-						"skipLineCount": 0,
-						"firstRowAsHeader": true
-					},
-					"fileName": {
-						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_fileName')]",
-						"type": "Expression"
-					},
-					"folderPath": "[parameters('DailyGameData_Blob_properties_typeProperties_folderPath')]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/bdldftutorial')]"
 			]
 		}
 	]

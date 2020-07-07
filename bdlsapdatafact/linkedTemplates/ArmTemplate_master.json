@@ -51,6 +51,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
 		},
+		"adfdatabricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'adfdatabricks'"
+		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "Customers.csv"
@@ -90,6 +94,10 @@
 		"Persons_Incremental_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "adftutorial/persons"
+		},
+		"ADFTest_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://bdladf.azurewebsites.net"
 		},
 		"AzDataLakeGen2_properties_typeProperties_url": {
 			"type": "string",
@@ -227,6 +235,12 @@
 					"bdlsqldatadb_connectionString": {
 						"value": "[parameters('bdlsqldatadb_connectionString')]"
 					},
+					"adfdatabricks_accessToken": {
+						"value": "[parameters('adfdatabricks_accessToken')]"
+					},
+					"ADFTest_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('ADFTest_properties_typeProperties_functionAppUrl')]"
+					},
 					"AzDataLakeGen2_properties_typeProperties_url": {
 						"value": "[parameters('AzDataLakeGen2_properties_typeProperties_url')]"
 					},
@@ -295,18 +309,6 @@
 					},
 					"BDL_AzDL_NPLProducts_properties_typeProperties_folderPath": {
 						"value": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_folderPath')]"
-					},
-					"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName": {
-						"value": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName')]"
-					},
-					"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath": {
-						"value": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath')]"
-					},
-					"DailyGameData_Blob_properties_typeProperties_fileName": {
-						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_fileName')]"
-					},
-					"DailyGameData_Blob_properties_typeProperties_folderPath": {
-						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_folderPath')]"
 					}
 				}
 			},
@@ -325,6 +327,18 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName": {
+						"value": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName')]"
+					},
+					"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath": {
+						"value": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath')]"
+					},
+					"DailyGameData_Blob_properties_typeProperties_fileName": {
+						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_fileName')]"
+					},
+					"DailyGameData_Blob_properties_typeProperties_folderPath": {
+						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_folderPath')]"
 					},
 					"Persons_Incremental_properties_typeProperties_fileName": {
 						"value": "[parameters('Persons_Incremental_properties_typeProperties_fileName')]"
