@@ -1127,7 +1127,7 @@
 							"source": {
 								"type": "SapTableSource",
 								"rfcTableOptions": {
-									"value": "LASTMODIFIED GE '@{activity('LookupWaterMark').output.firstRow.WaterMarkValue}'",
+									"value": "@{activity('LookupWaterMark').output.firstrow.WatermarkValue}",
 									"type": "Expression"
 								},
 								"customRfcReadTableFunctionModule": "",
