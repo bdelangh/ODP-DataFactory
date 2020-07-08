@@ -21,7 +21,7 @@
 		},
 		"NPLTable_properties_typeProperties_server": {
 			"type": "string",
-			"defaultValue": "137.117.134.161"
+			"defaultValue": "10.6.1.6"
 		},
 		"NPLTable_properties_typeProperties_systemNumber": {
 			"type": "string",
