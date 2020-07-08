@@ -33,6 +33,36 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/WaterMark_SQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlsqldatadb",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "TableName",
+						"type": "String"
+					},
+					{
+						"name": "WatermarkValue",
+						"type": "DateTime"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[watermarktable]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/NPLTable')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -55,39 +85,6 @@
 					"referenceName": "SAPADFRti",
 					"type": "IntegrationRuntimeReference"
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLProducts_csv_Table')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NPL"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@concat('tableproducts_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
-							"type": "Expression"
-						},
-						"folderPath": "NPL/TableConnector",
-						"fileSystem": "sap"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
 			},
 			"dependsOn": []
 		},
@@ -866,7 +863,9 @@
 				],
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/WaterMark_SQL')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/NPLProducts_Incremental')]",
@@ -1016,7 +1015,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/WaterMark_SQL')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_DataLake')]",
@@ -1262,7 +1263,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/WaterMark_SQL')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_DataLake2_Incr_Complete')]",
@@ -1425,7 +1428,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/WaterMark_SQL')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_DataLake2_json')]",
@@ -2333,8 +2338,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/NPLProductsTable')]",
-				"[concat(variables('factoryId'), '/datasets/AzDataLakeGen2_NPLProducts_csv_Table')]"
+				"[concat(variables('factoryId'), '/datasets/NPLProductsTable')]"
 			]
 		}
 	]

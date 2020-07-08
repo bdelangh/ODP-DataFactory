@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'NPLABAPSystem'"
 		},
+		"NPLTable_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'NPLTable'"
+		},
 		"S4HOData_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4HOData'"
@@ -54,10 +58,6 @@
 		"bdlsqldatadb_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
-		},
-		"NPLTable_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'NPLTable'"
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
@@ -131,6 +131,22 @@
 			"type": "string",
 			"defaultValue": "DEVELOPER"
 		},
+		"NPLTable_properties_typeProperties_clientId": {
+			"type": "string",
+			"defaultValue": "001"
+		},
+		"NPLTable_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "ADFUSER"
+		},
+		"NPLTable_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "10.6.1.6"
+		},
+		"NPLTable_properties_typeProperties_systemNumber": {
+			"type": "string",
+			"defaultValue": "00"
+		},
 		"S4HOData_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"
@@ -178,22 +194,6 @@
 		"SampleOData_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://services.odata.org/V3/Northwind/Northwind.svc/"
-		},
-		"NPLTable_properties_typeProperties_clientId": {
-			"type": "string",
-			"defaultValue": "001"
-		},
-		"NPLTable_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "ADFUSER"
-		},
-		"NPLTable_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "10.6.1.6"
-		},
-		"NPLTable_properties_typeProperties_systemNumber": {
-			"type": "string",
-			"defaultValue": "00"
 		},
 		"containerUri": {
 			"type": "string",
@@ -317,12 +317,6 @@
 					},
 					"SampleOData_properties_typeProperties_url": {
 						"value": "[parameters('SampleOData_properties_typeProperties_url')]"
-					},
-					"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
-						"value": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName')]"
-					},
-					"AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath": {
-						"value": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath')]"
 					}
 				}
 			},
@@ -341,6 +335,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
+						"value": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName')]"
+					},
+					"AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath": {
+						"value": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath')]"
 					},
 					"BDL_AzDL_NPLProducts_properties_typeProperties_fileName": {
 						"value": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_fileName')]"
