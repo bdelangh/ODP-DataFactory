@@ -43,6 +43,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SAPoData'"
 		},
+		"adfdatabricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'adfdatabricks'"
+		},
 		"bdldftutorial_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdldftutorial'"
@@ -50,10 +54,6 @@
 		"bdlsqldatadb_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
-		},
-		"adfdatabricks_accessToken": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accessToken' of 'adfdatabricks'"
 		},
 		"ADFTest_properties_typeProperties_functionAppUrl": {
 			"type": "string",
@@ -142,14 +142,6 @@
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "NorthWind"
-		},
-		"BDL_AzDL_NPLProducts_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "Products.csv"
-		},
-		"BDL_AzDL_NPLProducts_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "SAP/NPL"
 		}
 	},
 	"variables": {
@@ -351,6 +343,24 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/adfdatabricks')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-1659125483491971.11.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('adfdatabricks_accessToken')]"
+					},
+					"existingClusterId": "0702-145622-joust399"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/bdldftutorial')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -377,33 +387,51 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/NPLIntEngine')]",
+			"name": "[concat(parameters('factoryName'), '/SAPADFRti')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"type": "SelfHosted",
-				"description": "Self-Hosted Integration Runtime for the NPL - ABAP Dev System",
+				"description": "Azure Data Factory runtime - SAP Connector",
 				"typeProperties": {}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/adfdatabricks')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/ADFPipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"annotations": [],
-				"type": "AzureDatabricks",
-				"typeProperties": {
-					"domain": "https://adb-1659125483491971.11.azuredatabricks.net",
-					"accessToken": {
-						"type": "SecureString",
-						"value": "[parameters('adfdatabricks_accessToken')]"
-					},
-					"existingClusterId": "0702-145622-joust399"
-				}
+				"activities": [
+					{
+						"name": "MergeDeltaProducts",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/badelang@microsoft.com/ADFMerge"
+						},
+						"linkedServiceName": {
+							"referenceName": "adfdatabricks",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"folder": {
+					"name": "NPLProducts"
+				},
+				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/adfdatabricks')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLProducts_csv')]",
@@ -523,38 +551,6 @@
 					},
 					"fileName": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName')]",
 					"folderPath": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath')]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BdlAzDataLake')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/BDL_AzDL_NPLProducts')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BdlAzDataLake",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NPL"
-				},
-				"annotations": [],
-				"type": "AzureDataLakeStoreFile",
-				"typeProperties": {
-					"format": {
-						"type": "TextFormat",
-						"columnDelimiter": ",",
-						"rowDelimiter": "",
-						"nullValue": "\\N",
-						"treatEmptyAsNull": true,
-						"skipLineCount": 0,
-						"firstRowAsHeader": true
-					},
-					"fileName": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_fileName')]",
-					"folderPath": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_folderPath')]"
 				}
 			},
 			"dependsOn": [

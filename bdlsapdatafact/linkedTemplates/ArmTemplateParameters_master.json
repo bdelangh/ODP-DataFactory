@@ -32,13 +32,16 @@
 		"SAPoData_password": {
 			"value": ""
 		},
+		"adfdatabricks_accessToken": {
+			"value": ""
+		},
 		"bdldftutorial_connectionString": {
 			"value": ""
 		},
 		"bdlsqldatadb_connectionString": {
 			"value": ""
 		},
-		"adfdatabricks_accessToken": {
+		"NPLTable_password": {
 			"value": ""
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
@@ -130,6 +133,18 @@
 		},
 		"SampleOData_properties_typeProperties_url": {
 			"value": "https://services.odata.org/V3/Northwind/Northwind.svc/"
+		},
+		"NPLTable_properties_typeProperties_clientId": {
+			"value": "001"
+		},
+		"NPLTable_properties_typeProperties_userName": {
+			"value": "ADFUSER"
+		},
+		"NPLTable_properties_typeProperties_server": {
+			"value": "137.117.134.161"
+		},
+		"NPLTable_properties_typeProperties_systemNumber": {
+			"value": "00"
 		},
 		"containerUri": {
 			"value": ""

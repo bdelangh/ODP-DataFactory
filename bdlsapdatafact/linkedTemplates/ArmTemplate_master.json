@@ -43,6 +43,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SAPoData'"
 		},
+		"adfdatabricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'adfdatabricks'"
+		},
 		"bdldftutorial_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdldftutorial'"
@@ -51,9 +55,9 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
 		},
-		"adfdatabricks_accessToken": {
+		"NPLTable_password": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accessToken' of 'adfdatabricks'"
+			"metadata": "Secure string for 'password' of 'NPLTable'"
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
@@ -175,6 +179,22 @@
 			"type": "string",
 			"defaultValue": "https://services.odata.org/V3/Northwind/Northwind.svc/"
 		},
+		"NPLTable_properties_typeProperties_clientId": {
+			"type": "string",
+			"defaultValue": "001"
+		},
+		"NPLTable_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "ADFUSER"
+		},
+		"NPLTable_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "137.117.134.161"
+		},
+		"NPLTable_properties_typeProperties_systemNumber": {
+			"type": "string",
+			"defaultValue": "00"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -229,14 +249,14 @@
 					"SAPoData_password": {
 						"value": "[parameters('SAPoData_password')]"
 					},
+					"adfdatabricks_accessToken": {
+						"value": "[parameters('adfdatabricks_accessToken')]"
+					},
 					"bdldftutorial_connectionString": {
 						"value": "[parameters('bdldftutorial_connectionString')]"
 					},
 					"bdlsqldatadb_connectionString": {
 						"value": "[parameters('bdlsqldatadb_connectionString')]"
-					},
-					"adfdatabricks_accessToken": {
-						"value": "[parameters('adfdatabricks_accessToken')]"
 					},
 					"ADFTest_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('ADFTest_properties_typeProperties_functionAppUrl')]"
@@ -303,12 +323,6 @@
 					},
 					"AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath": {
 						"value": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_folderPath')]"
-					},
-					"BDL_AzDL_NPLProducts_properties_typeProperties_fileName": {
-						"value": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_fileName')]"
-					},
-					"BDL_AzDL_NPLProducts_properties_typeProperties_folderPath": {
-						"value": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_folderPath')]"
 					}
 				}
 			},
@@ -327,6 +341,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"BDL_AzDL_NPLProducts_properties_typeProperties_fileName": {
+						"value": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_fileName')]"
+					},
+					"BDL_AzDL_NPLProducts_properties_typeProperties_folderPath": {
+						"value": "[parameters('BDL_AzDL_NPLProducts_properties_typeProperties_folderPath')]"
 					},
 					"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName": {
 						"value": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_fileName')]"
@@ -365,6 +385,21 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"NPLTable_password": {
+						"value": "[parameters('NPLTable_password')]"
+					},
+					"NPLTable_properties_typeProperties_clientId": {
+						"value": "[parameters('NPLTable_properties_typeProperties_clientId')]"
+					},
+					"NPLTable_properties_typeProperties_userName": {
+						"value": "[parameters('NPLTable_properties_typeProperties_userName')]"
+					},
+					"NPLTable_properties_typeProperties_server": {
+						"value": "[parameters('NPLTable_properties_typeProperties_server')]"
+					},
+					"NPLTable_properties_typeProperties_systemNumber": {
+						"value": "[parameters('NPLTable_properties_typeProperties_systemNumber')]"
 					}
 				}
 			},
