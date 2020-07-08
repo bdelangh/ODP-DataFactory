@@ -1,0 +1,6 @@
+{
+	"name": "NPLIntegrationRT2",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
