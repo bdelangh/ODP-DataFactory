@@ -53,6 +53,52 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobDelimitedDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdldftutorial",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"HighWatermarkBlobDirectory": {
+						"type": "string"
+					},
+					"HighWatermarkBlobName": {
+						"type": "string"
+					},
+					"HighWatermarkBlobContainer": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().HighWatermarkBlobName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().HighWatermarkBlobDirectory",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().HighWatermarkBlobContainer",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStore_NWCustomers')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -188,6 +234,47 @@
 					},
 					"folderPath": "[parameters('DailyGameData_Blob_properties_typeProperties_folderPath')]"
 				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedTextSink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "DelimitedText sink",
+				"linkedServiceName": {
+					"referenceName": "bdldftutorial",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"DelimitedTextSinkContainer": {
+						"type": "string"
+					},
+					"DelimitedTextSinkDirectory": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@dataset().DelimitedTextSinkDirectory",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().DelimitedTextSinkContainer",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"nullValue": "\\N",
+					"quoteChar": "\""
+				},
+				"schema": []
 			},
 			"dependsOn": []
 		},
@@ -863,132 +950,6 @@
 				],
 				"typeProperties": {
 					"tableName": "[[dbo].[S4HSalesOrders]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HoData_getSalesOrdersByToken')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "S4HOData",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4H"
-				},
-				"annotations": [],
-				"type": "ODataResource",
-				"typeProperties": {
-					"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190828122610_000029000')/ChangesAfter"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SAPDevCenter_ProductSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SAPDevCenter",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "SAP Dev Center"
-				},
-				"annotations": [],
-				"type": "SapEccResource",
-				"structure": [
-					{
-						"name": "ProductID",
-						"type": "String"
-					},
-					{
-						"name": "TypeCode",
-						"type": "String"
-					},
-					{
-						"name": "Category",
-						"type": "String"
-					},
-					{
-						"name": "Name",
-						"type": "String"
-					},
-					{
-						"name": "NameLanguage",
-						"type": "String"
-					},
-					{
-						"name": "Description",
-						"type": "String"
-					},
-					{
-						"name": "DescriptionLanguage",
-						"type": "String"
-					},
-					{
-						"name": "SupplierID",
-						"type": "String"
-					},
-					{
-						"name": "SupplierName",
-						"type": "String"
-					},
-					{
-						"name": "TaxTarifCode",
-						"type": "Int16"
-					},
-					{
-						"name": "MeasureUnit",
-						"type": "String"
-					},
-					{
-						"name": "WeightMeasure",
-						"type": "Decimal"
-					},
-					{
-						"name": "WeightUnit",
-						"type": "String"
-					},
-					{
-						"name": "CurrencyCode",
-						"type": "String"
-					},
-					{
-						"name": "Price",
-						"type": "Decimal"
-					},
-					{
-						"name": "Width",
-						"type": "Decimal"
-					},
-					{
-						"name": "Depth",
-						"type": "Decimal"
-					},
-					{
-						"name": "Height",
-						"type": "Decimal"
-					},
-					{
-						"name": "DimUnit",
-						"type": "String"
-					},
-					{
-						"name": "CreatedAt",
-						"type": "DateTime"
-					},
-					{
-						"name": "ChangedAt",
-						"type": "DateTime"
-					}
-				],
-				"typeProperties": {
-					"path": "ProductSet"
 				}
 			},
 			"dependsOn": []

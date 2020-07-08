@@ -33,6 +33,132 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/S4HoData_getSalesOrdersByToken')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4HOData",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "ODataResource",
+				"typeProperties": {
+					"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190828122610_000029000')/ChangesAfter"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SAPDevCenter_ProductSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SAPDevCenter",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "SAP Dev Center"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"structure": [
+					{
+						"name": "ProductID",
+						"type": "String"
+					},
+					{
+						"name": "TypeCode",
+						"type": "String"
+					},
+					{
+						"name": "Category",
+						"type": "String"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					},
+					{
+						"name": "NameLanguage",
+						"type": "String"
+					},
+					{
+						"name": "Description",
+						"type": "String"
+					},
+					{
+						"name": "DescriptionLanguage",
+						"type": "String"
+					},
+					{
+						"name": "SupplierID",
+						"type": "String"
+					},
+					{
+						"name": "SupplierName",
+						"type": "String"
+					},
+					{
+						"name": "TaxTarifCode",
+						"type": "Int16"
+					},
+					{
+						"name": "MeasureUnit",
+						"type": "String"
+					},
+					{
+						"name": "WeightMeasure",
+						"type": "Decimal"
+					},
+					{
+						"name": "WeightUnit",
+						"type": "String"
+					},
+					{
+						"name": "CurrencyCode",
+						"type": "String"
+					},
+					{
+						"name": "Price",
+						"type": "Decimal"
+					},
+					{
+						"name": "Width",
+						"type": "Decimal"
+					},
+					{
+						"name": "Depth",
+						"type": "Decimal"
+					},
+					{
+						"name": "Height",
+						"type": "Decimal"
+					},
+					{
+						"name": "DimUnit",
+						"type": "String"
+					},
+					{
+						"name": "CreatedAt",
+						"type": "DateTime"
+					},
+					{
+						"name": "ChangedAt",
+						"type": "DateTime"
+					}
+				],
+				"typeProperties": {
+					"path": "ProductSet"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/WaterMark_SQL')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2247,98 +2373,8 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPLProductsTable')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "NPLTable",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NPL"
-				},
-				"annotations": [],
-				"type": "SapTableResource",
-				"schema": [],
-				"typeProperties": {
-					"tableName": "SEPMRACSHPRODUCT"
-				}
-			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/NPLTable')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPLProductsTable_To_DataLake2')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "NPLProductsTable",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapTableSource",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "NPLProductsTable",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "AzDataLakeGen2_NPLProducts_csv_Table",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "NPLProducts"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/NPLProductsTable')]"
+				"[concat(variables('factoryId'), '/datasets/SAPDevCenter_ProductSet')]"
 			]
 		}
 	]
