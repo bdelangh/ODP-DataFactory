@@ -5,7 +5,14 @@
 			{
 				"name": "NPLProductsTableIncr",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "LookupWaterMark",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -17,7 +24,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "SapTableSource",
-						"rfcTableOptions": "LASTMODIFIED GE '20200701000000'",
+						"rfcTableOptions": {
+							"value": "LASTMODIFIED GE '@activity('LookupWaterMark').output'",
+							"type": "Expression"
+						},
 						"customRfcReadTableFunctionModule": "",
 						"rfcTableFields": "",
 						"partitionOption": "None"
@@ -77,6 +87,46 @@
 						"referenceName": "WaterMark_SQL",
 						"type": "DatasetReference"
 					}
+				}
+			},
+			{
+				"name": "Update Watermark",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "NPLProductsTableIncr",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[sp_write_watermark]",
+					"storedProcedureParameters": {
+						"LastModifiedtime": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"TableName": {
+							"value": "NPLProductsTable",
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "bdlsqldatadb",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
