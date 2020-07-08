@@ -1,0 +1,7 @@
+{
+	"name": "SAPADFRti",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "Azure Data Factory runtime - SAP Connector"
+	}
+}
