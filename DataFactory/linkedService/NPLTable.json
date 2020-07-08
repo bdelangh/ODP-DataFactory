@@ -1,0 +1,21 @@
+{
+	"name": "NPLTable",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SapTable",
+		"typeProperties": {
+			"clientId": "001",
+			"language": "EN",
+			"sncMode": false,
+			"userName": "ADFUSER",
+			"server": "137.117.134.161",
+			"systemNumber": "00",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJiYzBmZWUxMi0yZGYzLTRmZTgtODAxYy0zNjExNzZlYTRjN2EiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "SAPADFRti",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
