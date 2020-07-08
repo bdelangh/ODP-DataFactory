@@ -9,9 +9,9 @@
 			"language": "EN",
 			"sncMode": false,
 			"userName": "ADFUSER",
-			"server": "137.117.134.161",
+			"server": "10.6.1.6",
 			"systemNumber": "00",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJiYzBmZWUxMi0yZGYzLTRmZTgtODAxYy0zNjExNzZlYTRjN2EiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJmMDI2ZmNmYy1lOWM2LTRjMWMtOWMwYi05YmY1MWU2ZDJiYTUiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "SAPADFRti",
