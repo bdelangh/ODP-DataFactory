@@ -72,15 +72,13 @@
 						"inputs": [
 							{
 								"referenceName": "NPLProductsTable",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "AzDataLakeGen2_NPLProducts_csv_Table",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					},
@@ -103,8 +101,7 @@
 							},
 							"dataset": {
 								"referenceName": "WaterMark_SQL",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						}
 					},
