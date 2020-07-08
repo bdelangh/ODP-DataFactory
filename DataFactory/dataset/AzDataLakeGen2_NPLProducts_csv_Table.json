@@ -1,0 +1,30 @@
+{
+	"name": "AzDataLakeGen2_NPLProducts_csv_Table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzDataLakeGen2",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "NPL"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@concat('tableproducts_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+					"type": "Expression"
+				},
+				"folderPath": "NPL",
+				"fileSystem": "sap"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
