@@ -25,7 +25,7 @@
 					"source": {
 						"type": "SapTableSource",
 						"rfcTableOptions": {
-							"value": "LASTMODIFIED GE 'formatDateTime(@{activity('LookupWaterMark').output.firstRow.WaterMarkValue},\"YYYYMMDDHHMMSS\")}'",
+							"value": "LASTMODIFIED GE 'formatDateTime(@{activity('LookupWaterMark').output.firstRow.WaterMarkValue},\"YYYYMMDDHHMMSS\")'",
 							"type": "Expression"
 						},
 						"customRfcReadTableFunctionModule": "",
