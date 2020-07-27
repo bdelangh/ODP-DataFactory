@@ -1,5 +1,5 @@
 {
-	"name": "SapBwCube1",
+	"name": "BW_NPL_MDX",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "NPL_BWMDX",
