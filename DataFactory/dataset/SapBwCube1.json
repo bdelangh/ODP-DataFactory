@@ -1,0 +1,15 @@
+{
+	"name": "SapBwCube1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "NPL_BWMDX",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "NPL"
+		},
+		"annotations": [],
+		"type": "SapBwCube",
+		"schema": []
+	}
+}
