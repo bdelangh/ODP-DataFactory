@@ -1,0 +1,19 @@
+{
+	"name": "NPL_BWMDX",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SapBw",
+		"typeProperties": {
+			"server": "137.117.134.161",
+			"systemNumber": "00",
+			"clientId": "001",
+			"userName": "MDXUSER",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIyY2IxMjZiYi0yYzY0LTRkNDEtODczYi0wZTc1YWEzMDM1NjAiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "SAPADFRti",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
