@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SapBwSource",
-						"query": "select [Measures].[GrossAmt] on columns,\n[2CREPM_SOANLYC1-COMPANYNAME].Members on rows\nfrom [2CREPM_SOANLYC1/2CREPM_SOANLYQ1]"
+						"query": ""
 					},
 					"enableStaging": false
 				},
