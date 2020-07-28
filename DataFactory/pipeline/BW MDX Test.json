@@ -19,11 +19,28 @@
 						"type": "SapBwSource",
 						"query": "select {[Measures].[0D_NW_NETV], [Measures].[0D_NW_OORV]} on columns,\n   [0D_NW_CNTRY].[LEVEL01] on rows\nfrom [$0D_NW_C01]"
 					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
 					"enableStaging": false
 				},
 				"inputs": [
 					{
 						"referenceName": "BW_NPL_MDX",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzDataLakeGen2_NPLMDX",
 						"type": "DatasetReference"
 					}
 				]
