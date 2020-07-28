@@ -1,0 +1,21 @@
+{
+	"name": "NPL_BWOpenHub",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "NPL_BWOpenHub",
+		"annotations": [],
+		"type": "SapOpenHub",
+		"typeProperties": {
+			"clientId": "001",
+			"language": "EN",
+			"userName": "OPENHUB",
+			"server": "137.117.134.161",
+			"systemNumber": "00",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI0MDBkZGRiZC1hMWI3LTRiZTYtYThmNy1mMjIwZGIwMDQ3MmYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "SAPADFRti",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
