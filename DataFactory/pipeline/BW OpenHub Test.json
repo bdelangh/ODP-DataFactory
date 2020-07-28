@@ -20,11 +20,28 @@
 						"baseRequestId": 9879,
 						"excludeLastRequest": false
 					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
 					"enableStaging": false
 				},
 				"inputs": [
 					{
 						"referenceName": "BW_NPL_OpenHub_NW_C01",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzDataLakeGen2_NPLOpenHub",
 						"type": "DatasetReference"
 					}
 				]
