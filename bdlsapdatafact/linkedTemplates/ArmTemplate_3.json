@@ -13,6 +13,805 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_DataLake2_par')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Usage of Parquet format in Sink",
+				"activities": [
+					{
+						"name": "NPLProducts_To_DataLake",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapEccSource"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "NPL_Products",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzDataLakeGen_NPLProducts_parq",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "NPLProducts"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_SQL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "NPLProducts_To_SQL",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapEccSource"
+							},
+							"sink": {
+								"type": "SqlSink",
+								"writeBatchSize": 10000
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0,
+							"translator": {
+								"type": "TabularTranslator",
+								"columnMappings": {
+									"Id": "id",
+									"CurrencyCode": "currencycode",
+									"StockQuantity": "stockquantity",
+									"Name": "name",
+									"Description": "description",
+									"SubCategoryId": "subcategoryid",
+									"SubCategoryName": "subcategoryname",
+									"MainCategoryId": "maincategoryid",
+									"MainCategoryName": "maincategoryname",
+									"SupplierId": "supplierid",
+									"SupplierName": "suppliername",
+									"LastModified": "lastmodified",
+									"Price": "price",
+									"QuantityUnit": "quantityunit",
+									"MeasureUnit": "measureunit"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "NPL_Products",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "NPLProducts_SQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "NPLProducts"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NorthwindCust_BdlAzDL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "NWCustomer_To_AzDLFile",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RelationalSource"
+							},
+							"sink": {
+								"type": "AzureDataLakeStoreSink"
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "NorthWind_Customers",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureDataLakeStore_NWCustomers",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "NorthWind"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4HRest_GetUpdatedSalesOrders')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetUpdatedSO_Rest",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"sqlWriterStoredProcedureName": "[[dbo].[spOverwriteS4HSOStr]",
+								"sqlWriterTableType": "S4HSalesOrderStr",
+								"storedProcedureTableTypeParameterName": "SalesOrders"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "d.results[0].SALESDOCUMENT"
+										},
+										"sink": {
+											"name": "SALESDOCUMENT",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SDDOCUMENTCATEGORY"
+										},
+										"sink": {
+											"name": "SDDOCUMENTCATEGORY",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESDOCUMENTTYPE"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTTYPE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESDOCUMENTPROCESSINGTYPE"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTPROCESSINGTYPE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].CREATIONDATE"
+										},
+										"sink": {
+											"name": "CREATIONDATE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].CREATIONTIME"
+										},
+										"sink": {
+											"name": "CREATIONTIME",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].LASTCHANGEDATE"
+										},
+										"sink": {
+											"name": "LASTCHANGEDATE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].LASTCHANGEDATETIME"
+										},
+										"sink": {
+											"name": "LASTCHANGEDATETIME",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESORGANIZATION"
+										},
+										"sink": {
+											"name": "SALESORGANIZATION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].DISTRIBUTIONCHANNEL"
+										},
+										"sink": {
+											"name": "DISTRIBUTIONCHANNEL",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].ORGANIZATIONDIVISION"
+										},
+										"sink": {
+											"name": "ORGANIZATIONDIVISION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESGROUP"
+										},
+										"sink": {
+											"name": "SALESGROUP",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESOFFICE"
+										},
+										"sink": {
+											"name": "SALESOFFICE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].PURCHASEORDERBYCUSTOMER"
+										},
+										"sink": {
+											"name": "PURCHASEORDERBYCUSTOMER",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].TRANSACTIONCURRENCY"
+										},
+										"sink": {
+											"name": "TRANSACTIONCURRENCY",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].PRICINGDATE"
+										},
+										"sink": {
+											"name": "PRICINGDATE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].RETAILPROMOTION"
+										},
+										"sink": {
+											"name": "RETAILPROMOTION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESDOCUMENTCONDITION"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTCONDITION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].ODQ_CHANGEMODE"
+										},
+										"sink": {
+											"name": "ODQ_CHANGEMODE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].ODQ_ENTITYCNTR"
+										},
+										"sink": {
+											"name": "ODQ_ENTITYCNTR",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "S4HRest_GetUpdatedSO",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "S4H_SalesOrdersSQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "GetNextDeltaToken",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190828122610_000029000')/ChangesAfter?$format=json",
+							"method": "GET",
+							"headers": {},
+							"authentication": {
+								"type": "Basic",
+								"username": "DEVELOPER",
+								"password": {
+									"type": "SecureString",
+									"value": "**********"
+								}
+							}
+						}
+					}
+				],
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4HSO_To_DataLake')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "S4HSO_DataLake",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapEccSource"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SALESDOCUMENT",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESDOCUMENT",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SDDOCUMENTCATEGORY",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SDDOCUMENTCATEGORY",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESDOCUMENTTYPE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTTYPE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESDOCUMENTPROCESSINGTYPE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTPROCESSINGTYPE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "CREATIONDATE",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "CREATIONDATE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "CREATIONTIME",
+											"type": "TimeSpan"
+										},
+										"sink": {
+											"name": "CREATIONTIME",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "LASTCHANGEDATE",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "LASTCHANGEDATE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "LASTCHANGEDATETIME",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "LASTCHANGEDATETIME",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESORGANIZATION",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESORGANIZATION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "DISTRIBUTIONCHANNEL",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DISTRIBUTIONCHANNEL",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ORGANIZATIONDIVISION",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ORAGANIZATIONDIVISION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESGROUP",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESGROUP",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESOFFICE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESOFFICE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "PURCHASEORDERBYCUSTOMER",
+											"type": "String"
+										},
+										"sink": {
+											"name": "PURCHASEORDERBYCUSTOMER",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "TRANSACTIONCURRENCY",
+											"type": "String"
+										},
+										"sink": {
+											"name": "TRANSACTIONCURRENCY",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "PRICINGDATE",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "PRICINGDATA",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "RETAILPROMOTION",
+											"type": "String"
+										},
+										"sink": {
+											"name": "RETAILPROMOTION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESDOCUMENTCONDITION",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTCONDITION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ODQ_CHANGEMODE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ODQ_CHANGEMODE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ODQ_ENTITYCNTR",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "ODQ_ENTITYCNTR",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "S4H_SalesOrders",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "S4HSO_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SAPDevCenterProdSet_BdlAzDL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ProductSet_SAPDev_BdlAzDL",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapEccSource"
+							},
+							"sink": {
+								"type": "AzureDataLakeStoreSink"
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "SAPDevCenter_ProductSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "BdlAzDL_SAPDev_ProductSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "SAP Dev Center"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BW_NPL_MDX')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NPL_BWMDX",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "SapBwCube",
+				"schema": [],
+				"typeProperties": {},
+				"typePropertites": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BW_NPL_OpenHub_NW_C01')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NPL_BWOpenHub",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "SapOpenHubTable",
+				"schema": [],
+				"typeProperties": {
+					"openHubDestinationName": "OH_NW_C01"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/NPLProductsTable')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -29,6 +828,36 @@
 				"schema": [],
 				"typeProperties": {
 					"tableName": "SEPMRACSHPRODUCT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SAPOHDSource_Incremental')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "SAP BW Open Hub table source",
+				"linkedServiceName": {
+					"referenceName": "NPL_BWOpenHub",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"BaseReqeustId": {
+						"type": "Int"
+					},
+					"SAPOpenHubDestinationName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "SapOpenHubTable",
+				"schema": [],
+				"typeProperties": {
+					"openHubDestinationName": {
+						"value": "@dataset().SAPOpenHubDestinationName",
+						"type": "Expression"
+					}
 				}
 			},
 			"dependsOn": []
@@ -58,6 +887,328 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BW MDX Test')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "BW MDX",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapBwSource",
+								"query": "select {[Measures].[0D_NW_NETV], [Measures].[0D_NW_OORV]} on columns,\n   [0D_NW_CNTRY].[LEVEL01] on rows\nfrom [$0D_NW_C01]"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "BW_NPL_MDX",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzDataLakeGen2_NPLMDX",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "BW_NPL"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/BW_NPL_MDX')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BW OpenHub Test')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "OpenHub",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapOpenHubSource",
+								"baseRequestId": 9879,
+								"excludeLastRequest": false
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "BW_NPL_OpenHub_NW_C01",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzDataLakeGen2_NPLOpenHub",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "BW_NPL"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/BW_NPL_OpenHub_NW_C01')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IncrementalCopyFromSAPBWOpenHub')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Copy incremental data from SAP BW Open Hub table to ADLS Gen2",
+				"activities": [
+					{
+						"name": "LookupLastRequestId",
+						"description": "Retrieve the last max copied request ID stored in blob",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "DelimitedTextDataset",
+								"type": "DatasetReference",
+								"parameters": {
+									"HighWatermarkBlobContainer": {
+										"value": "@pipeline().parameters.HighWatermarkBlobContainer",
+										"type": "Expression"
+									},
+									"HighWatermarkBlobDirectory": {
+										"value": "@pipeline().parameters.HighWatermarkBlobDirectory",
+										"type": "Expression"
+									},
+									"HighWatermarkBlobName": {
+										"value": "@pipeline().parameters.HighWatermarkBlobName",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "CopyFromSAPBWOpenHub",
+						"description": "Copy incremental data from SAP BW Open Hub table to ADLS Gen2",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "LookupLastRequestId",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapOpenHubSource",
+								"baseRequestId": {
+									"value": "@pipeline().parameters.BaseReqeustId",
+									"type": "Expression"
+								},
+								"excludeLastRequest": true
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "SAPOHDSource_Incremental",
+								"type": "DatasetReference",
+								"parameters": {
+									"BaseReqeustId": {
+										"value": "@activity('LookupLastRequestId').output.firstRow.Prop_0",
+										"type": "Expression"
+									},
+									"SAPOpenHubDestinationName": {
+										"value": "@pipeline().parameters.SAPOpenHubDestinationName",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureDataLakeStorageGen2Sink",
+								"type": "DatasetReference",
+								"parameters": {
+									"Data_Destination_Container": {
+										"value": "@pipeline().parameters.Data_Destination_Container",
+										"type": "Expression"
+									},
+									"Data_Destination_Directory": {
+										"value": "@pipeline().parameters.Data_Destination_Directory",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "SetMaxCopiedRequestId",
+						"description": "Store the latest max copied request ID into blob by calling Logic App",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "CopyFromSAPBWOpenHub",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@pipeline().parameters.LogicAppURL",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"value": "{\"sapOpenHubMaxRequestId\":\"@{activity('CopyFromSAPBWOpenHub').output.sapOpenHubMaxRequestId}\"}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"SAPOpenHubDestinationName": {
+						"type": "String"
+					},
+					"Data_Destination_Container": {
+						"type": "String"
+					},
+					"Data_Destination_Directory": {
+						"type": "String"
+					},
+					"HighWatermarkBlobContainer": {
+						"type": "String"
+					},
+					"HighWatermarkBlobDirectory": {
+						"type": "String"
+					},
+					"HighWatermarkBlobName": {
+						"type": "String"
+					},
+					"LogicAppURL": {
+						"type": "String"
+					},
+					"BaseReqeustId": {
+						"type": "int"
+					}
+				},
+				"folder": {
+					"name": "BW_NPL"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SAPOHDSource_Incremental')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/IncrementalCopyFromSAPTable')]",
@@ -242,6 +1393,9 @@
 					"SapTableDateColumn": {
 						"type": "string"
 					}
+				},
+				"folder": {
+					"name": "NPLProducts"
 				},
 				"annotations": []
 			},

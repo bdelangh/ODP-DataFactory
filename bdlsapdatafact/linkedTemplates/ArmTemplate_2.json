@@ -11,6 +11,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'NPLTable'"
 		},
+		"NPL_BWMDX_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'NPL_BWMDX'"
+		},
+		"NPL_BWOpenHub_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'NPL_BWOpenHub'"
+		},
 		"NPLTable_properties_typeProperties_clientId": {
 			"type": "string",
 			"defaultValue": "001"
@@ -26,12 +34,174 @@
 		"NPLTable_properties_typeProperties_systemNumber": {
 			"type": "string",
 			"defaultValue": "00"
+		},
+		"NPL_BWMDX_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "137.117.134.161"
+		},
+		"NPL_BWMDX_properties_typeProperties_systemNumber": {
+			"type": "string",
+			"defaultValue": "00"
+		},
+		"NPL_BWMDX_properties_typeProperties_clientId": {
+			"type": "string",
+			"defaultValue": "001"
+		},
+		"NPL_BWMDX_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "MDXUSER"
+		},
+		"NPL_BWOpenHub_properties_typeProperties_clientId": {
+			"type": "string",
+			"defaultValue": "001"
+		},
+		"NPL_BWOpenHub_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "OPENHUB"
+		},
+		"NPL_BWOpenHub_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "137.117.134.161"
+		},
+		"NPL_BWOpenHub_properties_typeProperties_systemNumber": {
+			"type": "string",
+			"defaultValue": "00"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/S4H_SalesOrdersByDeltaToken')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4H_ODP",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"schema": [],
+				"typeProperties": {
+					"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190723092859_000029000')/ChangesAfter"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4H_SalesOrdersSQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlsqldatadb",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "SALESDOCUMENT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SDDOCUMENTCATEGORY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTPROCESSINGTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREATIONDATE",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "CREATIONTIME",
+						"type": "time",
+						"scale": 7
+					},
+					{
+						"name": "LASTCHANGEDATE",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "LASTCHANGEDATETIME",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 0
+					},
+					{
+						"name": "SALESORGANIZATION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DISTRIBUTIONCHANNEL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ORGANIZATIONDIVISION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESOFFICE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TRANSACTIONCURRENCY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PRICINGDATE",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "RETAILPROMOTION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTCONDITION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ODQ_CHANGEMODE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ODQ_ENTITYCNTR",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[S4HSalesOrders]"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/S4HoData_getSalesOrdersByToken')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -211,6 +381,116 @@
 					"referenceName": "SAPADFRti",
 					"type": "IntegrationRuntimeReference"
 				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NPL_BWMDX')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapBw",
+				"typeProperties": {
+					"server": "[parameters('NPL_BWMDX_properties_typeProperties_server')]",
+					"systemNumber": "[parameters('NPL_BWMDX_properties_typeProperties_systemNumber')]",
+					"clientId": "[parameters('NPL_BWMDX_properties_typeProperties_clientId')]",
+					"userName": "[parameters('NPL_BWMDX_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('NPL_BWMDX_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "SAPADFRti",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NPL_BWOpenHub')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "NPL_BWOpenHub",
+				"annotations": [],
+				"type": "SapOpenHub",
+				"typeProperties": {
+					"clientId": "[parameters('NPL_BWOpenHub_properties_typeProperties_clientId')]",
+					"language": "EN",
+					"userName": "[parameters('NPL_BWOpenHub_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('NPL_BWOpenHub_password')]"
+					},
+					"server": "[parameters('NPL_BWOpenHub_properties_typeProperties_server')]",
+					"systemNumber": "[parameters('NPL_BWOpenHub_properties_typeProperties_systemNumber')]"
+				},
+				"connectVia": {
+					"referenceName": "SAPADFRti",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLMDX')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "@concat('NPLMDX_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+						"folderPath": "NPL/MDX",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLOpenHub')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "@concat('NPLOpenHub_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+						"folderPath": "NPL/OpenHub",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
 			},
 			"dependsOn": []
 		},
@@ -540,7 +820,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrdersSQL')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/GetS4HSalesOrders_Delta')]",
@@ -833,7 +1115,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrdersSQL')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/IncrementalPersons')]",
@@ -1616,766 +1900,6 @@
 				"annotations": []
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_DataLake2_par')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Usage of Parquet format in Sink",
-				"activities": [
-					{
-						"name": "NPLProducts_To_DataLake",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapEccSource"
-							},
-							"sink": {
-								"type": "ParquetSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								}
-							},
-							"enableStaging": false,
-							"dataIntegrationUnits": 0
-						},
-						"inputs": [
-							{
-								"referenceName": "NPL_Products",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "AzDataLakeGen_NPLProducts_parq",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "NPLProducts"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_SQL')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "NPLProducts_To_SQL",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapEccSource"
-							},
-							"sink": {
-								"type": "SqlSink",
-								"writeBatchSize": 10000
-							},
-							"enableStaging": false,
-							"dataIntegrationUnits": 0,
-							"translator": {
-								"type": "TabularTranslator",
-								"columnMappings": {
-									"Id": "id",
-									"CurrencyCode": "currencycode",
-									"StockQuantity": "stockquantity",
-									"Name": "name",
-									"Description": "description",
-									"SubCategoryId": "subcategoryid",
-									"SubCategoryName": "subcategoryname",
-									"MainCategoryId": "maincategoryid",
-									"MainCategoryName": "maincategoryname",
-									"SupplierId": "supplierid",
-									"SupplierName": "suppliername",
-									"LastModified": "lastmodified",
-									"Price": "price",
-									"QuantityUnit": "quantityunit",
-									"MeasureUnit": "measureunit"
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "NPL_Products",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "NPLProducts_SQL",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "NPLProducts"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NorthwindCust_BdlAzDL')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "NWCustomer_To_AzDLFile",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "RelationalSource"
-							},
-							"sink": {
-								"type": "AzureDataLakeStoreSink"
-							},
-							"enableStaging": false,
-							"dataIntegrationUnits": 0
-						},
-						"inputs": [
-							{
-								"referenceName": "NorthWind_Customers",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "AzureDataLakeStore_NWCustomers",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "NorthWind"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HRest_GetUpdatedSalesOrders')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "GetUpdatedSO_Rest",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
-								"requestInterval": "00.00:00:00.010"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"sqlWriterStoredProcedureName": "[[dbo].[spOverwriteS4HSOStr]",
-								"sqlWriterTableType": "S4HSalesOrderStr",
-								"storedProcedureTableTypeParameterName": "SalesOrders"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "d.results[0].SALESDOCUMENT"
-										},
-										"sink": {
-											"name": "SALESDOCUMENT",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].SDDOCUMENTCATEGORY"
-										},
-										"sink": {
-											"name": "SDDOCUMENTCATEGORY",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].SALESDOCUMENTTYPE"
-										},
-										"sink": {
-											"name": "SALESDOCUMENTTYPE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].SALESDOCUMENTPROCESSINGTYPE"
-										},
-										"sink": {
-											"name": "SALESDOCUMENTPROCESSINGTYPE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].CREATIONDATE"
-										},
-										"sink": {
-											"name": "CREATIONDATE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].CREATIONTIME"
-										},
-										"sink": {
-											"name": "CREATIONTIME",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].LASTCHANGEDATE"
-										},
-										"sink": {
-											"name": "LASTCHANGEDATE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].LASTCHANGEDATETIME"
-										},
-										"sink": {
-											"name": "LASTCHANGEDATETIME",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].SALESORGANIZATION"
-										},
-										"sink": {
-											"name": "SALESORGANIZATION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].DISTRIBUTIONCHANNEL"
-										},
-										"sink": {
-											"name": "DISTRIBUTIONCHANNEL",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].ORGANIZATIONDIVISION"
-										},
-										"sink": {
-											"name": "ORGANIZATIONDIVISION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].SALESGROUP"
-										},
-										"sink": {
-											"name": "SALESGROUP",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].SALESOFFICE"
-										},
-										"sink": {
-											"name": "SALESOFFICE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].PURCHASEORDERBYCUSTOMER"
-										},
-										"sink": {
-											"name": "PURCHASEORDERBYCUSTOMER",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].TRANSACTIONCURRENCY"
-										},
-										"sink": {
-											"name": "TRANSACTIONCURRENCY",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].PRICINGDATE"
-										},
-										"sink": {
-											"name": "PRICINGDATE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].RETAILPROMOTION"
-										},
-										"sink": {
-											"name": "RETAILPROMOTION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].SALESDOCUMENTCONDITION"
-										},
-										"sink": {
-											"name": "SALESDOCUMENTCONDITION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].ODQ_CHANGEMODE"
-										},
-										"sink": {
-											"name": "ODQ_CHANGEMODE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "d.results[0].ODQ_ENTITYCNTR"
-										},
-										"sink": {
-											"name": "ODQ_ENTITYCNTR",
-											"type": "String"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "S4HRest_GetUpdatedSO",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "S4H_SalesOrdersSQL",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "GetNextDeltaToken",
-						"type": "WebActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190828122610_000029000')/ChangesAfter?$format=json",
-							"method": "GET",
-							"headers": {},
-							"authentication": {
-								"type": "Basic",
-								"username": "DEVELOPER",
-								"password": {
-									"type": "SecureString",
-									"value": "**********"
-								}
-							}
-						}
-					}
-				],
-				"folder": {
-					"name": "S4H"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HSO_To_DataLake')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "S4HSO_DataLake",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapEccSource"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "SALESDOCUMENT",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESDOCUMENT",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SDDOCUMENTCATEGORY",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SDDOCUMENTCATEGORY",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESDOCUMENTTYPE",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESDOCUMENTTYPE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESDOCUMENTPROCESSINGTYPE",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESDOCUMENTPROCESSINGTYPE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "CREATIONDATE",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "CREATIONDATE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "CREATIONTIME",
-											"type": "TimeSpan"
-										},
-										"sink": {
-											"name": "CREATIONTIME",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "LASTCHANGEDATE",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "LASTCHANGEDATE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "LASTCHANGEDATETIME",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "LASTCHANGEDATETIME",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESORGANIZATION",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESORGANIZATION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "DISTRIBUTIONCHANNEL",
-											"type": "String"
-										},
-										"sink": {
-											"name": "DISTRIBUTIONCHANNEL",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ORGANIZATIONDIVISION",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ORAGANIZATIONDIVISION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESGROUP",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESGROUP",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESOFFICE",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESOFFICE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "PURCHASEORDERBYCUSTOMER",
-											"type": "String"
-										},
-										"sink": {
-											"name": "PURCHASEORDERBYCUSTOMER",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "TRANSACTIONCURRENCY",
-											"type": "String"
-										},
-										"sink": {
-											"name": "TRANSACTIONCURRENCY",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "PRICINGDATE",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "PRICINGDATA",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "RETAILPROMOTION",
-											"type": "String"
-										},
-										"sink": {
-											"name": "RETAILPROMOTION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESDOCUMENTCONDITION",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESDOCUMENTCONDITION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ODQ_CHANGEMODE",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ODQ_CHANGEMODE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ODQ_ENTITYCNTR",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "ODQ_ENTITYCNTR",
-											"type": "String"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "S4H_SalesOrders",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "S4HSO_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "S4H"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SAPDevCenterProdSet_BdlAzDL')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "ProductSet_SAPDev_BdlAzDL",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapEccSource"
-							},
-							"sink": {
-								"type": "AzureDataLakeStoreSink"
-							},
-							"enableStaging": false,
-							"dataIntegrationUnits": 0
-						},
-						"inputs": [
-							{
-								"referenceName": "SAPDevCenter_ProductSet",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "BdlAzDL_SAPDev_ProductSet",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "SAP Dev Center"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SAPDevCenter_ProductSet')]"
-			]
 		}
 	]
 }

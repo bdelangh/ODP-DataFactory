@@ -23,6 +23,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'NPLTable'"
 		},
+		"NPL_BWMDX_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'NPL_BWMDX'"
+		},
+		"NPL_BWOpenHub_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'NPL_BWOpenHub'"
+		},
 		"S4HOData_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4HOData'"
@@ -147,6 +155,38 @@
 			"type": "string",
 			"defaultValue": "00"
 		},
+		"NPL_BWMDX_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "137.117.134.161"
+		},
+		"NPL_BWMDX_properties_typeProperties_systemNumber": {
+			"type": "string",
+			"defaultValue": "00"
+		},
+		"NPL_BWMDX_properties_typeProperties_clientId": {
+			"type": "string",
+			"defaultValue": "001"
+		},
+		"NPL_BWMDX_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "MDXUSER"
+		},
+		"NPL_BWOpenHub_properties_typeProperties_clientId": {
+			"type": "string",
+			"defaultValue": "001"
+		},
+		"NPL_BWOpenHub_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "OPENHUB"
+		},
+		"NPL_BWOpenHub_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "137.117.134.161"
+		},
+		"NPL_BWOpenHub_properties_typeProperties_systemNumber": {
+			"type": "string",
+			"defaultValue": "00"
+		},
 		"S4HOData_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"
@@ -234,6 +274,131 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/adfdatabricks')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BW MDX Test')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "BW MDX",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapBwSource",
+								"query": "select {[Measures].[0D_NW_NETV], [Measures].[0D_NW_OORV]} on columns,\n   [0D_NW_CNTRY].[LEVEL01] on rows\nfrom [$0D_NW_C01]"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "BW_NPL_MDX",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzDataLakeGen2_NPLMDX",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "BW_NPL"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/BW_NPL_MDX')]",
+				"[concat(variables('factoryId'), '/datasets/AzDataLakeGen2_NPLMDX')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BW OpenHub Test')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "OpenHub",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapOpenHubSource",
+								"baseRequestId": 9879,
+								"excludeLastRequest": false
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "BW_NPL_OpenHub_NW_C01",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzDataLakeGen2_NPLOpenHub",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "BW_NPL"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/BW_NPL_OpenHub_NW_C01')]",
+				"[concat(variables('factoryId'), '/datasets/AzDataLakeGen2_NPLOpenHub')]"
 			]
 		},
 		{
@@ -868,6 +1033,207 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/IncrementalCopyFromSAPBWOpenHub')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Copy incremental data from SAP BW Open Hub table to ADLS Gen2",
+				"activities": [
+					{
+						"name": "LookupLastRequestId",
+						"description": "Retrieve the last max copied request ID stored in blob",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "DelimitedTextDataset",
+								"type": "DatasetReference",
+								"parameters": {
+									"HighWatermarkBlobContainer": {
+										"value": "@pipeline().parameters.HighWatermarkBlobContainer",
+										"type": "Expression"
+									},
+									"HighWatermarkBlobDirectory": {
+										"value": "@pipeline().parameters.HighWatermarkBlobDirectory",
+										"type": "Expression"
+									},
+									"HighWatermarkBlobName": {
+										"value": "@pipeline().parameters.HighWatermarkBlobName",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "CopyFromSAPBWOpenHub",
+						"description": "Copy incremental data from SAP BW Open Hub table to ADLS Gen2",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "LookupLastRequestId",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapOpenHubSource",
+								"baseRequestId": {
+									"value": "@pipeline().parameters.BaseReqeustId",
+									"type": "Expression"
+								},
+								"excludeLastRequest": true
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "SAPOHDSource_Incremental",
+								"type": "DatasetReference",
+								"parameters": {
+									"BaseReqeustId": {
+										"value": "@activity('LookupLastRequestId').output.firstRow.Prop_0",
+										"type": "Expression"
+									},
+									"SAPOpenHubDestinationName": {
+										"value": "@pipeline().parameters.SAPOpenHubDestinationName",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureDataLakeStorageGen2Sink",
+								"type": "DatasetReference",
+								"parameters": {
+									"Data_Destination_Container": {
+										"value": "@pipeline().parameters.Data_Destination_Container",
+										"type": "Expression"
+									},
+									"Data_Destination_Directory": {
+										"value": "@pipeline().parameters.Data_Destination_Directory",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "SetMaxCopiedRequestId",
+						"description": "Store the latest max copied request ID into blob by calling Logic App",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "CopyFromSAPBWOpenHub",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@pipeline().parameters.LogicAppURL",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"value": "{\"sapOpenHubMaxRequestId\":\"@{activity('CopyFromSAPBWOpenHub').output.sapOpenHubMaxRequestId}\"}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"SAPOpenHubDestinationName": {
+						"type": "String"
+					},
+					"Data_Destination_Container": {
+						"type": "String"
+					},
+					"Data_Destination_Directory": {
+						"type": "String"
+					},
+					"HighWatermarkBlobContainer": {
+						"type": "String"
+					},
+					"HighWatermarkBlobDirectory": {
+						"type": "String"
+					},
+					"HighWatermarkBlobName": {
+						"type": "String"
+					},
+					"LogicAppURL": {
+						"type": "String"
+					},
+					"BaseReqeustId": {
+						"type": "int"
+					}
+				},
+				"folder": {
+					"name": "BW_NPL"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DelimitedTextDataset')]",
+				"[concat(variables('factoryId'), '/datasets/SAPOHDSource_Incremental')]",
+				"[concat(variables('factoryId'), '/datasets/AzureDataLakeStorageGen2Sink')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/IncrementalCopyFromSAPTable')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1050,6 +1416,9 @@
 					"SapTableDateColumn": {
 						"type": "string"
 					}
+				},
+				"folder": {
+					"name": "NPLProducts"
 				},
 				"annotations": []
 			},
@@ -3034,6 +3403,48 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorageGen2Sink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "ADLS Gen2 sink",
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Data_Destination_Container": {
+						"type": "String"
+					},
+					"Data_Destination_Directory": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": {
+							"value": "@{dataset().Data_Destination_Directory}",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@{dataset().Data_Destination_Container}",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStore_NWCustomers')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -3095,6 +3506,51 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/BdlAzDataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BW_NPL_MDX')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NPL_BWMDX",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "SapBwCube",
+				"schema": [],
+				"typeProperties": {},
+				"typePropertites": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/NPL_BWMDX')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BW_NPL_OpenHub_NW_C01')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NPL_BWOpenHub",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "SapOpenHubTable",
+				"schema": [],
+				"typeProperties": {
+					"openHubDestinationName": "OH_NW_C01"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/NPL_BWOpenHub')]"
 			]
 		},
 		{
@@ -3175,6 +3631,55 @@
 					},
 					"folderPath": "[parameters('DailyGameData_Blob_properties_typeProperties_folderPath')]"
 				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdldftutorial')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedTextDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Blob to store the max copied request ID from SAP BW Open Hub table as high watermark",
+				"linkedServiceName": {
+					"referenceName": "bdldftutorial",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"HighWatermarkBlobContainer": {
+						"type": "String"
+					},
+					"HighWatermarkBlobDirectory": {
+						"type": "String"
+					},
+					"HighWatermarkBlobName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().HighWatermarkBlobName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().HighWatermarkBlobDirectory",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().HighWatermarkBlobContainer",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/bdldftutorial')]"
@@ -4081,6 +4586,38 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SAPOHDSource_Incremental')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "SAP BW Open Hub table source",
+				"linkedServiceName": {
+					"referenceName": "NPL_BWOpenHub",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"BaseReqeustId": {
+						"type": "Int"
+					},
+					"SAPOpenHubDestinationName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "SapOpenHubTable",
+				"schema": [],
+				"typeProperties": {
+					"openHubDestinationName": {
+						"value": "@dataset().SAPOpenHubDestinationName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/NPL_BWOpenHub')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SAPTableSource_Incremental')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -4226,6 +4763,60 @@
 					},
 					"server": "[parameters('NPLTable_properties_typeProperties_server')]",
 					"systemNumber": "[parameters('NPLTable_properties_typeProperties_systemNumber')]"
+				},
+				"connectVia": {
+					"referenceName": "SAPADFRti",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SAPADFRti')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NPL_BWMDX')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapBw",
+				"typeProperties": {
+					"server": "[parameters('NPL_BWMDX_properties_typeProperties_server')]",
+					"systemNumber": "[parameters('NPL_BWMDX_properties_typeProperties_systemNumber')]",
+					"clientId": "[parameters('NPL_BWMDX_properties_typeProperties_clientId')]",
+					"userName": "[parameters('NPL_BWMDX_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('NPL_BWMDX_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "SAPADFRti",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SAPADFRti')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NPL_BWOpenHub')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "NPL_BWOpenHub",
+				"annotations": [],
+				"type": "SapOpenHub",
+				"typeProperties": {
+					"clientId": "[parameters('NPL_BWOpenHub_properties_typeProperties_clientId')]",
+					"language": "EN",
+					"userName": "[parameters('NPL_BWOpenHub_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('NPL_BWOpenHub_password')]"
+					},
+					"server": "[parameters('NPL_BWOpenHub_properties_typeProperties_server')]",
+					"systemNumber": "[parameters('NPL_BWOpenHub_properties_typeProperties_systemNumber')]"
 				},
 				"connectVia": {
 					"referenceName": "SAPADFRti",
@@ -4416,6 +5007,70 @@
 				"typeProperties": {}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLMDX')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "@concat('NPLMDX_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+						"folderPath": "NPL/MDX",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLOpenHub')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "@concat('NPLOpenHub_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+						"folderPath": "NPL/OpenHub",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
+			]
 		}
 	]
 }

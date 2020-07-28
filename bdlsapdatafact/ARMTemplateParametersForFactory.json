@@ -17,6 +17,12 @@
 		"NPLTable_password": {
 			"value": ""
 		},
+		"NPL_BWMDX_password": {
+			"value": ""
+		},
+		"NPL_BWOpenHub_password": {
+			"value": ""
+		},
 		"S4HOData_password": {
 			"value": ""
 		},
@@ -108,6 +114,30 @@
 			"value": "10.6.1.6"
 		},
 		"NPLTable_properties_typeProperties_systemNumber": {
+			"value": "00"
+		},
+		"NPL_BWMDX_properties_typeProperties_server": {
+			"value": "137.117.134.161"
+		},
+		"NPL_BWMDX_properties_typeProperties_systemNumber": {
+			"value": "00"
+		},
+		"NPL_BWMDX_properties_typeProperties_clientId": {
+			"value": "001"
+		},
+		"NPL_BWMDX_properties_typeProperties_userName": {
+			"value": "MDXUSER"
+		},
+		"NPL_BWOpenHub_properties_typeProperties_clientId": {
+			"value": "001"
+		},
+		"NPL_BWOpenHub_properties_typeProperties_userName": {
+			"value": "OPENHUB"
+		},
+		"NPL_BWOpenHub_properties_typeProperties_server": {
+			"value": "137.117.134.161"
+		},
+		"NPL_BWOpenHub_properties_typeProperties_systemNumber": {
 			"value": "00"
 		},
 		"S4HOData_properties_typeProperties_url": {
