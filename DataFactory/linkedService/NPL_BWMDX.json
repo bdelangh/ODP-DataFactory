@@ -8,8 +8,8 @@
 			"server": "137.117.134.161",
 			"systemNumber": "00",
 			"clientId": "001",
-			"userName": "BWDEVELOPER",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJkMDE0ZThmMS04MGNmLTRjY2MtYmUwZC05ZTBlN2FkMWJlMDUiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"userName": "MDXUSER",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJkMmRhODAwMC1lMmEyLTQzMTMtYTdhOC02ZGIxYTA3OTQzNWEiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "SAPADFRti",
