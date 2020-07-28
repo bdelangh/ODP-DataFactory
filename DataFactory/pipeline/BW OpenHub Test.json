@@ -1,0 +1,38 @@
+{
+	"name": "BW OpenHub Test",
+	"properties": {
+		"activities": [
+			{
+				"name": "OpenHub",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SapOpenHubSource",
+						"baseRequestId": 9880,
+						"excludeLastRequest": false
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "BW_NPL_OpenHub",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "BW_NPL"
+		},
+		"annotations": []
+	}
+}
