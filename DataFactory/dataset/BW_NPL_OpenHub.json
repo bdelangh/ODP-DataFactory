@@ -1,0 +1,18 @@
+{
+	"name": "BW_NPL_OpenHub",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "NPL_BWOpenHub",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "NPL"
+		},
+		"annotations": [],
+		"type": "SapOpenHubTable",
+		"schema": [],
+		"typeProperties": {
+			"openHubDestinationName": "OH_NW_C01"
+		}
+	}
+}
