@@ -1,5 +1,5 @@
 {
-	"name": "BW_NPL_OpenHub",
+	"name": "BW_NPL_OpenHub_NW_C01",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "NPL_BWOpenHub",
