@@ -1,0 +1,27 @@
+{
+	"name": "SAPOHDSource_Incremental",
+	"properties": {
+		"description": "SAP BW Open Hub table source",
+		"linkedServiceName": {
+			"referenceName": "NPL_BWOpenHub",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"BaseReqeustId": {
+				"type": "Int"
+			},
+			"SAPOpenHubDestinationName": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "SapOpenHubTable",
+		"schema": [],
+		"typeProperties": {
+			"openHubDestinationName": {
+				"value": "@dataset().SAPOpenHubDestinationName",
+				"type": "Expression"
+			}
+		}
+	}
+}

@@ -1,0 +1,44 @@
+{
+	"name": "DelimitedTextDataset",
+	"properties": {
+		"description": "Blob to store the max copied request ID from SAP BW Open Hub table as high watermark",
+		"linkedServiceName": {
+			"referenceName": "bdldftutorial",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"HighWatermarkBlobContainer": {
+				"type": "String"
+			},
+			"HighWatermarkBlobDirectory": {
+				"type": "String"
+			},
+			"HighWatermarkBlobName": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().HighWatermarkBlobName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().HighWatermarkBlobDirectory",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().HighWatermarkBlobContainer",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
