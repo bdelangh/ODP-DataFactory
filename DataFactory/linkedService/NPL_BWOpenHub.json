@@ -8,10 +8,10 @@
 		"typeProperties": {
 			"clientId": "001",
 			"language": "EN",
-			"userName": "BWDEVELOPER",
+			"userName": "OPENHUB",
 			"server": "137.117.134.161",
 			"systemNumber": "00",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJlNzljMThiYS03NzBlLTQzZWMtODY3My0yMWViMTM1ZGU4MWYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJkOTQzMmE5OC0wNTQ3LTQ3YzUtYjg2ZS01OTE1NDIzYTExOGIiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "SAPADFRti",
