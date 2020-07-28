@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SapBwSource",
-						"query": "select {[Measures].[0D_NW_NETV], [Measures].[0D_NW_OORV]} on columns,\n   [0D_NW_CNTRY].[LEVEL01] on rows\nfrom [$0D_NW_C01]"
+						"query": "select [Measures].[GrossAmt] on columns,\n[2CREPM_SOANLYC1-COMPANYNAME].Members on rows\nfrom [2CREPM_SOANLYC1/2CREPM_SOANLYQ1]"
 					},
 					"enableStaging": false
 				},
