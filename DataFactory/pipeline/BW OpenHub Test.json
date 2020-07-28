@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SapOpenHubSource",
-						"baseRequestId": 9880,
+						"baseRequestId": 9879,
 						"excludeLastRequest": false
 					},
 					"enableStaging": false
