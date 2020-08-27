@@ -67,6 +67,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
 		},
+		"ODPFunction_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ODPFunction'"
+		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "Customers.csv"
@@ -205,7 +209,7 @@
 		},
 		"S4H_ODP_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"
+			"defaultValue": "http://40.68.1.228:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV"
 		},
 		"S4H_ODP_properties_typeProperties_username": {
 			"type": "string",
@@ -234,6 +238,10 @@
 		"SampleOData_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://services.odata.org/V3/Northwind/Northwind.svc/"
+		},
+		"ODPFunction_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://odpfunctions.azurewebsites.net"
 		}
 	},
 	"variables": {
@@ -1016,7 +1024,7 @@
 							}
 						},
 						"linkedServiceName": {
-							"referenceName": "ADFTest",
+							"referenceName": "ODPFunction",
 							"type": "LinkedServiceReference"
 						}
 					}
@@ -1029,7 +1037,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrderByToken')]",
 				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrdersSQL')]",
-				"[concat(variables('factoryId'), '/linkedServices/ADFTest')]"
+				"[concat(variables('factoryId'), '/linkedServices/ODPFunction')]"
 			]
 		},
 		{
@@ -1449,7 +1457,8 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlSource",
-								"sqlReaderQuery": "select * from watermarktable where TableName = 'persons';"
+								"sqlReaderQuery": "select * from watermarktable where TableName = 'persons';",
+								"partitionOption": "None"
 							},
 							"dataset": {
 								"referenceName": "WaterMark_SQL",
@@ -1473,7 +1482,8 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlSource",
-								"sqlReaderQuery": "select MAX(LastModifytime) as NewWatermarkvalue from persons"
+								"sqlReaderQuery": "select MAX(LastModifytime) as NewWatermarkvalue from persons",
+								"partitionOption": "None"
 							},
 							"dataset": {
 								"referenceName": "Persons_SQL",
@@ -1513,7 +1523,8 @@
 								"sqlReaderQuery": {
 									"value": "select * from persons where LastModifytime > '@{activity('LookupOldWatermarkActivity').output.firstrow.watermarkvalue}' and LastModifytime <= '@{activity('LookupNewWaterMarkActivity').output.firstRow.NewWatermarkvalue}';",
 									"type": "Expression"
-								}
+								},
+								"partitionOption": "None"
 							},
 							"sink": {
 								"type": "BlobSink"
@@ -1746,7 +1757,8 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlSource",
-								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProductsTable';"
+								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProductsTable';",
+								"partitionOption": "None"
 							},
 							"dataset": {
 								"referenceName": "WaterMark_SQL",
@@ -1829,7 +1841,8 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlSource",
-								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProducts';"
+								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProducts';",
+								"partitionOption": "None"
 							},
 							"dataset": {
 								"referenceName": "WaterMark_SQL",
@@ -2158,7 +2171,8 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProductsDL';",
-								"queryTimeout": "02:00:00"
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
 							},
 							"dataset": {
 								"referenceName": "WaterMark_SQL",
@@ -2299,7 +2313,8 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProductsDL';",
-								"queryTimeout": "02:00:00"
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
 							},
 							"dataset": {
 								"referenceName": "WaterMark_SQL",
@@ -2418,7 +2433,6 @@
 								},
 								"formatSettings": {
 									"type": "JsonWriteSettings",
-									"quoteAllText": true,
 									"filePattern": "setOfObjects"
 								}
 							},
@@ -3225,6 +3239,76 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SAPDevCenter_ProductSet')]",
 				"[concat(variables('factoryId'), '/datasets/BdlAzDL_SAPDev_ProductSet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLMDX')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('NPLMDX_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "NPL/MDX",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLOpenHub')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('NPLOpenHub_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "NPL/OpenHub",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
 			]
 		},
 		{
@@ -5009,68 +5093,21 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLMDX')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/ODPFunction')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NPL"
-				},
 				"annotations": [],
-				"type": "DelimitedText",
+				"type": "AzureFunction",
 				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "@concat('NPLMDX_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
-						"folderPath": "NPL/MDX",
-						"fileSystem": "sap"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
+					"functionAppUrl": "[parameters('ODPFunction_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('ODPFunction_functionKey')]"
+					}
+				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLOpenHub')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NPL"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "@concat('NPLOpenHub_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
-						"folderPath": "NPL/OpenHub",
-						"fileSystem": "sap"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
-			]
+			"dependsOn": []
 		}
 	]
 }

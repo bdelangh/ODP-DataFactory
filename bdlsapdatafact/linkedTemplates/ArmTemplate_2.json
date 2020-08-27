@@ -73,6 +73,79 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/S4H_DeltaTokens')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4H_ODP",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"schema": [],
+				"typeProperties": {
+					"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4H_SalesOrderByToken')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4H_ODP",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Token": {
+						"type": "string",
+						"defaultValue": "D20190716141524_000029000"
+					}
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"schema": [],
+				"typeProperties": {
+					"path": {
+						"value": "@concat('DeltaLinksOfAttrOfZBD_ISALESDOC_1(%27',dataset().Token, '%27)/ChangesAfter')",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4H_SalesOrders')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "S4H - SAP CAL",
+				"linkedServiceName": {
+					"referenceName": "S4H_ODP",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"schema": [],
+				"typeProperties": {
+					"path": "AttrOfZBD_ISALESDOC_1"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/S4H_SalesOrdersByDeltaToken')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -435,66 +508,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLMDX')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NPL"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "@concat('NPLMDX_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
-						"folderPath": "NPL/MDX",
-						"fileSystem": "sap"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLOpenHub')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NPL"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "@concat('NPLOpenHub_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
-						"folderPath": "NPL/OpenHub",
-						"fileSystem": "sap"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/CopyDailyGameData')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -821,6 +834,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrders')]",
 				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrdersSQL')]"
 			]
 		},
@@ -1105,7 +1119,7 @@
 							}
 						},
 						"linkedServiceName": {
-							"referenceName": "ADFTest",
+							"referenceName": "ODPFunction",
 							"type": "LinkedServiceReference"
 						}
 					}
@@ -1116,6 +1130,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrderByToken')]",
 				"[concat(variables('factoryId'), '/datasets/S4H_SalesOrdersSQL')]"
 			]
 		},
@@ -1140,7 +1155,8 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlSource",
-								"sqlReaderQuery": "select * from watermarktable where TableName = 'persons';"
+								"sqlReaderQuery": "select * from watermarktable where TableName = 'persons';",
+								"partitionOption": "None"
 							},
 							"dataset": {
 								"referenceName": "WaterMark_SQL",
@@ -1164,7 +1180,8 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlSource",
-								"sqlReaderQuery": "select MAX(LastModifytime) as NewWatermarkvalue from persons"
+								"sqlReaderQuery": "select MAX(LastModifytime) as NewWatermarkvalue from persons",
+								"partitionOption": "None"
 							},
 							"dataset": {
 								"referenceName": "Persons_SQL",
@@ -1204,7 +1221,8 @@
 								"sqlReaderQuery": {
 									"value": "select * from persons where LastModifytime > '@{activity('LookupOldWatermarkActivity').output.firstrow.watermarkvalue}' and LastModifytime <= '@{activity('LookupNewWaterMarkActivity').output.firstRow.NewWatermarkvalue}';",
 									"type": "Expression"
-								}
+								},
+								"partitionOption": "None"
 							},
 							"sink": {
 								"type": "BlobSink"
@@ -1298,7 +1316,8 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlSource",
-								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProducts';"
+								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProducts';",
+								"partitionOption": "None"
 							},
 							"dataset": {
 								"referenceName": "WaterMark_SQL",
@@ -1618,7 +1637,8 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProductsDL';",
-								"queryTimeout": "02:00:00"
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
 							},
 							"dataset": {
 								"referenceName": "WaterMark_SQL",
@@ -1756,7 +1776,8 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProductsDL';",
-								"queryTimeout": "02:00:00"
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
 							},
 							"dataset": {
 								"referenceName": "WaterMark_SQL",
@@ -1841,65 +1862,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/WaterMark_SQL')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_DataLake2_json')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "NPLProducts_To_DataLake",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapEccSource"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true,
-									"filePattern": "setOfObjects"
-								}
-							},
-							"enableStaging": false,
-							"dataIntegrationUnits": 0
-						},
-						"inputs": [
-							{
-								"referenceName": "NPL_Products",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "AzDataLakeGen2_NPLProducts_json",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "NPLProducts"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
 		}
 	]
 }

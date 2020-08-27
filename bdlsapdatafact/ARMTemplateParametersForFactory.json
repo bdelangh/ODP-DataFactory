@@ -50,6 +50,9 @@
 		"bdlsqldatadb_connectionString": {
 			"value": ""
 		},
+		"ODPFunction_functionKey": {
+			"value": ""
+		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"value": "Customers.csv"
 		},
@@ -153,7 +156,7 @@
 			"value": "DEVELOPER"
 		},
 		"S4H_ODP_properties_typeProperties_url": {
-			"value": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"
+			"value": "http://40.68.1.228:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV"
 		},
 		"S4H_ODP_properties_typeProperties_username": {
 			"value": "Developer"
@@ -175,6 +178,9 @@
 		},
 		"SampleOData_properties_typeProperties_url": {
 			"value": "https://services.odata.org/V3/Northwind/Northwind.svc/"
+		},
+		"ODPFunction_properties_typeProperties_functionAppUrl": {
+			"value": "https://odpfunctions.azurewebsites.net"
 		}
 	}
 }

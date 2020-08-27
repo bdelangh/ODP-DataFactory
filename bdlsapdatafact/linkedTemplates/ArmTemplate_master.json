@@ -67,6 +67,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
 		},
+		"ODPFunction_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ODPFunction'"
+		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "Customers.csv"
@@ -205,7 +209,7 @@
 		},
 		"S4H_ODP_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"
+			"defaultValue": "http://40.68.1.228:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV"
 		},
 		"S4H_ODP_properties_typeProperties_username": {
 			"type": "string",
@@ -235,6 +239,10 @@
 			"type": "string",
 			"defaultValue": "https://services.odata.org/V3/Northwind/Northwind.svc/"
 		},
+		"ODPFunction_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://odpfunctions.azurewebsites.net"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -249,7 +257,7 @@
 	},
 	"resources": [
 		{
-			"name": "ArmTemplate_0",
+			"name": "bdlsapdatafact_ArmTemplate_0",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2018-02-01",
 			"properties": {
@@ -297,6 +305,9 @@
 					},
 					"bdlsqldatadb_connectionString": {
 						"value": "[parameters('bdlsqldatadb_connectionString')]"
+					},
+					"ODPFunction_functionKey": {
+						"value": "[parameters('ODPFunction_functionKey')]"
 					},
 					"ADFTest_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('ADFTest_properties_typeProperties_functionAppUrl')]"
@@ -357,13 +368,16 @@
 					},
 					"SampleOData_properties_typeProperties_url": {
 						"value": "[parameters('SampleOData_properties_typeProperties_url')]"
+					},
+					"ODPFunction_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('ODPFunction_properties_typeProperties_functionAppUrl')]"
 					}
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "ArmTemplate_1",
+			"name": "bdlsapdatafact_ArmTemplate_1",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2018-02-01",
 			"properties": {
@@ -409,11 +423,11 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_0')]"
+				"[resourceId('Microsoft.Resources/deployments', 'bdlsapdatafact_ArmTemplate_0')]"
 			]
 		},
 		{
-			"name": "ArmTemplate_2",
+			"name": "bdlsapdatafact_ArmTemplate_2",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2018-02-01",
 			"properties": {
@@ -474,11 +488,11 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_1')]"
+				"[resourceId('Microsoft.Resources/deployments', 'bdlsapdatafact_ArmTemplate_1')]"
 			]
 		},
 		{
-			"name": "ArmTemplate_3",
+			"name": "bdlsapdatafact_ArmTemplate_3",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2018-02-01",
 			"properties": {
@@ -494,7 +508,7 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_2')]"
+				"[resourceId('Microsoft.Resources/deployments', 'bdlsapdatafact_ArmTemplate_2')]"
 			]
 		}
 	]

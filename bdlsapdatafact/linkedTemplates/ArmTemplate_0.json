@@ -55,6 +55,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
 		},
+		"ODPFunction_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ODPFunction'"
+		},
 		"ADFTest_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://bdladf.azurewebsites.net"
@@ -105,7 +109,7 @@
 		},
 		"S4H_ODP_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"
+			"defaultValue": "http://40.68.1.228:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV"
 		},
 		"S4H_ODP_properties_typeProperties_username": {
 			"type": "string",
@@ -134,6 +138,10 @@
 		"SampleOData_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://services.odata.org/V3/Northwind/Northwind.svc/"
+		},
+		"ODPFunction_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://odpfunctions.azurewebsites.net"
 		}
 	},
 	"variables": {
@@ -390,6 +398,23 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ODPFunction')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('ODPFunction_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('ODPFunction_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ADFPipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -426,6 +451,76 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLMDX')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('NPLMDX_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "NPL/MDX",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLOpenHub')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('NPLOpenHub_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "NPL/OpenHub",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLProducts_csv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -453,98 +548,6 @@
 					"escapeChar": "\\",
 					"firstRowAsHeader": true,
 					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLProducts_csv_Table')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NPL"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@concat('tableproducts_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
-							"type": "Expression"
-						},
-						"folderPath": "NPL/TableConnector",
-						"fileSystem": "sap"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLProducts_json')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NPL"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "products.json",
-						"folderPath": "NPL",
-						"fileSystem": "sap"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen_NPLProducts_parq')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NPL"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "products.parquet",
-						"folderPath": "NPL",
-						"fileSystem": "sap"
-					},
-					"compressionCodec": "snappy"
 				},
 				"schema": []
 			},
