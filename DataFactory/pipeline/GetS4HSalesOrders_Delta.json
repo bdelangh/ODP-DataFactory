@@ -275,7 +275,7 @@
 					}
 				},
 				"linkedServiceName": {
-					"referenceName": "ADFTest",
+					"referenceName": "ODPFunction",
 					"type": "LinkedServiceReference"
 				}
 			}
