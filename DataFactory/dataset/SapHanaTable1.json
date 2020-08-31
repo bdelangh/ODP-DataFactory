@@ -1,0 +1,19 @@
+{
+	"name": "SapHanaTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "S4HHANA",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "S4H"
+		},
+		"annotations": [],
+		"type": "SapHanaTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "SAPHANADB",
+			"table": "MARA"
+		}
+	}
+}
