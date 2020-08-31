@@ -1,0 +1,38 @@
+{
+	"name": "GetMaintOrderHeaders",
+	"properties": {
+		"activities": [
+			{
+				"name": "Extract MaintenanceOrder Headers",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SapHanaSource",
+						"query": "select * from \"SAPHANADB\".\"AUFK\" where \"AUTYP\"=30",
+						"partitionOption": "None"
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "MARATableHANA",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "S4H"
+		},
+		"annotations": []
+	}
+}
