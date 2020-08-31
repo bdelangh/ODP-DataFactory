@@ -1,0 +1,30 @@
+{
+	"name": "MaintenanceOrdersCsv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzDataLakeGen2",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "S4H"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@concat('aufk_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+					"type": "Expression"
+				},
+				"folderPath": "S4H",
+				"fileSystem": "sap"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
