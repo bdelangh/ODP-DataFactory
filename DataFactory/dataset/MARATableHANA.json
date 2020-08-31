@@ -1,5 +1,5 @@
 {
-	"name": "MARATable",
+	"name": "MARATableHANA",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "S4HHANA",
