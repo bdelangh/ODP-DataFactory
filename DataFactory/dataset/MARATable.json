@@ -1,5 +1,5 @@
 {
-	"name": "SapHanaTable1",
+	"name": "MARATable",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "S4HHANA",
