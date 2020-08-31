@@ -23,6 +23,9 @@
 		"NPL_BWOpenHub_password": {
 			"value": ""
 		},
+		"ODPFunction_functionKey": {
+			"value": ""
+		},
 		"S4HOData_password": {
 			"value": ""
 		},
@@ -50,7 +53,7 @@
 		"bdlsqldatadb_connectionString": {
 			"value": ""
 		},
-		"ODPFunction_functionKey": {
+		"S4HHANA_connectionString": {
 			"value": ""
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
@@ -143,6 +146,9 @@
 		"NPL_BWOpenHub_properties_typeProperties_systemNumber": {
 			"value": "00"
 		},
+		"ODPFunction_properties_typeProperties_functionAppUrl": {
+			"value": "https://odpfunctions.azurewebsites.net"
+		},
 		"S4HOData_properties_typeProperties_url": {
 			"value": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"
 		},
@@ -178,9 +184,6 @@
 		},
 		"SampleOData_properties_typeProperties_url": {
 			"value": "https://services.odata.org/V3/Northwind/Northwind.svc/"
-		},
-		"ODPFunction_properties_typeProperties_functionAppUrl": {
-			"value": "https://odpfunctions.azurewebsites.net"
 		},
 		"containerUri": {
 			"value": ""

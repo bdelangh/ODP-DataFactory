@@ -31,6 +31,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'NPL_BWOpenHub'"
 		},
+		"ODPFunction_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ODPFunction'"
+		},
 		"S4HOData_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4HOData'"
@@ -67,9 +71,9 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
 		},
-		"ODPFunction_functionKey": {
+		"S4HHANA_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'ODPFunction'"
+			"metadata": "Secure string for 'connectionString' of 'S4HHANA'"
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
@@ -191,6 +195,10 @@
 			"type": "string",
 			"defaultValue": "00"
 		},
+		"ODPFunction_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://odpfunctions.azurewebsites.net"
+		},
 		"S4HOData_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"
@@ -239,10 +247,6 @@
 			"type": "string",
 			"defaultValue": "https://services.odata.org/V3/Northwind/Northwind.svc/"
 		},
-		"ODPFunction_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://odpfunctions.azurewebsites.net"
-		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -279,6 +283,9 @@
 					"NPLABAPSystem_password": {
 						"value": "[parameters('NPLABAPSystem_password')]"
 					},
+					"ODPFunction_functionKey": {
+						"value": "[parameters('ODPFunction_functionKey')]"
+					},
 					"S4HOData_password": {
 						"value": "[parameters('S4HOData_password')]"
 					},
@@ -306,9 +313,6 @@
 					"bdlsqldatadb_connectionString": {
 						"value": "[parameters('bdlsqldatadb_connectionString')]"
 					},
-					"ODPFunction_functionKey": {
-						"value": "[parameters('ODPFunction_functionKey')]"
-					},
 					"ADFTest_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('ADFTest_properties_typeProperties_functionAppUrl')]"
 					},
@@ -332,6 +336,9 @@
 					},
 					"NPLABAPSystem_properties_typeProperties_username": {
 						"value": "[parameters('NPLABAPSystem_properties_typeProperties_username')]"
+					},
+					"ODPFunction_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('ODPFunction_properties_typeProperties_functionAppUrl')]"
 					},
 					"S4HOData_properties_typeProperties_url": {
 						"value": "[parameters('S4HOData_properties_typeProperties_url')]"
@@ -368,9 +375,6 @@
 					},
 					"SampleOData_properties_typeProperties_url": {
 						"value": "[parameters('SampleOData_properties_typeProperties_url')]"
-					},
-					"ODPFunction_properties_typeProperties_functionAppUrl": {
-						"value": "[parameters('ODPFunction_properties_typeProperties_functionAppUrl')]"
 					}
 				}
 			},
@@ -449,6 +453,9 @@
 					"NPL_BWOpenHub_password": {
 						"value": "[parameters('NPL_BWOpenHub_password')]"
 					},
+					"S4HHANA_connectionString": {
+						"value": "[parameters('S4HHANA_connectionString')]"
+					},
 					"NPLTable_properties_typeProperties_clientId": {
 						"value": "[parameters('NPLTable_properties_typeProperties_clientId')]"
 					},
@@ -509,6 +516,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'bdlsapdatafact_ArmTemplate_2')]"
+			]
+		},
+		{
+			"name": "bdlsapdatafact_ArmTemplate_4",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_4.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'bdlsapdatafact_ArmTemplate_3')]"
 			]
 		}
 	]

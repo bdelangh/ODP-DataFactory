@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'NPLABAPSystem'"
 		},
+		"ODPFunction_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ODPFunction'"
+		},
 		"S4HOData_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4HOData'"
@@ -55,10 +59,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
 		},
-		"ODPFunction_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'ODPFunction'"
-		},
 		"ADFTest_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://bdladf.azurewebsites.net"
@@ -90,6 +90,10 @@
 		"NPLABAPSystem_properties_typeProperties_username": {
 			"type": "string",
 			"defaultValue": "DEVELOPER"
+		},
+		"ODPFunction_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://odpfunctions.azurewebsites.net"
 		},
 		"S4HOData_properties_typeProperties_url": {
 			"type": "string",
@@ -138,10 +142,6 @@
 		"SampleOData_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://services.odata.org/V3/Northwind/Northwind.svc/"
-		},
-		"ODPFunction_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://odpfunctions.azurewebsites.net"
 		}
 	},
 	"variables": {
@@ -211,6 +211,23 @@
 					"password": {
 						"type": "SecureString",
 						"value": "[parameters('NPLABAPSystem_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ODPFunction')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('ODPFunction_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('ODPFunction_functionKey')]"
 					}
 				}
 			},
@@ -394,23 +411,6 @@
 				"type": "SelfHosted",
 				"description": "Azure Data Factory runtime - SAP Connector",
 				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ODPFunction')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('ODPFunction_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('ODPFunction_functionKey')]"
-					}
-				}
 			},
 			"dependsOn": []
 		},
