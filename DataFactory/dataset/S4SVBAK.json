@@ -1,0 +1,15 @@
+{
+	"name": "S4SVBAK",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "S4SGBBDemoTableCon",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SapTableResource",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "VBAK"
+		}
+	}
+}
