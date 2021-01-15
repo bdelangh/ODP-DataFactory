@@ -1,5 +1,5 @@
 {
-	"name": "SapTableResource1",
+	"name": "ZBD_ISALESDOC_E",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "myGBBDemoTableCon",
