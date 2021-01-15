@@ -5,6 +5,9 @@
 			"referenceName": "myGBBDemoTableCon",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "myGBBS4S"
+		},
 		"annotations": [],
 		"type": "SapTableResource",
 		"schema": [],
