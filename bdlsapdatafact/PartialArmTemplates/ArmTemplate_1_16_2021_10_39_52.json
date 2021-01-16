@@ -1,0 +1,224 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "bdlsapdatafact"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/S4SVBAK')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4SGBBDemoTableCon",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SapTableResource",
+				"schema": [],
+				"typeProperties": {
+					"tableName": "VBAK"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/S4SGBBDemoTableCon')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ZBD_ISALESDOC_E')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "myGBBDemoTableCon",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "myGBBS4S"
+				},
+				"annotations": [],
+				"type": "SapTableResource",
+				"schema": [],
+				"typeProperties": {
+					"tableName": "ZBD_ISALESDOC_E"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/myGBBDemoTableCon')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HttpServer1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "HttpServer",
+				"typeProperties": {
+					"url": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_PRODUCTGROUP_SRV/A_ProductGroup?%24top=10",
+					"enableServerCertificateValidation": false,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4SGBBDemoTableCon')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapTable",
+				"typeProperties": {
+					"clientId": "100",
+					"language": "EN",
+					"sncMode": false,
+					"userName": "DEVELOPER",
+					"password": {
+						"type": "SecureString",
+						"value": "**********"
+					},
+					"server": "51.143.115.209",
+					"systemNumber": "40"
+				},
+				"connectVia": {
+					"referenceName": "SAPADFRti",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/myGBBDemoTableCon')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapTable",
+				"typeProperties": {
+					"clientId": "100",
+					"language": "EN",
+					"sncMode": false,
+					"userName": "ADFUSER",
+					"password": {
+						"type": "SecureString",
+						"value": "**********"
+					},
+					"server": "20.71.235.137",
+					"systemNumber": "40"
+				},
+				"connectVia": {
+					"referenceName": "SAPADFRti",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/myS4S_BD_ISALESDOC_E')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Extract Sales Data to DataLake",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapTableSource",
+								"rfcTableOptions": "",
+								"customRfcReadTableFunctionModule": "",
+								"rfcTableFields": "BILLINGCOMPANYCODE,BILLINGDOCUMENTDATE,COUNTRY,CREATIONDATE,CREATIONTIME,CREDITCONTROLAREA,CUSTOMERGROUP,CUSTOMERNAME,DISTRIBUTIONCHANNEL,HEADERBILLINGBLOCKREASON,LASTCHANGEDATE,LASTCHANGEDATETIME,MANDT,ORGANIZATIONDIVISION,PRICINGDATE,PURCHASEORDERBYCUSTOMER,SALESDOCUMENT,SALESDOCUMENTPROCESSINGTYPE,SALESDOCUMENTTYPE,SALESGROUP,SALESOFFICE,SALESORGANIZATION,SDDOCUMENTCATEGORY,SOLDTOPARTY,TOTALNETAMOUNT,TRANSACTIONCURRENCY",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ZBD_ISALESDOC_E",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "myS4SSalesOrders",
+								"type": "DatasetReference"
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "myS4S"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ZBD_ISALESDOC_E')]",
+				"[concat(variables('factoryId'), '/datasets/myS4SSalesOrders')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/myS4SSalesOrders')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "S4SSalesOrders",
+						"folderPath": "myS4S",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		}
+	]
+}

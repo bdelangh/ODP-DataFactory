@@ -13,6 +13,747 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/S4SVBAK')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4SGBBDemoTableCon",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SapTableResource",
+				"schema": [],
+				"typeProperties": {
+					"tableName": "VBAK"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SAPOHDSource_Incremental')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "SAP BW Open Hub table source",
+				"linkedServiceName": {
+					"referenceName": "NPL_BWOpenHub",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"BaseReqeustId": {
+						"type": "Int"
+					},
+					"SAPOpenHubDestinationName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "SapOpenHubTable",
+				"schema": [],
+				"typeProperties": {
+					"openHubDestinationName": {
+						"value": "@dataset().SAPOpenHubDestinationName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SAPTableSource_Incremental')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NPLTable",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"SapTableName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "SapTableResource",
+				"schema": [],
+				"typeProperties": {
+					"tableName": {
+						"value": "@dataset().SapTableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ZBD_ISALESDOC_E')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "myGBBDemoTableCon",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "myGBBS4S"
+				},
+				"annotations": [],
+				"type": "SapTableResource",
+				"schema": [],
+				"typeProperties": {
+					"tableName": "ZBD_ISALESDOC_E"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BW MDX Test')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "BW MDX",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapBwSource",
+								"query": "select {[Measures].[0D_NW_NETV], [Measures].[0D_NW_OORV]} on columns,\n   [0D_NW_CNTRY].[LEVEL01] on rows\nfrom [$0D_NW_C01]"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "BW_NPL_MDX",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzDataLakeGen2_NPLMDX",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "BW_NPL"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BW OpenHub Test')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "OpenHub",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapOpenHubSource",
+								"baseRequestId": 9879,
+								"excludeLastRequest": false
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "BW_NPL_OpenHub_NW_C01",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzDataLakeGen2_NPLOpenHub",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "BW_NPL"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GetMaintOrderHeaders')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Extract MaintenanceOrder Headers",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapHanaSource",
+								"query": "select * from \"SAPHANADB\".\"AUFK\" where \"AUTYP\"=30",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "MARATableHANA",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "MaintenanceOrdersCsv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GetMaraUsingHANA')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Extract Mara Table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapHanaSource",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "MARATableHANA",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "MARAcsv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IncrementalCopyFromSAPBWOpenHub')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Copy incremental data from SAP BW Open Hub table to ADLS Gen2",
+				"activities": [
+					{
+						"name": "LookupLastRequestId",
+						"description": "Retrieve the last max copied request ID stored in blob",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "DelimitedTextDataset",
+								"type": "DatasetReference",
+								"parameters": {
+									"HighWatermarkBlobContainer": {
+										"value": "@pipeline().parameters.HighWatermarkBlobContainer",
+										"type": "Expression"
+									},
+									"HighWatermarkBlobDirectory": {
+										"value": "@pipeline().parameters.HighWatermarkBlobDirectory",
+										"type": "Expression"
+									},
+									"HighWatermarkBlobName": {
+										"value": "@pipeline().parameters.HighWatermarkBlobName",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "CopyFromSAPBWOpenHub",
+						"description": "Copy incremental data from SAP BW Open Hub table to ADLS Gen2",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "LookupLastRequestId",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapOpenHubSource",
+								"baseRequestId": {
+									"value": "@pipeline().parameters.BaseReqeustId",
+									"type": "Expression"
+								},
+								"excludeLastRequest": true
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "SAPOHDSource_Incremental",
+								"type": "DatasetReference",
+								"parameters": {
+									"BaseReqeustId": {
+										"value": "@activity('LookupLastRequestId').output.firstRow.Prop_0",
+										"type": "Expression"
+									},
+									"SAPOpenHubDestinationName": {
+										"value": "@pipeline().parameters.SAPOpenHubDestinationName",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureDataLakeStorageGen2Sink",
+								"type": "DatasetReference",
+								"parameters": {
+									"Data_Destination_Container": {
+										"value": "@pipeline().parameters.Data_Destination_Container",
+										"type": "Expression"
+									},
+									"Data_Destination_Directory": {
+										"value": "@pipeline().parameters.Data_Destination_Directory",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "SetMaxCopiedRequestId",
+						"description": "Store the latest max copied request ID into blob by calling Logic App",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "CopyFromSAPBWOpenHub",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@pipeline().parameters.LogicAppURL",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"value": "{\"sapOpenHubMaxRequestId\":\"@{activity('CopyFromSAPBWOpenHub').output.sapOpenHubMaxRequestId}\"}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"SAPOpenHubDestinationName": {
+						"type": "String"
+					},
+					"Data_Destination_Container": {
+						"type": "String"
+					},
+					"Data_Destination_Directory": {
+						"type": "String"
+					},
+					"HighWatermarkBlobContainer": {
+						"type": "String"
+					},
+					"HighWatermarkBlobDirectory": {
+						"type": "String"
+					},
+					"HighWatermarkBlobName": {
+						"type": "String"
+					},
+					"LogicAppURL": {
+						"type": "String"
+					},
+					"BaseReqeustId": {
+						"type": "int"
+					}
+				},
+				"folder": {
+					"name": "BW_NPL"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SAPOHDSource_Incremental')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IncrementalCopyFromSAPTable')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CopyFromSAPTable",
+						"description": "Copy incremental data from SAP table to AzureBlobStorage",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "LookupLastCopiedDate",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapTableSource",
+								"rfcTableOptions": {
+									"value": "@{concat(pipeline().parameters.SapTableDateColumn,' LE ',formatDateTime(adddays(pipeline().TriggerTime,-1),'yyyyMMdd'), ' AND ',pipeline().parameters.SapTableDateColumn,' GE ', formatDateTime(activity('LookupLastCopiedDate').output.firstRow.Prop_0, 'yyyyMMdd'))}",
+									"type": "Expression"
+								},
+								"customRfcReadTableFunctionModule": "",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "SAPTableSource_Incremental",
+								"type": "DatasetReference",
+								"parameters": {
+									"SapTableName": {
+										"value": "@pipeline().parameters.SapTableName",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DelimitedTextSink",
+								"type": "DatasetReference",
+								"parameters": {
+									"DelimitedTextSinkContainer": {
+										"value": "@pipeline().parameters.DelimitedTextSinkContainer",
+										"type": "Expression"
+									},
+									"DelimitedTextSinkDirectory": {
+										"value": "@pipeline().parameters.DelimitedTextSinkDirectory",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "LookupLastCopiedDate",
+						"description": "Copy incremental data from SAP table to AzureBlobStorage",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "AzureBlobDelimitedDataset",
+								"type": "DatasetReference",
+								"parameters": {
+									"HighWatermarkBlobDirectory": {
+										"value": "@pipeline().parameters.HighWatermarkBlobDirectory",
+										"type": "Expression"
+									},
+									"HighWatermarkBlobName": {
+										"value": "@pipeline().parameters.HighWatermarkBlobName",
+										"type": "Expression"
+									},
+									"HighWatermarkBlobContainer": {
+										"value": "@pipeline().parameters.HighWatermarkBlobContainer",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "SetLastCopiedDate",
+						"description": "Store the last copied date into blob by calling Logic App",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "CopyFromSAPTable",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@pipeline().parameters.LogicAppURL",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"value": "{\"copiedDate\":\"@{pipeline().TriggerTime}\"",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"HighWatermarkBlobDirectory": {
+						"type": "string"
+					},
+					"HighWatermarkBlobName": {
+						"type": "string"
+					},
+					"HighWatermarkBlobContainer": {
+						"type": "string"
+					},
+					"SapTableName": {
+						"type": "string"
+					},
+					"DelimitedTextSinkContainer": {
+						"type": "string"
+					},
+					"DelimitedTextSinkDirectory": {
+						"type": "string"
+					},
+					"LogicAppURL": {
+						"type": "string"
+					},
+					"SapTableDateColumn": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "NPLProducts"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SAPTableSource_Incremental')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/NPLProductsTable_To_DataLake2')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -225,13 +966,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/GetMaraUsingHANA')]",
+			"name": "[concat(parameters('factoryName'), '/myS4S_BD_ISALESDOC_E')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Extract Mara Table",
+						"name": "Extract Sales Data to DataLake",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -244,7 +985,10 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "SapHanaSource",
+								"type": "SapTableSource",
+								"rfcTableOptions": "",
+								"customRfcReadTableFunctionModule": "",
+								"rfcTableFields": "BILLINGCOMPANYCODE,BILLINGDOCUMENTDATE,COUNTRY,CREATIONDATE,CREATIONTIME,CREDITCONTROLAREA,CUSTOMERGROUP,CUSTOMERNAME,DISTRIBUTIONCHANNEL,HEADERBILLINGBLOCKREASON,LASTCHANGEDATE,LASTCHANGEDATETIME,MANDT,ORGANIZATIONDIVISION,PRICINGDATE,PURCHASEORDERBYCUSTOMER,SALESDOCUMENT,SALESDOCUMENTPROCESSINGTYPE,SALESDOCUMENTTYPE,SALESGROUP,SALESOFFICE,SALESORGANIZATION,SDDOCUMENTCATEGORY,SOLDTOPARTY,TOTALNETAMOUNT,TRANSACTIONCURRENCY",
 								"partitionOption": "None"
 							},
 							"sink": {
@@ -270,14 +1014,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "MARATableHANA",
+								"referenceName": "ZBD_ISALESDOC_E",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "MARAcsv",
+								"referenceName": "myS4SSalesOrders",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -285,79 +1029,13 @@
 					}
 				],
 				"folder": {
-					"name": "S4H"
+					"name": "myS4S"
 				},
 				"annotations": []
 			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/GetMaintOrderHeaders')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Extract MaintenanceOrder Headers",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapHanaSource",
-								"query": "select * from \"SAPHANADB\".\"AUFK\" where \"AUTYP\"=30",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "MARATableHANA",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "MaintenanceOrdersCsv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "S4H"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ZBD_ISALESDOC_E')]"
+			]
 		}
 	]
 }

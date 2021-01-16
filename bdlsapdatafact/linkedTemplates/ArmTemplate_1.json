@@ -38,20 +38,111 @@
 		"DailyGameData_Blob_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "adftutorial/gamedata/2016/test"
-		},
-		"Persons_Incremental_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "@concat('Incremental-', pipeline().RunId, '.txt')"
-		},
-		"Persons_Incremental_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "adftutorial/persons"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLMDX')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('NPLMDX_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "NPL/MDX",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLOpenHub')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('NPLOpenHub_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "NPL/OpenHub",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLProducts_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('products_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "NPL",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLProducts_csv_Table')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -483,6 +574,72 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/MARAcsv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('mara_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "S4H",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MaintenanceOrdersCsv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('aufk_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "S4H",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/NPLProducts_SQL')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -699,228 +856,6 @@
 				"typeProperties": {
 					"path": "Customers"
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Persons_Incremental')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdldftutorial",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureBlob",
-				"typeProperties": {
-					"format": {
-						"type": "TextFormat",
-						"columnDelimiter": ",",
-						"rowDelimiter": "",
-						"nullValue": "\\N",
-						"treatEmptyAsNull": true,
-						"skipLineCount": 0,
-						"firstRowAsHeader": false
-					},
-					"fileName": {
-						"value": "[parameters('Persons_Incremental_properties_typeProperties_fileName')]",
-						"type": "Expression"
-					},
-					"folderPath": "[parameters('Persons_Incremental_properties_typeProperties_folderPath')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Persons_SQL')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdlsqldatadb",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"structure": [
-					{
-						"name": "PersonID",
-						"type": "Int32"
-					},
-					{
-						"name": "Name",
-						"type": "String"
-					},
-					{
-						"name": "LastModifytime",
-						"type": "DateTime"
-					}
-				],
-				"typeProperties": {
-					"tableName": "[[dbo].[persons]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HRest_GetUpdatedSO')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "S4HRest",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4H"
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {
-					"relativeUrl": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190828122610_000029000')/ChangesAfter",
-					"requestMethod": "GET"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HSO_Json')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SAPDataLake",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4H"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "test.json",
-						"folderPath": "SalesOrders",
-						"fileSystem": "s4hana"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HSO_csv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SAPDataLake",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4H"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@concat('test_',utcnow())",
-							"type": "Expression"
-						},
-						"folderPath": "SalesOrders",
-						"fileSystem": "s4hana"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "SALESDOCUMENT",
-						"type": "String"
-					},
-					{
-						"name": "SDDOCUMENTCATEGORY",
-						"type": "String"
-					},
-					{
-						"name": "SALESDOCUMENTTYPE",
-						"type": "String"
-					},
-					{
-						"name": "SALESDOCUMENTPROCESSINGTYPE",
-						"type": "String"
-					},
-					{
-						"name": "CREATIONDATE",
-						"type": "String"
-					},
-					{
-						"name": "CREATIONTIME",
-						"type": "String"
-					},
-					{
-						"name": "LASTCHANGEDATE",
-						"type": "String"
-					},
-					{
-						"name": "LASTCHANGEDATETIME",
-						"type": "String"
-					},
-					{
-						"name": "SALESORGANIZATION",
-						"type": "String"
-					},
-					{
-						"name": "DISTRIBUTIONCHANNEL",
-						"type": "String"
-					},
-					{
-						"name": "ORAGANIZATIONDIVISION",
-						"type": "String"
-					},
-					{
-						"name": "SALESGROUP",
-						"type": "String"
-					},
-					{
-						"name": "SALESOFFICE",
-						"type": "String"
-					},
-					{
-						"name": "PURCHASEORDERBYCUSTOMER",
-						"type": "String"
-					},
-					{
-						"name": "TRANSACTIONCURRENCY",
-						"type": "String"
-					},
-					{
-						"name": "PRICINGDATA",
-						"type": "String"
-					},
-					{
-						"name": "RETAILPROMOTION",
-						"type": "String"
-					},
-					{
-						"name": "SALESDOCUMENTCONDITION",
-						"type": "String"
-					},
-					{
-						"name": "ODQ_CHANGEMODE",
-						"type": "String"
-					},
-					{
-						"name": "ODQ_ENTITYCNTR",
-						"type": "String"
-					}
-				]
 			},
 			"dependsOn": []
 		}

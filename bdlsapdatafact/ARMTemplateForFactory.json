@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzDataLakeGen2'"
 		},
+		"AzureSynapseAnalytics1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSynapseAnalytics1'"
+		},
 		"NPLABAPSystem_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'NPLABAPSystem'"
@@ -35,6 +39,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'functionKey' of 'ODPFunction'"
 		},
+		"S4HHANA_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'S4HHANA'"
+		},
 		"S4HOData_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4HOData'"
@@ -46,6 +54,10 @@
 		"S4H_ODP_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4H_ODP'"
+		},
+		"S4SGBBDemoTableCon_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4SGBBDemoTableCon'"
 		},
 		"SAPDataLake_accountKey": {
 			"type": "secureString",
@@ -71,9 +83,9 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
 		},
-		"S4HHANA_connectionString": {
+		"myGBBDemoTableCon_password": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'S4HHANA'"
+			"metadata": "Secure string for 'password' of 'myGBBDemoTableCon'"
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
@@ -139,6 +151,10 @@
 			"type": "string",
 			"defaultValue": "bdl_azdatalake"
 		},
+		"HttpServer1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_PRODUCTGROUP_SRV/A_ProductGroup?%24top=10"
+		},
 		"NPLABAPSystem_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "http://137.117.134.161:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/"
@@ -199,6 +215,10 @@
 			"type": "string",
 			"defaultValue": "https://odpfunctions.azurewebsites.net"
 		},
+		"OData1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_PRODUCTGROUP_SRV/"
+		},
 		"S4HOData_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"
@@ -223,6 +243,22 @@
 			"type": "string",
 			"defaultValue": "Developer"
 		},
+		"S4SGBBDemoTableCon_properties_typeProperties_clientId": {
+			"type": "string",
+			"defaultValue": "100"
+		},
+		"S4SGBBDemoTableCon_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "DEVELOPER"
+		},
+		"S4SGBBDemoTableCon_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "51.143.115.209"
+		},
+		"S4SGBBDemoTableCon_properties_typeProperties_systemNumber": {
+			"type": "string",
+			"defaultValue": "40"
+		},
 		"SAPDataLake_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://sapdatalake.dfs.core.windows.net"
@@ -246,6 +282,22 @@
 		"SampleOData_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://services.odata.org/V3/Northwind/Northwind.svc/"
+		},
+		"myGBBDemoTableCon_properties_typeProperties_clientId": {
+			"type": "string",
+			"defaultValue": "100"
+		},
+		"myGBBDemoTableCon_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "ADFUSER"
+		},
+		"myGBBDemoTableCon_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "20.71.235.137"
+		},
+		"myGBBDemoTableCon_properties_typeProperties_systemNumber": {
+			"type": "string",
+			"defaultValue": "40"
 		}
 	},
 	"variables": {
@@ -483,6 +535,147 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DailyGameData_Blob')]",
 				"[concat(variables('factoryId'), '/datasets/GameData_SQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GetMaintOrderHeaders')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Extract MaintenanceOrder Headers",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapHanaSource",
+								"query": "select * from \"SAPHANADB\".\"AUFK\" where \"AUTYP\"=30",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "MARATableHANA",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "MaintenanceOrdersCsv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/MARATableHANA')]",
+				"[concat(variables('factoryId'), '/datasets/MaintenanceOrdersCsv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GetMaraUsingHANA')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Extract Mara Table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapHanaSource",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "MARATableHANA",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "MARAcsv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/MARATableHANA')]",
+				"[concat(variables('factoryId'), '/datasets/MARAcsv')]"
 			]
 		},
 		{
@@ -3850,6 +4043,100 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/MARATableHANA')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4HHANA",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "SapHanaTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "SAPHANADB",
+					"table": "MARA"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/S4HHANA')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MARAcsv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('mara_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "S4H",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MaintenanceOrdersCsv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('aufk_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "S4H",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/NPLProductsTable')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -4566,6 +4853,26 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/S4SVBAK')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4SGBBDemoTableCon",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SapTableResource",
+				"schema": [],
+				"typeProperties": {
+					"tableName": "VBAK"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/S4SGBBDemoTableCon')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SAPDevCenter_ProductSet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -4766,6 +5073,29 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ZBD_ISALESDOC_E')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "myGBBDemoTableCon",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "myGBBS4S"
+				},
+				"annotations": [],
+				"type": "SapTableResource",
+				"schema": [],
+				"typeProperties": {
+					"tableName": "ZBD_ISALESDOC_E"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/myGBBDemoTableCon')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ADFTest')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -4800,6 +5130,19 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureSynapseAnalytics1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSynapseAnalytics1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/BdlAzDataLake')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -4811,6 +5154,21 @@
 					"tenant": "[parameters('BdlAzDataLake_properties_typeProperties_tenant')]",
 					"subscriptionId": "[parameters('BdlAzDataLake_properties_typeProperties_subscriptionId')]",
 					"resourceGroupName": "[parameters('BdlAzDataLake_properties_typeProperties_resourceGroupName')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HttpServer1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "HttpServer",
+				"typeProperties": {
+					"url": "[parameters('HttpServer1_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": false,
+					"authenticationType": "Anonymous"
 				}
 			},
 			"dependsOn": []
@@ -4933,6 +5291,45 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/OData1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "OData",
+				"typeProperties": {
+					"url": "[parameters('OData1_properties_typeProperties_url')]",
+					"authenticationType": "Anonymous",
+					"authHeaders": {
+						"APIKey": {
+							"type": "SecureString",
+							"value": "**********"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4HHANA')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapHana",
+				"typeProperties": {
+					"connectionString": "[parameters('S4HHANA_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "SAPADFRti",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SAPADFRti')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/S4HOData')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -4989,6 +5386,34 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4SGBBDemoTableCon')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapTable",
+				"typeProperties": {
+					"clientId": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_clientId')]",
+					"language": "EN",
+					"sncMode": false,
+					"userName": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('S4SGBBDemoTableCon_password')]"
+					},
+					"server": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_server')]",
+					"systemNumber": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_systemNumber')]"
+				},
+				"connectVia": {
+					"referenceName": "SAPADFRti",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SAPADFRti')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SAPDataLake')]",
@@ -5103,25 +5528,23 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SAPADFRti')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"description": "Azure Data Factory runtime - SAP Connector",
-				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HHANA')]",
+			"name": "[concat(parameters('factoryName'), '/myGBBDemoTableCon')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"type": "SapHana",
+				"type": "SapTable",
 				"typeProperties": {
-					"connectionString": "[parameters('S4HHANA_connectionString')]"
+					"clientId": "[parameters('myGBBDemoTableCon_properties_typeProperties_clientId')]",
+					"language": "EN",
+					"sncMode": false,
+					"userName": "[parameters('myGBBDemoTableCon_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('myGBBDemoTableCon_password')]"
+					},
+					"server": "[parameters('myGBBDemoTableCon_properties_typeProperties_server')]",
+					"systemNumber": "[parameters('myGBBDemoTableCon_properties_typeProperties_systemNumber')]"
 				},
 				"connectVia": {
 					"referenceName": "SAPADFRti",
@@ -5133,37 +5556,24 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/MARATableHANA')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/SAPADFRti')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "S4HHANA",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4H"
-				},
-				"annotations": [],
-				"type": "SapHanaTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "SAPHANADB",
-					"table": "MARA"
-				}
+				"type": "SelfHosted",
+				"description": "Azure Data Factory runtime - SAP Connector",
+				"typeProperties": {}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/S4HHANA')]"
-			]
+			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/GetMaraUsingHANA')]",
+			"name": "[concat(parameters('factoryName'), '/myS4S_BD_ISALESDOC_E')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Extract Mara Table",
+						"name": "Extract Sales Data to DataLake",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -5176,7 +5586,10 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "SapHanaSource",
+								"type": "SapTableSource",
+								"rfcTableOptions": "",
+								"customRfcReadTableFunctionModule": "",
+								"rfcTableFields": "BILLINGCOMPANYCODE,BILLINGDOCUMENTDATE,COUNTRY,CREATIONDATE,CREATIONTIME,CREDITCONTROLAREA,CUSTOMERGROUP,CUSTOMERNAME,DISTRIBUTIONCHANNEL,HEADERBILLINGBLOCKREASON,LASTCHANGEDATE,LASTCHANGEDATETIME,MANDT,ORGANIZATIONDIVISION,PRICINGDATE,PURCHASEORDERBYCUSTOMER,SALESDOCUMENT,SALESDOCUMENTPROCESSINGTYPE,SALESDOCUMENTTYPE,SALESGROUP,SALESOFFICE,SALESORGANIZATION,SDDOCUMENTCATEGORY,SOLDTOPARTY,TOTALNETAMOUNT,TRANSACTIONCURRENCY",
 								"partitionOption": "None"
 							},
 							"sink": {
@@ -5202,14 +5615,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "MARATableHANA",
+								"referenceName": "ZBD_ISALESDOC_E",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "MARAcsv",
+								"referenceName": "myS4SSalesOrders",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -5217,17 +5630,17 @@
 					}
 				],
 				"folder": {
-					"name": "S4H"
+					"name": "myS4S"
 				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/MARATableHANA')]",
-				"[concat(variables('factoryId'), '/datasets/MARAcsv')]"
+				"[concat(variables('factoryId'), '/datasets/ZBD_ISALESDOC_E')]",
+				"[concat(variables('factoryId'), '/datasets/myS4SSalesOrders')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/MARAcsv')]",
+			"name": "[concat(parameters('factoryName'), '/myS4SSalesOrders')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -5235,160 +5648,13 @@
 					"referenceName": "AzDataLakeGen2",
 					"type": "LinkedServiceReference"
 				},
-				"folder": {
-					"name": "S4H"
-				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@concat('mara_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
-							"type": "Expression"
-						},
-						"folderPath": "S4H",
-						"fileSystem": "sap"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/GetMaintOrderHeaders')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Extract MaintenanceOrder Headers",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapHanaSource",
-								"query": "select * from \"SAPHANADB\".\"AUFK\" where \"AUTYP\"=30",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "MARATableHANA",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "MaintenanceOrdersCsv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "S4H"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/MARATableHANA')]",
-				"[concat(variables('factoryId'), '/datasets/MaintenanceOrdersCsv')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/MaintenanceOrdersCsv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4H"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@concat('aufk_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
-							"type": "Expression"
-						},
-						"folderPath": "S4H",
-						"fileSystem": "sap"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/MaintenanceOrdersCsv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4H"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@concat('aufk_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
-							"type": "Expression"
-						},
-						"folderPath": "S4H",
+						"fileName": "S4SSalesOrders",
+						"folderPath": "myS4S",
 						"fileSystem": "sap"
 					},
 					"columnDelimiter": ",",

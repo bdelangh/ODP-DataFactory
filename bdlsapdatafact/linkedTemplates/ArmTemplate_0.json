@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzDataLakeGen2'"
 		},
+		"AzureSynapseAnalytics1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSynapseAnalytics1'"
+		},
 		"NPLABAPSystem_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'NPLABAPSystem'"
@@ -83,6 +87,10 @@
 			"type": "string",
 			"defaultValue": "bdl_azdatalake"
 		},
+		"HttpServer1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_PRODUCTGROUP_SRV/A_ProductGroup?%24top=10"
+		},
 		"NPLABAPSystem_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "http://137.117.134.161:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/"
@@ -94,6 +102,10 @@
 		"ODPFunction_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://odpfunctions.azurewebsites.net"
+		},
+		"OData1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_PRODUCTGROUP_SRV/"
 		},
 		"S4HOData_properties_typeProperties_url": {
 			"type": "string",
@@ -183,6 +195,19 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureSynapseAnalytics1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSynapseAnalytics1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/BdlAzDataLake')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -194,6 +219,21 @@
 					"tenant": "[parameters('BdlAzDataLake_properties_typeProperties_tenant')]",
 					"subscriptionId": "[parameters('BdlAzDataLake_properties_typeProperties_subscriptionId')]",
 					"resourceGroupName": "[parameters('BdlAzDataLake_properties_typeProperties_resourceGroupName')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HttpServer1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "HttpServer",
+				"typeProperties": {
+					"url": "[parameters('HttpServer1_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": false,
+					"authenticationType": "Anonymous"
 				}
 			},
 			"dependsOn": []
@@ -228,6 +268,26 @@
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('ODPFunction_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OData1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "OData",
+				"typeProperties": {
+					"url": "[parameters('OData1_properties_typeProperties_url')]",
+					"authenticationType": "Anonymous",
+					"authHeaders": {
+						"APIKey": {
+							"type": "SecureString",
+							"value": "**********"
+						}
 					}
 				}
 			},
@@ -448,111 +508,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/adfdatabricks')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLMDX')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NPL"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@concat('NPLMDX_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
-							"type": "Expression"
-						},
-						"folderPath": "NPL/MDX",
-						"fileSystem": "sap"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLOpenHub')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NPL"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@concat('NPLOpenHub_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
-							"type": "Expression"
-						},
-						"folderPath": "NPL/OpenHub",
-						"fileSystem": "sap"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLProducts_csv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NPL"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@concat('products_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
-							"type": "Expression"
-						},
-						"folderPath": "NPL",
-						"fileSystem": "sap"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
 			]
 		}
 	]
