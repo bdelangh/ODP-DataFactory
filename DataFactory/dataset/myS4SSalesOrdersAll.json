@@ -1,0 +1,27 @@
+{
+	"name": "myS4SSalesOrdersAll",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzDataLakeGen2",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "myGBBS4S"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "myS4SSalesOrdersAll.csv",
+				"folderPath": "myS4S",
+				"fileSystem": "sap"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
