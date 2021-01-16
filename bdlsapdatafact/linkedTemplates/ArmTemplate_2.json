@@ -859,12 +859,15 @@
 					"referenceName": "AzDataLakeGen2",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "myGBBS4S"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "S4SSalesOrders",
+						"fileName": "@concat('myS4SSalesOrders',utcnow(),'.csv')",
 						"folderPath": "myS4S",
 						"fileSystem": "sap"
 					},
