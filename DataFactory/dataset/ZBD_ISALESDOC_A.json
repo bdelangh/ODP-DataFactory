@@ -1,0 +1,18 @@
+{
+	"name": "ZBD_ISALESDOC_A",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "myGBBDemoTableCon",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "myGBBS4S"
+		},
+		"annotations": [],
+		"type": "SapTableResource",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "ZBD_ISALESDOC_A"
+		}
+	}
+}
