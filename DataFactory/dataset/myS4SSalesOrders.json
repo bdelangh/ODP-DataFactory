@@ -5,6 +5,9 @@
 			"referenceName": "AzDataLakeGen2",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "myGBBS4S"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
