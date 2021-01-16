@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "S4SSalesOrders",
+				"fileName": "S4SSalesOrders.csv",
 				"folderPath": "myS4S",
 				"fileSystem": "sap"
 			},
