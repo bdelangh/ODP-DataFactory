@@ -514,9 +514,6 @@
 					"S4SGBBDemoTableCon_password": {
 						"value": "[parameters('S4SGBBDemoTableCon_password')]"
 					},
-					"myGBBDemoTableCon_password": {
-						"value": "[parameters('myGBBDemoTableCon_password')]"
-					},
 					"Persons_Incremental_properties_typeProperties_fileName": {
 						"value": "[parameters('Persons_Incremental_properties_typeProperties_fileName')]"
 					},
@@ -570,18 +567,6 @@
 					},
 					"S4SGBBDemoTableCon_properties_typeProperties_systemNumber": {
 						"value": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_systemNumber')]"
-					},
-					"myGBBDemoTableCon_properties_typeProperties_clientId": {
-						"value": "[parameters('myGBBDemoTableCon_properties_typeProperties_clientId')]"
-					},
-					"myGBBDemoTableCon_properties_typeProperties_userName": {
-						"value": "[parameters('myGBBDemoTableCon_properties_typeProperties_userName')]"
-					},
-					"myGBBDemoTableCon_properties_typeProperties_server": {
-						"value": "[parameters('myGBBDemoTableCon_properties_typeProperties_server')]"
-					},
-					"myGBBDemoTableCon_properties_typeProperties_systemNumber": {
-						"value": "[parameters('myGBBDemoTableCon_properties_typeProperties_systemNumber')]"
 					}
 				}
 			},
@@ -602,6 +587,21 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"myGBBDemoTableCon_password": {
+						"value": "[parameters('myGBBDemoTableCon_password')]"
+					},
+					"myGBBDemoTableCon_properties_typeProperties_clientId": {
+						"value": "[parameters('myGBBDemoTableCon_properties_typeProperties_clientId')]"
+					},
+					"myGBBDemoTableCon_properties_typeProperties_userName": {
+						"value": "[parameters('myGBBDemoTableCon_properties_typeProperties_userName')]"
+					},
+					"myGBBDemoTableCon_properties_typeProperties_server": {
+						"value": "[parameters('myGBBDemoTableCon_properties_typeProperties_server')]"
+					},
+					"myGBBDemoTableCon_properties_typeProperties_systemNumber": {
+						"value": "[parameters('myGBBDemoTableCon_properties_typeProperties_systemNumber')]"
 					}
 				}
 			},

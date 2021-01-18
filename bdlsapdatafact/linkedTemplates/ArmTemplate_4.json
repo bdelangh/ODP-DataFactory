@@ -108,27 +108,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ZBD_ISALESDOC_E')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "myGBBDemoTableCon",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "myGBBS4S"
-				},
-				"annotations": [],
-				"type": "SapTableResource",
-				"schema": [],
-				"typeProperties": {
-					"tableName": "ZBD_ISALESDOC_E"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/ZBD_ISALESDOC_A')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -145,6 +124,27 @@
 				"schema": [],
 				"typeProperties": {
 					"tableName": "ZBD_ISALESDOC_A"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ZBD_ISALESDOC_E')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "myGBBDemoTableCon",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "myGBBS4S"
+				},
+				"annotations": [],
+				"type": "SapTableResource",
+				"schema": [],
+				"typeProperties": {
+					"tableName": "ZBD_ISALESDOC_E"
 				}
 			},
 			"dependsOn": []
@@ -1012,78 +1012,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/myS4S_BD_ISALESDOC_E')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Extract Sales Data to DataLake",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapTableSource",
-								"rfcTableOptions": "",
-								"customRfcReadTableFunctionModule": "",
-								"rfcTableFields": "BILLINGCOMPANYCODE,BILLINGDOCUMENTDATE,COUNTRY,CREATIONDATE,CREATIONTIME,CREDITCONTROLAREA,CUSTOMERGROUP,CUSTOMERNAME,DISTRIBUTIONCHANNEL,HEADERBILLINGBLOCKREASON,LASTCHANGEDATE,LASTCHANGEDATETIME,MANDT,ORGANIZATIONDIVISION,PRICINGDATE,PURCHASEORDERBYCUSTOMER,SALESDOCUMENT,SALESDOCUMENTPROCESSINGTYPE,SALESDOCUMENTTYPE,SALESGROUP,SALESOFFICE,SALESORGANIZATION,SDDOCUMENTCATEGORY,SOLDTOPARTY,TOTALNETAMOUNT,TRANSACTIONCURRENCY",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ZBD_ISALESDOC_E",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "myS4SSalesOrders",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "myS4S"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ZBD_ISALESDOC_E')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/myS4S_BD_ISALESDOC_A')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1150,6 +1078,78 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ZBD_ISALESDOC_A')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/myS4S_BD_ISALESDOC_E')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Extract Sales Data to DataLake",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapTableSource",
+								"rfcTableOptions": "",
+								"customRfcReadTableFunctionModule": "",
+								"rfcTableFields": "BILLINGCOMPANYCODE,BILLINGDOCUMENTDATE,COUNTRY,CREATIONDATE,CREATIONTIME,CREDITCONTROLAREA,CUSTOMERGROUP,CUSTOMERNAME,DISTRIBUTIONCHANNEL,HEADERBILLINGBLOCKREASON,LASTCHANGEDATE,LASTCHANGEDATETIME,MANDT,ORGANIZATIONDIVISION,PRICINGDATE,PURCHASEORDERBYCUSTOMER,SALESDOCUMENT,SALESDOCUMENTPROCESSINGTYPE,SALESDOCUMENTTYPE,SALESGROUP,SALESOFFICE,SALESORGANIZATION,SDDOCUMENTCATEGORY,SOLDTOPARTY,TOTALNETAMOUNT,TRANSACTIONCURRENCY,CITYNAME",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ZBD_ISALESDOC_E",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "myS4SSalesOrders",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "myS4S"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ZBD_ISALESDOC_E')]"
 			]
 		}
 	]

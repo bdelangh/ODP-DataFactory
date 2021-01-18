@@ -6,6 +6,26 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "bdlsapdatafact"
+		},
+		"myGBBDemoTableCon_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'myGBBDemoTableCon'"
+		},
+		"myGBBDemoTableCon_properties_typeProperties_clientId": {
+			"type": "string",
+			"defaultValue": "100"
+		},
+		"myGBBDemoTableCon_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "ADFUSER"
+		},
+		"myGBBDemoTableCon_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "20.71.235.137"
+		},
+		"myGBBDemoTableCon_properties_typeProperties_systemNumber": {
+			"type": "string",
+			"defaultValue": "40"
 		}
 	},
 	"variables": {
@@ -13,32 +33,28 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/myS4SSalesOrdersAll')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/myGBBDemoTableCon')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "myGBBS4S"
-				},
 				"annotations": [],
-				"type": "DelimitedText",
+				"type": "SapTable",
 				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "myS4SSalesOrdersAll.csv",
-						"folderPath": "myS4S",
-						"fileSystem": "sap"
+					"clientId": "[parameters('myGBBDemoTableCon_properties_typeProperties_clientId')]",
+					"language": "EN",
+					"sncMode": false,
+					"userName": "[parameters('myGBBDemoTableCon_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('myGBBDemoTableCon_password')]"
 					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
+					"server": "[parameters('myGBBDemoTableCon_properties_typeProperties_server')]",
+					"systemNumber": "[parameters('myGBBDemoTableCon_properties_typeProperties_systemNumber')]"
 				},
-				"schema": []
+				"connectVia": {
+					"referenceName": "SAPADFRti",
+					"type": "IntegrationRuntimeReference"
+				}
 			},
 			"dependsOn": []
 		},
