@@ -20,7 +20,7 @@
 				"folderPath": "myS4S",
 				"fileSystem": "sap"
 			},
-			"columnDelimiter": ";",
+			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
