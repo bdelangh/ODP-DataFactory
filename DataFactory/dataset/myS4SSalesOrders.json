@@ -13,11 +13,14 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "@concat('myS4SSalesOrders',utcnow(),'.csv')",
+				"fileName": {
+					"value": "@concat('myS4SSalesOrders',utcnow(),'.csv')",
+					"type": "Expression"
+				},
 				"folderPath": "myS4S",
 				"fileSystem": "sap"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": ";",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
