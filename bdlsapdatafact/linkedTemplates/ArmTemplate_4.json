@@ -13,6 +13,49 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/BW_NPL_OpenHub_NW_C01')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NPL_BWOpenHub",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "SapOpenHubTable",
+				"schema": [],
+				"typeProperties": {
+					"openHubDestinationName": "OH_NW_C01"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MARATableHANA')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4HHANA",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "SapHanaTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "SAPHANADB",
+					"table": "MARA"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/NPLProductsTable')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -150,6 +193,65 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ES5SalesOrderSet_to_AzDL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Extract SalesOrderSet",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapEccSource",
+								"httpRequestTimeout": "00:05:00"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "ES5SalesOrderSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "BdlAzDL_ES5SalesOrderSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "ES5"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/BW MDX Test')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -266,7 +368,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/BW_NPL_OpenHub_NW_C01')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/GetMaintOrderHeaders')]",
@@ -334,7 +438,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/MARATableHANA')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/GetMaraUsingHANA')]",
@@ -401,7 +507,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/MARATableHANA')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/IncrementalCopyFromSAPBWOpenHub')]",
