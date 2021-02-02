@@ -56,7 +56,7 @@
 								},
 								"sink": {
 									"name": "BILLINGDOCUMENTDATE",
-									"type": "DateTime"
+									"type": "String"
 								}
 							},
 							{
@@ -76,7 +76,7 @@
 								},
 								"sink": {
 									"name": "CREATIONDATE",
-									"type": "DateTime"
+									"type": "String"
 								}
 							},
 							{
@@ -86,7 +86,7 @@
 								},
 								"sink": {
 									"name": "CREATIONTIME",
-									"type": "TimeSpan"
+									"type": "String"
 								}
 							},
 							{
@@ -146,7 +146,7 @@
 								},
 								"sink": {
 									"name": "LASTCHANGEDATE",
-									"type": "DateTime"
+									"type": "String"
 								}
 							},
 							{
@@ -186,7 +186,7 @@
 								},
 								"sink": {
 									"name": "PRICINGDATE",
-									"type": "DateTime"
+									"type": "String"
 								}
 							},
 							{
