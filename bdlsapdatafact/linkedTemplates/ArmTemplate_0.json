@@ -15,10 +15,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzDataLakeGen2'"
 		},
-		"AzureSynapseAnalytics1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureSynapseAnalytics1'"
-		},
 		"NPLABAPSystem_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'NPLABAPSystem'"
@@ -62,6 +58,10 @@
 		"bdlsqldatadb_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
+		},
+		"bdlSynapsAnalytics_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'bdlSynapsAnalytics'"
 		},
 		"ADFTest_properties_typeProperties_functionAppUrl": {
 			"type": "string",
@@ -190,19 +190,6 @@
 						"type": "SecureString",
 						"value": "[parameters('AzDataLakeGen2_accountKey')]"
 					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSynapseAnalytics1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDW",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureSynapseAnalytics1_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -471,6 +458,19 @@
 				"type": "SelfHosted",
 				"description": "Azure Data Factory runtime - SAP Connector",
 				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/bdlSynapsAnalytics')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('bdlSynapsAnalytics_connectionString')]"
+				}
 			},
 			"dependsOn": []
 		},

@@ -19,14 +19,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'NPL_BWOpenHub'"
 		},
-		"S4HHANA_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'S4HHANA'"
-		},
-		"S4SGBBDemoTableCon_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'S4SGBBDemoTableCon'"
-		},
 		"Persons_Incremental_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "@concat('Incremental-', pipeline().RunId, '.txt')"
@@ -82,28 +74,150 @@
 		"NPL_BWOpenHub_properties_typeProperties_systemNumber": {
 			"type": "string",
 			"defaultValue": "00"
-		},
-		"S4SGBBDemoTableCon_properties_typeProperties_clientId": {
-			"type": "string",
-			"defaultValue": "100"
-		},
-		"S4SGBBDemoTableCon_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "DEVELOPER"
-		},
-		"S4SGBBDemoTableCon_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "51.143.115.209"
-		},
-		"S4SGBBDemoTableCon_properties_typeProperties_systemNumber": {
-			"type": "string",
-			"defaultValue": "40"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/NPL_Products')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NPLABAPSystem",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"structure": [
+					{
+						"name": "CurrencyCode",
+						"type": "String"
+					},
+					{
+						"name": "Id",
+						"type": "String"
+					},
+					{
+						"name": "StockQuantity",
+						"type": "Int32"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					},
+					{
+						"name": "Description",
+						"type": "String"
+					},
+					{
+						"name": "SubCategoryId",
+						"type": "String"
+					},
+					{
+						"name": "SubCategoryName",
+						"type": "String"
+					},
+					{
+						"name": "MainCategoryId",
+						"type": "String"
+					},
+					{
+						"name": "MainCategoryName",
+						"type": "String"
+					},
+					{
+						"name": "SupplierId",
+						"type": "String"
+					},
+					{
+						"name": "SupplierName",
+						"type": "String"
+					},
+					{
+						"name": "LastModified",
+						"type": "DateTime"
+					},
+					{
+						"name": "Price",
+						"type": "Decimal"
+					},
+					{
+						"name": "DimensionHeight",
+						"type": "Decimal"
+					},
+					{
+						"name": "DimensionWidth",
+						"type": "Decimal"
+					},
+					{
+						"name": "DimensionDepth",
+						"type": "Decimal"
+					},
+					{
+						"name": "DimensionUnit",
+						"type": "String"
+					},
+					{
+						"name": "ImageUrl",
+						"type": "String"
+					},
+					{
+						"name": "QuantityUnit",
+						"type": "String"
+					},
+					{
+						"name": "MeasureUnit",
+						"type": "String"
+					},
+					{
+						"name": "AverageRating",
+						"type": "Decimal"
+					},
+					{
+						"name": "RatingCount",
+						"type": "Int32"
+					},
+					{
+						"name": "WeightMeasure",
+						"type": "Decimal"
+					},
+					{
+						"name": "WeightUnit",
+						"type": "String"
+					}
+				],
+				"typeProperties": {
+					"path": "Products"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NorthWind_Customers')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SampleOData",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NorthWind"
+				},
+				"annotations": [],
+				"type": "ODataResource",
+				"typeProperties": {
+					"path": "Customers"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Persons_Incremental')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -816,49 +930,6 @@
 					},
 					"server": "[parameters('NPL_BWOpenHub_properties_typeProperties_server')]",
 					"systemNumber": "[parameters('NPL_BWOpenHub_properties_typeProperties_systemNumber')]"
-				},
-				"connectVia": {
-					"referenceName": "SAPADFRti",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HHANA')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SapHana",
-				"typeProperties": {
-					"connectionString": "[parameters('S4HHANA_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "SAPADFRti",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4SGBBDemoTableCon')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SapTable",
-				"typeProperties": {
-					"clientId": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_clientId')]",
-					"language": "EN",
-					"sncMode": false,
-					"userName": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('S4SGBBDemoTableCon_password')]"
-					},
-					"server": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_server')]",
-					"systemNumber": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_systemNumber')]"
 				},
 				"connectVia": {
 					"referenceName": "SAPADFRti",

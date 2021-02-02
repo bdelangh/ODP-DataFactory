@@ -15,10 +15,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzDataLakeGen2'"
 		},
-		"AzureSynapseAnalytics1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureSynapseAnalytics1'"
-		},
 		"NPLABAPSystem_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'NPLABAPSystem'"
@@ -86,6 +82,10 @@
 		"myGBBDemoTableCon_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'myGBBDemoTableCon'"
+		},
+		"bdlSynapsAnalytics_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'bdlSynapsAnalytics'"
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
@@ -332,9 +332,6 @@
 					"AzDataLakeGen2_accountKey": {
 						"value": "[parameters('AzDataLakeGen2_accountKey')]"
 					},
-					"AzureSynapseAnalytics1_connectionString": {
-						"value": "[parameters('AzureSynapseAnalytics1_connectionString')]"
-					},
 					"NPLABAPSystem_password": {
 						"value": "[parameters('NPLABAPSystem_password')]"
 					},
@@ -367,6 +364,9 @@
 					},
 					"bdlsqldatadb_connectionString": {
 						"value": "[parameters('bdlsqldatadb_connectionString')]"
+					},
+					"bdlSynapsAnalytics_connectionString": {
+						"value": "[parameters('bdlSynapsAnalytics_connectionString')]"
 					},
 					"ADFTest_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('ADFTest_properties_typeProperties_functionAppUrl')]"
@@ -508,12 +508,6 @@
 					"NPL_BWOpenHub_password": {
 						"value": "[parameters('NPL_BWOpenHub_password')]"
 					},
-					"S4HHANA_connectionString": {
-						"value": "[parameters('S4HHANA_connectionString')]"
-					},
-					"S4SGBBDemoTableCon_password": {
-						"value": "[parameters('S4SGBBDemoTableCon_password')]"
-					},
 					"Persons_Incremental_properties_typeProperties_fileName": {
 						"value": "[parameters('Persons_Incremental_properties_typeProperties_fileName')]"
 					},
@@ -555,18 +549,6 @@
 					},
 					"NPL_BWOpenHub_properties_typeProperties_systemNumber": {
 						"value": "[parameters('NPL_BWOpenHub_properties_typeProperties_systemNumber')]"
-					},
-					"S4SGBBDemoTableCon_properties_typeProperties_clientId": {
-						"value": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_clientId')]"
-					},
-					"S4SGBBDemoTableCon_properties_typeProperties_userName": {
-						"value": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_userName')]"
-					},
-					"S4SGBBDemoTableCon_properties_typeProperties_server": {
-						"value": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_server')]"
-					},
-					"S4SGBBDemoTableCon_properties_typeProperties_systemNumber": {
-						"value": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_systemNumber')]"
 					}
 				}
 			},
@@ -588,8 +570,26 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"S4HHANA_connectionString": {
+						"value": "[parameters('S4HHANA_connectionString')]"
+					},
+					"S4SGBBDemoTableCon_password": {
+						"value": "[parameters('S4SGBBDemoTableCon_password')]"
+					},
 					"myGBBDemoTableCon_password": {
 						"value": "[parameters('myGBBDemoTableCon_password')]"
+					},
+					"S4SGBBDemoTableCon_properties_typeProperties_clientId": {
+						"value": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_clientId')]"
+					},
+					"S4SGBBDemoTableCon_properties_typeProperties_userName": {
+						"value": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_userName')]"
+					},
+					"S4SGBBDemoTableCon_properties_typeProperties_server": {
+						"value": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_server')]"
+					},
+					"S4SGBBDemoTableCon_properties_typeProperties_systemNumber": {
+						"value": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_systemNumber')]"
 					},
 					"myGBBDemoTableCon_properties_typeProperties_clientId": {
 						"value": "[parameters('myGBBDemoTableCon_properties_typeProperties_clientId')]"
@@ -627,6 +627,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'bdlsapdatafact_ArmTemplate_3')]"
+			]
+		},
+		{
+			"name": "bdlsapdatafact_ArmTemplate_5",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_5.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'bdlsapdatafact_ArmTemplate_4')]"
 			]
 		}
 	]

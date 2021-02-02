@@ -376,6 +376,36 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/BdlAzDL_ES5SalesOrderSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "SAP Dev Center"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "SalesOrderSet.csv",
+						"folderPath": "ES5/SalesOrderSet",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/BdlAzDL_SAPDev_ProductSet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -539,6 +569,27 @@
 					"quoteChar": "\""
 				},
 				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ES5SalesOrderSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SAPDevCenter",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "SAP Dev Center"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"schema": [],
+				"typeProperties": {
+					"path": "SalesOrderSet"
+				}
 			},
 			"dependsOn": []
 		},
@@ -717,144 +768,6 @@
 				],
 				"typeProperties": {
 					"tableName": "NPLProducts"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPL_Products')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "NPLABAPSystem",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NPL"
-				},
-				"annotations": [],
-				"type": "SapEccResource",
-				"structure": [
-					{
-						"name": "CurrencyCode",
-						"type": "String"
-					},
-					{
-						"name": "Id",
-						"type": "String"
-					},
-					{
-						"name": "StockQuantity",
-						"type": "Int32"
-					},
-					{
-						"name": "Name",
-						"type": "String"
-					},
-					{
-						"name": "Description",
-						"type": "String"
-					},
-					{
-						"name": "SubCategoryId",
-						"type": "String"
-					},
-					{
-						"name": "SubCategoryName",
-						"type": "String"
-					},
-					{
-						"name": "MainCategoryId",
-						"type": "String"
-					},
-					{
-						"name": "MainCategoryName",
-						"type": "String"
-					},
-					{
-						"name": "SupplierId",
-						"type": "String"
-					},
-					{
-						"name": "SupplierName",
-						"type": "String"
-					},
-					{
-						"name": "LastModified",
-						"type": "DateTime"
-					},
-					{
-						"name": "Price",
-						"type": "Decimal"
-					},
-					{
-						"name": "DimensionHeight",
-						"type": "Decimal"
-					},
-					{
-						"name": "DimensionWidth",
-						"type": "Decimal"
-					},
-					{
-						"name": "DimensionDepth",
-						"type": "Decimal"
-					},
-					{
-						"name": "DimensionUnit",
-						"type": "String"
-					},
-					{
-						"name": "ImageUrl",
-						"type": "String"
-					},
-					{
-						"name": "QuantityUnit",
-						"type": "String"
-					},
-					{
-						"name": "MeasureUnit",
-						"type": "String"
-					},
-					{
-						"name": "AverageRating",
-						"type": "Decimal"
-					},
-					{
-						"name": "RatingCount",
-						"type": "Int32"
-					},
-					{
-						"name": "WeightMeasure",
-						"type": "Decimal"
-					},
-					{
-						"name": "WeightUnit",
-						"type": "String"
-					}
-				],
-				"typeProperties": {
-					"path": "Products"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NorthWind_Customers')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SampleOData",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NorthWind"
-				},
-				"annotations": [],
-				"type": "ODataResource",
-				"typeProperties": {
-					"path": "Customers"
 				}
 			},
 			"dependsOn": []

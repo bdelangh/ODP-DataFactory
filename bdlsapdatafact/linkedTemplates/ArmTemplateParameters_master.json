@@ -11,9 +11,6 @@
 		"AzDataLakeGen2_accountKey": {
 			"value": ""
 		},
-		"AzureSynapseAnalytics1_connectionString": {
-			"value": ""
-		},
 		"NPLABAPSystem_password": {
 			"value": ""
 		},
@@ -63,6 +60,9 @@
 			"value": ""
 		},
 		"myGBBDemoTableCon_password": {
+			"value": ""
+		},
+		"bdlSynapsAnalytics_connectionString": {
 			"value": ""
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
