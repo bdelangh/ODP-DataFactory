@@ -71,8 +71,7 @@
 							},
 							{
 								"source": {
-									"name": "CREATIONDATE",
-									"type": "String"
+									"name": "CREATIONDATE"
 								},
 								"sink": {
 									"name": "CREATIONDATE",
