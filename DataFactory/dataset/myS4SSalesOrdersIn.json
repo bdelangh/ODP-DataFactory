@@ -1,0 +1,136 @@
+{
+	"name": "myS4SSalesOrdersIn",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzDataLakeGen2",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "myGBBS4S"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "myS4SSalesOrders2021-01-18T09:28:03.3604797Z.csv",
+				"folderPath": "myS4S",
+				"fileSystem": "sap"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "BILLINGCOMPANYCODE",
+				"type": "String"
+			},
+			{
+				"name": "BILLINGDOCUMENTDATE",
+				"type": "String"
+			},
+			{
+				"name": "COUNTRY",
+				"type": "String"
+			},
+			{
+				"name": "CREATIONDATE",
+				"type": "String"
+			},
+			{
+				"name": "CREATIONTIME",
+				"type": "String"
+			},
+			{
+				"name": "CREDITCONTROLAREA",
+				"type": "String"
+			},
+			{
+				"name": "CUSTOMERGROUP",
+				"type": "String"
+			},
+			{
+				"name": "CUSTOMERNAME",
+				"type": "String"
+			},
+			{
+				"name": "DISTRIBUTIONCHANNEL",
+				"type": "String"
+			},
+			{
+				"name": "HEADERBILLINGBLOCKREASON",
+				"type": "String"
+			},
+			{
+				"name": "LASTCHANGEDATE",
+				"type": "String"
+			},
+			{
+				"name": "LASTCHANGEDATETIME",
+				"type": "String"
+			},
+			{
+				"name": "MANDT",
+				"type": "String"
+			},
+			{
+				"name": "ORGANIZATIONDIVISION",
+				"type": "String"
+			},
+			{
+				"name": "PRICINGDATE",
+				"type": "String"
+			},
+			{
+				"name": "PURCHASEORDERBYCUSTOMER",
+				"type": "String"
+			},
+			{
+				"name": "SALESDOCUMENT",
+				"type": "String"
+			},
+			{
+				"name": "SALESDOCUMENTPROCESSINGTYPE",
+				"type": "String"
+			},
+			{
+				"name": "SALESDOCUMENTTYPE",
+				"type": "String"
+			},
+			{
+				"name": "SALESGROUP",
+				"type": "String"
+			},
+			{
+				"name": "SALESOFFICE",
+				"type": "String"
+			},
+			{
+				"name": "SALESORGANIZATION",
+				"type": "String"
+			},
+			{
+				"name": "SDDOCUMENTCATEGORY",
+				"type": "String"
+			},
+			{
+				"name": "SOLDTOPARTY",
+				"type": "String"
+			},
+			{
+				"name": "TOTALNETAMOUNT",
+				"type": "String"
+			},
+			{
+				"name": "TRANSACTIONCURRENCY",
+				"type": "String"
+			},
+			{
+				"name": "CITYNAME",
+				"type": "String"
+			}
+		]
+	}
+}
