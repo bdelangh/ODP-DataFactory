@@ -1,0 +1,141 @@
+{
+	"name": "SynSalesOrderHeaders2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "bdlSynapsAnalytics",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "myGBBS4S"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "BILLINGCOMPANYCODE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "BILLINGDOCUMENTDATE",
+				"type": "date"
+			},
+			{
+				"name": "COUNTRY",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CREATIONDATE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CREATIONTIME",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CREDITCONTROLAREA",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CUSTOMERACCOUNTGROUP",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CUSTOMERGROUP",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CUSTOMERNAME",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DISTRIBUTIONCHANNEL",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LASTCHANGEDATE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LASTCHANGEDATETIME",
+				"type": "decimal",
+				"precision": 21,
+				"scale": 0
+			},
+			{
+				"name": "MANDT",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ORGANIZATIONDIVISION",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRICINGDATE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PURCHASEORDERBYCUSTOMER",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SALESDISTRICT",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SALESDOCUMENT",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SALESDOCUMENTPROCESSINGTYPE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SALESDOCUMENTTYPE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SALESGROUP",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SALESOFFICE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SALESORGANIZATION",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SDDOCUMENTCATEGORY",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SOLDTOPARTY",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TOTALNETAMOUNT",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 2
+			},
+			{
+				"name": "TRANSACTIONCURRENCY",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CITYNAME",
+				"type": "nvarchar"
+			},
+			{
+				"name": "POSTALCODE",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "SalesOrderHeaders2"
+		}
+	}
+}
