@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "myGBBS4S"
+			"name": "S4D"
 		},
 		"annotations": [],
 		"type": "AzureSqlDWTable",
