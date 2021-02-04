@@ -137,7 +137,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/SynSalesOrderHeaders2')]",
+			"name": "[concat(parameters('factoryName'), '/SynSalesOrderHeaders')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -146,7 +146,7 @@
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
-					"name": "myGBBS4S"
+					"name": "S4D_MicroHack"
 				},
 				"annotations": [],
 				"type": "AzureSqlDWTable",
@@ -165,7 +165,156 @@
 					},
 					{
 						"name": "CREATIONDATE",
+						"type": "date"
+					},
+					{
+						"name": "CREATIONTIME",
+						"type": "time",
+						"scale": 7
+					},
+					{
+						"name": "CREDITCONTROLAREA",
 						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERACCOUNTGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DISTRIBUTIONCHANNEL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "HEADERBILLINGBLOCKREASON",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LASTCHANGEDATE",
+						"type": "date"
+					},
+					{
+						"name": "LASTCHANGEDATETIME",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "MANDT",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ORGANIZATIONDIVISION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PRICINGDATE",
+						"type": "date"
+					},
+					{
+						"name": "PURCHASEORDERBYCUSTOMER",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDISTRICT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTPROCESSINGTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESOFFICE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESORGANIZATION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SDDOCUMENTCATEGORY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SOLDTOPARTY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TOTALNETAMOUNT",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 0
+					},
+					{
+						"name": "TRANSACTIONCURRENCY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CITYNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "POSTALCODE",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "SalesOrderHeaders"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SynSalesOrderHeaders2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlSynapsAnalytics",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "BILLINGCOMPANYCODE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BILLINGDOCUMENTDATE",
+						"type": "date"
+					},
+					{
+						"name": "COUNTRY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREATIONDATE",
+						"type": "date"
 					},
 					{
 						"name": "CREATIONTIME",
@@ -193,7 +342,7 @@
 					},
 					{
 						"name": "LASTCHANGEDATE",
-						"type": "nvarchar"
+						"type": "date"
 					},
 					{
 						"name": "LASTCHANGEDATETIME",
@@ -212,7 +361,7 @@
 					},
 					{
 						"name": "PRICINGDATE",
-						"type": "nvarchar"
+						"type": "date"
 					},
 					{
 						"name": "PURCHASEORDERBYCUSTOMER",
@@ -1715,65 +1864,6 @@
 						"outputs": [
 							{
 								"referenceName": "BDL_AzDL_NPLProducts",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "NPLProducts"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_DataLake2')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "NPLProducts_To_DataLake",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapEccSource"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"dataIntegrationUnits": 0
-						},
-						"inputs": [
-							{
-								"referenceName": "NPL_Products",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "AzDataLakeGen2_NPLProducts_csv",
 								"type": "DatasetReference",
 								"parameters": {}
 							}

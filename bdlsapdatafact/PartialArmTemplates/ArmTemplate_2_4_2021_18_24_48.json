@@ -1,0 +1,614 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "bdlsapdatafact"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/SalesOrderHeadersFromS4DDF')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ExtractSalesOrderHeadersToAzDL",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapTableSource",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzDataLakeGen2",
+									"type": "LinkedServiceReference"
+								},
+								"path": "synapsestaging"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "MANDT",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "MANDT",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESDOCUMENT",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "SALESDOCUMENT",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SDDOCUMENTCATEGORY",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "SDDOCUMENTCATEGORY",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESDOCUMENTTYPE",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTTYPE",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESDOCUMENTPROCESSINGTYPE",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTPROCESSINGTYPE",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "CREATIONDATE",
+											"type": "String",
+											"physicalType": "D"
+										},
+										"sink": {
+											"name": "CREATIONDATE",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "CREATIONTIME",
+											"type": "String",
+											"physicalType": "T"
+										},
+										"sink": {
+											"name": "CREATIONTIME",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "LASTCHANGEDATE",
+											"type": "String",
+											"physicalType": "D"
+										},
+										"sink": {
+											"name": "LASTCHANGEDATE",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "LASTCHANGEDATETIME",
+											"type": "Decimal",
+											"physicalType": "P"
+										},
+										"sink": {
+											"name": "LASTCHANGEDATETIME",
+											"type": "Decimal",
+											"physicalType": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESORGANIZATION",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "SALESORGANIZATION",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "DISTRIBUTIONCHANNEL",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "DISTRIBUTIONCHANNEL",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ORGANIZATIONDIVISION",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "ORGANIZATIONDIVISION",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESGROUP",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "SALESGROUP",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESOFFICE",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "SALESOFFICE",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SOLDTOPARTY",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "SOLDTOPARTY",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "CUSTOMERNAME",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "CUSTOMERNAME",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "COUNTRY",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "COUNTRY",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "CITYNAME",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "CITYNAME",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "POSTALCODE",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "POSTALCODE",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "CUSTOMERACCOUNTGROUP",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "CUSTOMERACCOUNTGROUP",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SALESDISTRICT",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "SALESDISTRICT",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "CUSTOMERGROUP",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "CUSTOMERGROUP",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "CREDITCONTROLAREA",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "CREDITCONTROLAREA",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "PURCHASEORDERBYCUSTOMER",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "PURCHASEORDERBYCUSTOMER",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "TOTALNETAMOUNT",
+											"type": "Decimal",
+											"physicalType": "P"
+										},
+										"sink": {
+											"name": "TOTALNETAMOUNT",
+											"type": "Decimal",
+											"physicalType": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"name": "TRANSACTIONCURRENCY",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "TRANSACTIONCURRENCY",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "PRICINGDATE",
+											"type": "String",
+											"physicalType": "D"
+										},
+										"sink": {
+											"name": "PRICINGDATE",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "BILLINGDOCUMENTDATE",
+											"type": "String",
+											"physicalType": "D"
+										},
+										"sink": {
+											"name": "BILLINGDOCUMENTDATE",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "BILLINGCOMPANYCODE",
+											"type": "String",
+											"physicalType": "C"
+										},
+										"sink": {
+											"name": "BILLINGCOMPANYCODE",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "S4D_SalesOrderHeaders",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "S4DSalesOrderHeadersCSV",
+								"type": "DatasetReference"
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/S4DSalesOrderHeadersCSV')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4DSalesOrderHeadersCSV')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "salesorderheaders.csv",
+						"folderPath": "salesorderheaders",
+						"fileSystem": "microhack"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SynSalesOrderHeaders2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlSynapsAnalytics",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "BILLINGCOMPANYCODE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BILLINGDOCUMENTDATE",
+						"type": "date"
+					},
+					{
+						"name": "COUNTRY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREATIONDATE",
+						"type": "date"
+					},
+					{
+						"name": "CREATIONTIME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREDITCONTROLAREA",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERACCOUNTGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DISTRIBUTIONCHANNEL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LASTCHANGEDATE",
+						"type": "date"
+					},
+					{
+						"name": "LASTCHANGEDATETIME",
+						"type": "decimal",
+						"precision": 21,
+						"scale": 0
+					},
+					{
+						"name": "MANDT",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ORGANIZATIONDIVISION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PRICINGDATE",
+						"type": "date"
+					},
+					{
+						"name": "PURCHASEORDERBYCUSTOMER",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDISTRICT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTPROCESSINGTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESOFFICE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESORGANIZATION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SDDOCUMENTCATEGORY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SOLDTOPARTY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TOTALNETAMOUNT",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 2
+					},
+					{
+						"name": "TRANSACTIONCURRENCY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CITYNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "POSTALCODE",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "SalesOrderHeaders2"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
