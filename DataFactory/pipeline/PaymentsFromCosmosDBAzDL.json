@@ -1,0 +1,113 @@
+{
+	"name": "PaymentsFromCosmosDBAzDL",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "CosmosDbSqlApiSource",
+						"preferredRegions": []
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['PaymentNr']"
+								},
+								"sink": {
+									"name": "PaymentNr",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SalesOrderNr']"
+								},
+								"sink": {
+									"name": "SalesOrderNr",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CustomerNr']"
+								},
+								"sink": {
+									"name": "CustomerNr",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CustomerName']"
+								},
+								"sink": {
+									"name": "CustomerName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PaymentDate']"
+								},
+								"sink": {
+									"name": "PaymentDate",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Value']"
+								},
+								"sink": {
+									"name": "Value",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CosmosS4D_Payments",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Payments_csv",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "S4D_MicroHack"
+		},
+		"annotations": []
+	}
+}
