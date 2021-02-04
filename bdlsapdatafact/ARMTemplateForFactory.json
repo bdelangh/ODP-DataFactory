@@ -7471,7 +7471,7 @@
 										},
 										"sink": {
 											"name": "PaymentDate",
-											"type": "DateTime"
+											"type": "String"
 										}
 									},
 									{
