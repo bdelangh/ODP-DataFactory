@@ -1,0 +1,20 @@
+{
+	"name": "dataflow2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "S4DSalesOrderHeadersCSV",
+						"type": "DatasetReference"
+					},
+					"name": "SalesOrdersFromAzDL"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"script": "source(output(\n\t\tMANDT as short '000',\n\t\tSALESDOCUMENT as integer,\n\t\tSDDOCUMENTCATEGORY as string,\n\t\tSALESDOCUMENTTYPE as string,\n\t\tSALESDOCUMENTPROCESSINGTYPE as string,\n\t\tCREATIONDATE as date,\n\t\tCREATIONTIME as integer,\n\t\tLASTCHANGEDATE as integer,\n\t\tLASTCHANGEDATETIME as double,\n\t\tSALESORGANIZATION as short,\n\t\tDISTRIBUTIONCHANNEL as short,\n\t\tORGANIZATIONDIVISION as short,\n\t\tSALESGROUP as short,\n\t\tSALESOFFICE as short,\n\t\tSOLDTOPARTY as string,\n\t\tCUSTOMERNAME as string,\n\t\tCOUNTRY as string,\n\t\tCITYNAME as string,\n\t\tPOSTALCODE as string,\n\t\tCUSTOMERACCOUNTGROUP as string,\n\t\tSALESDISTRICT as string,\n\t\tCUSTOMERGROUP as string,\n\t\tCREDITCONTROLAREA as string,\n\t\tPURCHASEORDERBYCUSTOMER as string,\n\t\tTOTALNETAMOUNT as double,\n\t\tTRANSACTIONCURRENCY as string,\n\t\tPRICINGDATE as date,\n\t\tBILLINGDOCUMENTDATE as date,\n\t\tBILLINGCOMPANYCODE as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> SalesOrdersFromAzDL"
+		}
+	}
+}
