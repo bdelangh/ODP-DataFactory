@@ -28,7 +28,14 @@
 							"useTypeDefault": true
 						}
 					},
-					"enableStaging": false,
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "AzDataLakeGen2",
+							"type": "LinkedServiceReference"
+						},
+						"path": "synapsestaging"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -80,36 +87,10 @@
 							{
 								"source": {
 									"path": "$['Value']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['id']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['_rid']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['_self']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['_etag']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['_attachments']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['_ts']"
+								},
+								"sink": {
+									"name": "PaymentValue",
+									"type": "Decimal"
 								}
 							}
 						]
