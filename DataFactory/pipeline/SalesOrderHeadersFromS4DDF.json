@@ -30,7 +30,14 @@
 							"fileExtension": ".txt"
 						}
 					},
-					"enableStaging": false,
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "AzDataLakeGen2",
+							"type": "LinkedServiceReference"
+						},
+						"path": "synapsestaging"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
