@@ -1,0 +1,20 @@
+{
+	"name": "dataflow2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "S4DSalesOrderHeadersCSV",
+						"type": "DatasetReference"
+					},
+					"name": "S4DSalesOrderHeadersCSV"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> S4DSalesOrderHeadersCSV"
+		}
+	}
+}
