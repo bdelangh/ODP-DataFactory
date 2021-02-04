@@ -1,5 +1,5 @@
 {
-	"name": "SapTableResource1",
+	"name": "S4D_SalesOrderHeaders",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "S4DCLNT100",
