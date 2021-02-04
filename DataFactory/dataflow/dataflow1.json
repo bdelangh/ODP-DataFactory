@@ -12,13 +12,17 @@
 					"name": "PaymentsAzDL"
 				}
 			],
-			"sinks": [],
-			"transformations": [
+			"sinks": [
 				{
-					"name": "PaymentsDateConv"
+					"dataset": {
+						"referenceName": "SynPaymentsS4D",
+						"type": "DatasetReference"
+					},
+					"name": "SynapePayments"
 				}
 			],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> PaymentsAzDL\nPaymentsAzDL derive(PaymentDate2 = toDate('PaymentDate', 'dd/mm/yyyy')) ~> PaymentsDateConv"
+			"transformations": [],
+			"script": "source(output(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date 'dd/MM/yyyy',\n\t\tValue as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> PaymentsAzDL\nPaymentsAzDL sink(input(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date,\n\t\tPaymentValue as decimal(18,0)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SynapePayments"
 		}
 	}
 }
