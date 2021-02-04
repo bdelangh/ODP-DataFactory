@@ -1134,7 +1134,7 @@
 										},
 										"sink": {
 											"name": "PaymentDate",
-											"type": "DateTime"
+											"type": "String"
 										}
 									},
 									{
@@ -1146,7 +1146,8 @@
 											"type": "Decimal"
 										}
 									}
-								]
+								],
+								"collectionReference": ""
 							}
 						},
 						"inputs": [
