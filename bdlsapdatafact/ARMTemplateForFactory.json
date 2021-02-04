@@ -3143,7 +3143,7 @@
 										},
 										"sink": {
 											"name": "PaymentDate",
-											"type": "DateTime"
+											"type": "DateTimeOffset"
 										}
 									},
 									{
