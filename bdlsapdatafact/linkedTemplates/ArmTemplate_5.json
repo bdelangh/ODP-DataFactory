@@ -13,27 +13,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/ZBD_ISALESDOC_A')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "myGBBDemoTableCon",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "myGBBS4S"
-				},
-				"annotations": [],
-				"type": "SapTableResource",
-				"schema": [],
-				"typeProperties": {
-					"tableName": "ZBD_ISALESDOC_A"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/ZBD_ISALESDOC_E')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -947,6 +926,170 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PaymentsFromCosmosDBAzDL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CosmosDbToAzDL",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "CosmosDbSqlApiSource",
+								"preferredRegions": []
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['PaymentNr']"
+										},
+										"sink": {
+											"name": "PaymentNr",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['SalesOrderNr']"
+										},
+										"sink": {
+											"name": "SalesOrderNr",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CustomerNr']"
+										},
+										"sink": {
+											"name": "CustomerNr",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CustomerName']"
+										},
+										"sink": {
+											"name": "CustomerName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['PaymentDate']"
+										},
+										"sink": {
+											"name": "PaymentDate",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Value']"
+										},
+										"sink": {
+											"name": "Value",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "CosmosS4D_Payments",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Payments_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "TransformSynapse",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "CosmosDbToAzDL",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"PaymentsAzDL": {},
+									"PaymentsCosmosDB": {},
+									"SynapePayments": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "AzDataLakeGen2",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "synapsestaging"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/S4SSalesOrderHeadersToMySynapse')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1730,9 +1873,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ZBD_ISALESDOC_A')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/myS4S_BD_ISALESDOC_E')]",
