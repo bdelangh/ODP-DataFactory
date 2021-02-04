@@ -13,8 +13,12 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> PaymentsAzDL"
+			"transformations": [
+				{
+					"name": "PaymentsDateConv"
+				}
+			],
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> PaymentsAzDL\nPaymentsAzDL derive(PaymentDate2 = toDate('PaymentDate', 'dd/mm/yyyy')) ~> PaymentsDateConv"
 		}
 	}
 }
