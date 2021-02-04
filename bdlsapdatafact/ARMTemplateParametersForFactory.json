@@ -11,6 +11,9 @@
 		"AzDataLakeGen2_accountKey": {
 			"value": ""
 		},
+		"Cosmos_SAPS4D_connectionString": {
+			"value": ""
+		},
 		"NPLABAPSystem_password": {
 			"value": ""
 		},
@@ -24,6 +27,9 @@
 			"value": ""
 		},
 		"ODPFunction_functionKey": {
+			"value": ""
+		},
+		"S4DCLNT100_password": {
 			"value": ""
 		},
 		"S4HHANA_connectionString": {
@@ -63,12 +69,6 @@
 			"value": ""
 		},
 		"myGBBDemoTableCon_password": {
-			"value": ""
-		},
-		"S4DCLNT100_password": {
-			"value": ""
-		},
-		"Cosmos_SAPS4D_connectionString": {
 			"value": ""
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
@@ -170,6 +170,18 @@
 		"OData1_properties_typeProperties_url": {
 			"value": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_PRODUCTGROUP_SRV/"
 		},
+		"S4DCLNT100_properties_typeProperties_clientId": {
+			"value": "100"
+		},
+		"S4DCLNT100_properties_typeProperties_userName": {
+			"value": "ADFUSER"
+		},
+		"S4DCLNT100_properties_typeProperties_server": {
+			"value": "52.183.47.112"
+		},
+		"S4DCLNT100_properties_typeProperties_systemNumber": {
+			"value": "40"
+		},
 		"S4HOData_properties_typeProperties_url": {
 			"value": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"
 		},
@@ -228,18 +240,6 @@
 			"value": "20.71.235.137"
 		},
 		"myGBBDemoTableCon_properties_typeProperties_systemNumber": {
-			"value": "40"
-		},
-		"S4DCLNT100_properties_typeProperties_clientId": {
-			"value": "100"
-		},
-		"S4DCLNT100_properties_typeProperties_userName": {
-			"value": "ADFUSER"
-		},
-		"S4DCLNT100_properties_typeProperties_server": {
-			"value": "52.183.47.112"
-		},
-		"S4DCLNT100_properties_typeProperties_systemNumber": {
 			"value": "40"
 		}
 	}

@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'NPL_BWOpenHub'"
 		},
+		"S4DCLNT100_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4DCLNT100'"
+		},
 		"S4HHANA_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'S4HHANA'"
@@ -30,10 +34,6 @@
 		"myGBBDemoTableCon_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'myGBBDemoTableCon'"
-		},
-		"S4DCLNT100_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'S4DCLNT100'"
 		},
 		"NPLTable_properties_typeProperties_clientId": {
 			"type": "string",
@@ -83,6 +83,22 @@
 			"type": "string",
 			"defaultValue": "00"
 		},
+		"S4DCLNT100_properties_typeProperties_clientId": {
+			"type": "string",
+			"defaultValue": "100"
+		},
+		"S4DCLNT100_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "ADFUSER"
+		},
+		"S4DCLNT100_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "52.183.47.112"
+		},
+		"S4DCLNT100_properties_typeProperties_systemNumber": {
+			"type": "string",
+			"defaultValue": "40"
+		},
 		"S4SGBBDemoTableCon_properties_typeProperties_clientId": {
 			"type": "string",
 			"defaultValue": "100"
@@ -114,28 +130,249 @@
 		"myGBBDemoTableCon_properties_typeProperties_systemNumber": {
 			"type": "string",
 			"defaultValue": "40"
-		},
-		"S4DCLNT100_properties_typeProperties_clientId": {
-			"type": "string",
-			"defaultValue": "100"
-		},
-		"S4DCLNT100_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "ADFUSER"
-		},
-		"S4DCLNT100_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "52.183.47.112"
-		},
-		"S4DCLNT100_properties_typeProperties_systemNumber": {
-			"type": "string",
-			"defaultValue": "40"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/SynSalesOrderHeaders2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlSynapsAnalytics",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "myGBBS4S"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "BILLINGCOMPANYCODE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BILLINGDOCUMENTDATE",
+						"type": "date"
+					},
+					{
+						"name": "COUNTRY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREATIONDATE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREATIONTIME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREDITCONTROLAREA",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERACCOUNTGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DISTRIBUTIONCHANNEL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LASTCHANGEDATE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LASTCHANGEDATETIME",
+						"type": "decimal",
+						"precision": 21,
+						"scale": 0
+					},
+					{
+						"name": "MANDT",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ORGANIZATIONDIVISION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PRICINGDATE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PURCHASEORDERBYCUSTOMER",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDISTRICT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTPROCESSINGTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESOFFICE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESORGANIZATION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SDDOCUMENTCATEGORY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SOLDTOPARTY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TOTALNETAMOUNT",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 2
+					},
+					{
+						"name": "TRANSACTIONCURRENCY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CITYNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "POSTALCODE",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "SalesOrderHeaders2"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/WaterMark_SQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlsqldatadb",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "TableName",
+						"type": "String"
+					},
+					{
+						"name": "WatermarkValue",
+						"type": "DateTime"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[watermarktable]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/myS4SSalesOrders')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "myGBBS4S"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('myS4SSalesOrders',utcnow(),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "myS4S",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/myS4SSalesOrdersAll')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "myGBBS4S"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "myS4SSalesOrdersAll.csv",
+						"folderPath": "myS4S",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/myS4SSalesOrdersIn')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -352,6 +589,32 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/S4DCLNT100')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapTable",
+				"typeProperties": {
+					"clientId": "[parameters('S4DCLNT100_properties_typeProperties_clientId')]",
+					"language": "EN",
+					"sncMode": false,
+					"userName": "[parameters('S4DCLNT100_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('S4DCLNT100_password')]"
+					},
+					"server": "[parameters('S4DCLNT100_properties_typeProperties_server')]",
+					"systemNumber": "[parameters('S4DCLNT100_properties_typeProperties_systemNumber')]"
+				},
+				"connectVia": {
+					"referenceName": "SAPADFRti",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/S4HHANA')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -417,154 +680,6 @@
 					"referenceName": "SAPADFRti",
 					"type": "IntegrationRuntimeReference"
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4DCLNT100')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SapTable",
-				"typeProperties": {
-					"clientId": "[parameters('S4DCLNT100_properties_typeProperties_clientId')]",
-					"language": "EN",
-					"sncMode": false,
-					"userName": "[parameters('S4DCLNT100_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('S4DCLNT100_password')]"
-					},
-					"server": "[parameters('S4DCLNT100_properties_typeProperties_server')]",
-					"systemNumber": "[parameters('S4DCLNT100_properties_typeProperties_systemNumber')]"
-				},
-				"connectVia": {
-					"referenceName": "SAPADFRti",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/CosmosS4D_Payments')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Cosmos_SAPS4D",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4D_MicroHack"
-				},
-				"annotations": [],
-				"type": "CosmosDbSqlApiCollection",
-				"schema": {
-					"type": "object",
-					"properties": {
-						"PaymentNr": {
-							"type": "string"
-						},
-						"SalesOrderNr": {
-							"type": "string"
-						},
-						"CustomerNr": {
-							"type": "string"
-						},
-						"CustomerName": {
-							"type": "string"
-						},
-						"PaymentDate": {
-							"type": "string"
-						},
-						"Value": {
-							"type": "string"
-						}
-					}
-				},
-				"typeProperties": {
-					"collectionName": "paymentData"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SynPaymentsS4D')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdlSynapsAnalytics",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4D_MicroHack"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [
-					{
-						"name": "PaymentNr",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SalesOrderNr",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CustomerNr",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CustomerName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PaymentDate",
-						"type": "date"
-					},
-					{
-						"name": "PaymentValue",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Payments"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Payments_csv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4D_MicroHack"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "payments.csv",
-						"folderPath": "payments",
-						"fileSystem": "microhack"
-					},
-					"columnDelimiter": ";",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
 			},
 			"dependsOn": []
 		},
@@ -1405,7 +1520,9 @@
 				],
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/WaterMark_SQL')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/NPLProducts_Incremental')]",
@@ -1556,7 +1673,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/WaterMark_SQL')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_DataLake')]",
@@ -1659,143 +1778,6 @@
 								"parameters": {}
 							}
 						]
-					}
-				],
-				"folder": {
-					"name": "NPLProducts"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPLProducts_To_DataLake2_Incr')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Get Product Deltas based on LastModified dates",
-				"activities": [
-					{
-						"name": "Incremental NPLProducts_To_DataLake",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "LookupWaterMark",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapEccSource",
-								"query": {
-									"value": "$filter=LastModified%20gt%20datetime%27@{activity('LookupWaterMark').output.firstRow.WaterMarkValue}%27",
-									"type": "Expression"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"dataIntegrationUnits": 0
-						},
-						"inputs": [
-							{
-								"referenceName": "NPL_Products",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "AzDataLakeGen2_NPLProducts_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "LookupWaterMark",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProductsDL';",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "WaterMark_SQL",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Update Watermark",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Incremental NPLProducts_To_DataLake",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[sp_write_watermark]",
-							"storedProcedureParameters": {
-								"LastModifiedtime": {
-									"value": {
-										"value": "@utcnow()",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"TableName": {
-									"value": "NPLProductsDL",
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "bdlsqldatadb",
-							"type": "LinkedServiceReference"
-						}
 					}
 				],
 				"folder": {

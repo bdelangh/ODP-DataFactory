@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzDataLakeGen2'"
 		},
+		"Cosmos_SAPS4D_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Cosmos_SAPS4D'"
+		},
 		"NPLABAPSystem_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'NPLABAPSystem'"
@@ -62,10 +66,6 @@
 		"bdlsqldatadb_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
-		},
-		"Cosmos_SAPS4D_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'Cosmos_SAPS4D'"
 		},
 		"ADFTest_properties_typeProperties_functionAppUrl": {
 			"type": "string",
@@ -210,6 +210,19 @@
 					"tenant": "[parameters('BdlAzDataLake_properties_typeProperties_tenant')]",
 					"subscriptionId": "[parameters('BdlAzDataLake_properties_typeProperties_subscriptionId')]",
 					"resourceGroupName": "[parameters('BdlAzDataLake_properties_typeProperties_resourceGroupName')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Cosmos_SAPS4D')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CosmosDb",
+				"typeProperties": {
+					"connectionString": "[parameters('Cosmos_SAPS4D_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -475,19 +488,6 @@
 				"type": "SelfHosted",
 				"description": "Azure Data Factory runtime - SAP Connector",
 				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Cosmos_SAPS4D')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "CosmosDb",
-				"typeProperties": {
-					"connectionString": "[parameters('Cosmos_SAPS4D_connectionString')]"
-				}
 			},
 			"dependsOn": []
 		}

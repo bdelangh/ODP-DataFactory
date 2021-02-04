@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzDataLakeGen2'"
 		},
+		"Cosmos_SAPS4D_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Cosmos_SAPS4D'"
+		},
 		"NPLABAPSystem_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'NPLABAPSystem'"
@@ -34,6 +38,10 @@
 		"ODPFunction_functionKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'functionKey' of 'ODPFunction'"
+		},
+		"S4DCLNT100_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4DCLNT100'"
 		},
 		"S4HHANA_connectionString": {
 			"type": "secureString",
@@ -86,14 +94,6 @@
 		"myGBBDemoTableCon_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'myGBBDemoTableCon'"
-		},
-		"S4DCLNT100_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'S4DCLNT100'"
-		},
-		"Cosmos_SAPS4D_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'Cosmos_SAPS4D'"
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
@@ -227,6 +227,22 @@
 			"type": "string",
 			"defaultValue": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_PRODUCTGROUP_SRV/"
 		},
+		"S4DCLNT100_properties_typeProperties_clientId": {
+			"type": "string",
+			"defaultValue": "100"
+		},
+		"S4DCLNT100_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "ADFUSER"
+		},
+		"S4DCLNT100_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "52.183.47.112"
+		},
+		"S4DCLNT100_properties_typeProperties_systemNumber": {
+			"type": "string",
+			"defaultValue": "40"
+		},
 		"S4HOData_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"
@@ -307,22 +323,6 @@
 			"type": "string",
 			"defaultValue": "40"
 		},
-		"S4DCLNT100_properties_typeProperties_clientId": {
-			"type": "string",
-			"defaultValue": "100"
-		},
-		"S4DCLNT100_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "ADFUSER"
-		},
-		"S4DCLNT100_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "52.183.47.112"
-		},
-		"S4DCLNT100_properties_typeProperties_systemNumber": {
-			"type": "string",
-			"defaultValue": "40"
-		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -355,6 +355,9 @@
 					},
 					"AzDataLakeGen2_accountKey": {
 						"value": "[parameters('AzDataLakeGen2_accountKey')]"
+					},
+					"Cosmos_SAPS4D_connectionString": {
+						"value": "[parameters('Cosmos_SAPS4D_connectionString')]"
 					},
 					"NPLABAPSystem_password": {
 						"value": "[parameters('NPLABAPSystem_password')]"
@@ -391,9 +394,6 @@
 					},
 					"bdlsqldatadb_connectionString": {
 						"value": "[parameters('bdlsqldatadb_connectionString')]"
-					},
-					"Cosmos_SAPS4D_connectionString": {
-						"value": "[parameters('Cosmos_SAPS4D_connectionString')]"
 					},
 					"ADFTest_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('ADFTest_properties_typeProperties_functionAppUrl')]"
@@ -561,6 +561,9 @@
 					"NPL_BWOpenHub_password": {
 						"value": "[parameters('NPL_BWOpenHub_password')]"
 					},
+					"S4DCLNT100_password": {
+						"value": "[parameters('S4DCLNT100_password')]"
+					},
 					"S4HHANA_connectionString": {
 						"value": "[parameters('S4HHANA_connectionString')]"
 					},
@@ -569,9 +572,6 @@
 					},
 					"myGBBDemoTableCon_password": {
 						"value": "[parameters('myGBBDemoTableCon_password')]"
-					},
-					"S4DCLNT100_password": {
-						"value": "[parameters('S4DCLNT100_password')]"
 					},
 					"NPLTable_properties_typeProperties_clientId": {
 						"value": "[parameters('NPLTable_properties_typeProperties_clientId')]"
@@ -609,6 +609,18 @@
 					"NPL_BWOpenHub_properties_typeProperties_systemNumber": {
 						"value": "[parameters('NPL_BWOpenHub_properties_typeProperties_systemNumber')]"
 					},
+					"S4DCLNT100_properties_typeProperties_clientId": {
+						"value": "[parameters('S4DCLNT100_properties_typeProperties_clientId')]"
+					},
+					"S4DCLNT100_properties_typeProperties_userName": {
+						"value": "[parameters('S4DCLNT100_properties_typeProperties_userName')]"
+					},
+					"S4DCLNT100_properties_typeProperties_server": {
+						"value": "[parameters('S4DCLNT100_properties_typeProperties_server')]"
+					},
+					"S4DCLNT100_properties_typeProperties_systemNumber": {
+						"value": "[parameters('S4DCLNT100_properties_typeProperties_systemNumber')]"
+					},
 					"S4SGBBDemoTableCon_properties_typeProperties_clientId": {
 						"value": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_clientId')]"
 					},
@@ -632,18 +644,6 @@
 					},
 					"myGBBDemoTableCon_properties_typeProperties_systemNumber": {
 						"value": "[parameters('myGBBDemoTableCon_properties_typeProperties_systemNumber')]"
-					},
-					"S4DCLNT100_properties_typeProperties_clientId": {
-						"value": "[parameters('S4DCLNT100_properties_typeProperties_clientId')]"
-					},
-					"S4DCLNT100_properties_typeProperties_userName": {
-						"value": "[parameters('S4DCLNT100_properties_typeProperties_userName')]"
-					},
-					"S4DCLNT100_properties_typeProperties_server": {
-						"value": "[parameters('S4DCLNT100_properties_typeProperties_server')]"
-					},
-					"S4DCLNT100_properties_typeProperties_systemNumber": {
-						"value": "[parameters('S4DCLNT100_properties_typeProperties_systemNumber')]"
 					}
 				}
 			},
