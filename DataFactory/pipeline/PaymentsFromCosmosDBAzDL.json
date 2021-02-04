@@ -76,7 +76,7 @@
 								},
 								"sink": {
 									"name": "PaymentDate",
-									"type": "DateTimeOffset"
+									"type": "String"
 								}
 							},
 							{
