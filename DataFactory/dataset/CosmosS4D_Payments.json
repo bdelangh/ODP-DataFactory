@@ -1,0 +1,40 @@
+{
+	"name": "CosmosS4D_Payments",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Cosmos_SAPS4D",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "S4D_MicroHack"
+		},
+		"annotations": [],
+		"type": "CosmosDbSqlApiCollection",
+		"schema": {
+			"type": "object",
+			"properties": {
+				"PaymentNr": {
+					"type": "string"
+				},
+				"SalesOrderNr": {
+					"type": "string"
+				},
+				"CustomerNr": {
+					"type": "string"
+				},
+				"CustomerName": {
+					"type": "string"
+				},
+				"PaymentDate": {
+					"type": "string"
+				},
+				"Value": {
+					"type": "string"
+				}
+			}
+		},
+		"typeProperties": {
+			"collectionName": "paymentData"
+		}
+	}
+}

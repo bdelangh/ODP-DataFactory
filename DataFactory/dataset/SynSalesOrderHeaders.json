@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "S4D"
+			"name": "S4D_MicroHack"
 		},
 		"annotations": [],
 		"type": "AzureSqlDWTable",

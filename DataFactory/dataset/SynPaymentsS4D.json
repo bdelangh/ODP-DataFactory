@@ -1,0 +1,46 @@
+{
+	"name": "SynPaymentsS4D",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "bdlSynapsAnalytics",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "S4D_MicroHack"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "PaymentNr",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalesOrderNr",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CustomerNr",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CustomerName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PaymentDate",
+				"type": "date"
+			},
+			{
+				"name": "PaymentValue",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Payments"
+		}
+	}
+}

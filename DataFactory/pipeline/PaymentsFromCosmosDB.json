@@ -1,0 +1,137 @@
+{
+	"name": "PaymentsFromCosmosDB",
+	"properties": {
+		"activities": [
+			{
+				"name": "PaymentsFromCosmosDB",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "CosmosDbSqlApiSource",
+						"preferredRegions": []
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"allowPolyBase": true,
+						"polyBaseSettings": {
+							"rejectValue": 0,
+							"rejectType": "value",
+							"useTypeDefault": true
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['PaymentNr']"
+								},
+								"sink": {
+									"name": "PaymentNr",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SalesOrderNr']"
+								},
+								"sink": {
+									"name": "SalesOrderNr",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CustomerNr']"
+								},
+								"sink": {
+									"name": "CustomerNr",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CustomerName']"
+								},
+								"sink": {
+									"name": "CustomerName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PaymentDate']"
+								},
+								"sink": {
+									"name": "PaymentDate",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Value']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['id']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['_rid']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['_self']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['_etag']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['_attachments']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['_ts']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CosmosS4D_Payments",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SynPaymentsS4D",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "S4D_MicroHack"
+		},
+		"annotations": []
+	}
+}
