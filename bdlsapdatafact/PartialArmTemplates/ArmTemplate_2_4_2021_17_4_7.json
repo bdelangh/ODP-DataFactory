@@ -1,0 +1,54 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "bdlsapdatafact"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "PaymentsFromAzDL",
+								"type": "DatasetReference"
+							},
+							"name": "PaymentsAzDL"
+						},
+						{
+							"dataset": {
+								"referenceName": "CosmosS4D_Payments",
+								"type": "DatasetReference"
+							},
+							"name": "PaymentsCosmosDB"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SynPaymentsS4D",
+								"type": "DatasetReference"
+							},
+							"name": "SynapePayments"
+						}
+					],
+					"transformations": [],
+					"script": "source(output(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date 'dd/MM/yyyy',\n\t\tValue as double '000,000,000.000'\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> PaymentsAzDL\nsource(output(\n\t\tCustomerName as string,\n\t\tCustomerNr as string,\n\t\tPaymentDate as string,\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tValue as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'document') ~> PaymentsCosmosDB\nPaymentsAzDL sink(input(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date,\n\t\tPaymentValue as decimal(18,0)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SynapePayments"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
