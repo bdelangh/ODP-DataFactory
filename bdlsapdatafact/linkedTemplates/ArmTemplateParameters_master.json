@@ -68,6 +68,9 @@
 		"S4DCLNT100_password": {
 			"value": ""
 		},
+		"Cosmos_SAPS4D_connectionString": {
+			"value": ""
+		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"value": "Customers.csv"
 		},

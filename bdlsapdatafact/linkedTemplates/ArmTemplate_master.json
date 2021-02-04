@@ -91,6 +91,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4DCLNT100'"
 		},
+		"Cosmos_SAPS4D_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Cosmos_SAPS4D'"
+		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "Customers.csv"
@@ -387,6 +391,9 @@
 					},
 					"bdlsqldatadb_connectionString": {
 						"value": "[parameters('bdlsqldatadb_connectionString')]"
+					},
+					"Cosmos_SAPS4D_connectionString": {
+						"value": "[parameters('Cosmos_SAPS4D_connectionString')]"
 					},
 					"ADFTest_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('ADFTest_properties_typeProperties_functionAppUrl')]"
