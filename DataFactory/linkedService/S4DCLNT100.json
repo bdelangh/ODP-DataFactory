@@ -1,0 +1,21 @@
+{
+	"name": "S4DCLNT100",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SapTable",
+		"typeProperties": {
+			"clientId": "100",
+			"language": "EN",
+			"sncMode": false,
+			"userName": "ADFUSER",
+			"server": "52.183.47.112",
+			"systemNumber": "40",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI2M2EwNGZjMC01ZGY4LTRlOWMtOGRhOS04ZDZlYzVlN2MxNTAiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "SAPADFRti",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
