@@ -13,218 +13,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/NPLProductsTable_To_DataLake2')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "NPLProductsTable",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapTableSource",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "NPLProductsTable",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "AzDataLakeGen2_NPLProducts_csv_Table",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "NPLProducts"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPLProductsTable_To_DataLake2_Incr')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "NPLProductsTableIncr",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "LookupWaterMark",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapTableSource",
-								"rfcTableOptions": {
-									"value": "@{concat('LASTMODIFIED GE ', formatDateTime(activity('LookupWaterMark').output.firstRow.WatermarkValue, 'yyyyMMdd'))}",
-									"type": "Expression"
-								},
-								"customRfcReadTableFunctionModule": "",
-								"rfcTableFields": "",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "NPLProductsTable",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "AzDataLakeGen2_NPLProducts_csv_Table",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "LookupWaterMark",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlSource",
-								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProductsTable';",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "WaterMark_SQL",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Update Watermark",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "NPLProductsTableIncr",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[sp_write_watermark]",
-							"storedProcedureParameters": {
-								"LastModifiedtime": {
-									"value": {
-										"value": "@utcnow()",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"TableName": {
-									"value": "NPLProductsTable",
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "bdlsqldatadb",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"folder": {
-					"name": "NPLProducts"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/S4SSalesOrderHeadersToMySynapse')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -562,15 +350,13 @@
 						"inputs": [
 							{
 								"referenceName": "ZBD_ISALESDOC_E",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "SynSalesOrderHeaders",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					}
@@ -579,145 +365,491 @@
 					"name": "myS4S"
 				},
 				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SynSalesOrderHeaders')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SynSalesOrderHeaders')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlSynapsAnalytics",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "BILLINGCOMPANYCODE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BILLINGDOCUMENTDATE",
+						"type": "date"
+					},
+					{
+						"name": "COUNTRY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREATIONDATE",
+						"type": "date"
+					},
+					{
+						"name": "CREATIONTIME",
+						"type": "time",
+						"scale": 7
+					},
+					{
+						"name": "CREDITCONTROLAREA",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERACCOUNTGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DISTRIBUTIONCHANNEL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "HEADERBILLINGBLOCKREASON",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LASTCHANGEDATE",
+						"type": "date"
+					},
+					{
+						"name": "LASTCHANGEDATETIME",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "MANDT",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ORGANIZATIONDIVISION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PRICINGDATE",
+						"type": "date"
+					},
+					{
+						"name": "PURCHASEORDERBYCUSTOMER",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDISTRICT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTPROCESSINGTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESOFFICE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESORGANIZATION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SDDOCUMENTCATEGORY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SOLDTOPARTY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TOTALNETAMOUNT",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 0
+					},
+					{
+						"name": "TRANSACTIONCURRENCY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CITYNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "POSTALCODE",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "SalesOrderHeaders"
+				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/myS4S_BD_ISALESDOC_A')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
+			"name": "[concat(parameters('factoryName'), '/SynSalesOrderHeaders2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"activities": [
+				"linkedServiceName": {
+					"referenceName": "bdlSynapsAnalytics",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "myGBBS4S"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
 					{
-						"name": "Copy All Order Data",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapTableSource",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ZBD_ISALESDOC_A",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "myS4SSalesOrdersAll",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
+						"name": "BILLINGCOMPANYCODE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BILLINGDOCUMENTDATE",
+						"type": "date"
+					},
+					{
+						"name": "COUNTRY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREATIONDATE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREATIONTIME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREDITCONTROLAREA",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERACCOUNTGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DISTRIBUTIONCHANNEL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LASTCHANGEDATE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LASTCHANGEDATETIME",
+						"type": "decimal",
+						"precision": 21,
+						"scale": 0
+					},
+					{
+						"name": "MANDT",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ORGANIZATIONDIVISION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PRICINGDATE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PURCHASEORDERBYCUSTOMER",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDISTRICT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTPROCESSINGTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESOFFICE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESORGANIZATION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SDDOCUMENTCATEGORY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SOLDTOPARTY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TOTALNETAMOUNT",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 2
+					},
+					{
+						"name": "TRANSACTIONCURRENCY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CITYNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "POSTALCODE",
+						"type": "nvarchar"
 					}
 				],
-				"folder": {
-					"name": "myS4S"
-				},
-				"annotations": []
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "SalesOrderHeaders2"
+				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/myS4S_BD_ISALESDOC_E')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
+			"name": "[concat(parameters('factoryName'), '/myS4SSalesOrdersIn')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"activities": [
-					{
-						"name": "Extract Sales Data to DataLake",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapTableSource",
-								"rfcTableOptions": "",
-								"customRfcReadTableFunctionModule": "",
-								"rfcTableFields": "BILLINGCOMPANYCODE,BILLINGDOCUMENTDATE,COUNTRY,CREATIONDATE,CREATIONTIME,CREDITCONTROLAREA,CUSTOMERGROUP,CUSTOMERNAME,DISTRIBUTIONCHANNEL,HEADERBILLINGBLOCKREASON,LASTCHANGEDATE,LASTCHANGEDATETIME,MANDT,ORGANIZATIONDIVISION,PRICINGDATE,PURCHASEORDERBYCUSTOMER,SALESDOCUMENT,SALESDOCUMENTPROCESSINGTYPE,SALESDOCUMENTTYPE,SALESGROUP,SALESOFFICE,SALESORGANIZATION,SDDOCUMENTCATEGORY,SOLDTOPARTY,TOTALNETAMOUNT,TRANSACTIONCURRENCY,CITYNAME",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ZBD_ISALESDOC_E",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "myS4SSalesOrders",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "myS4S"
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
 				},
-				"annotations": []
+				"folder": {
+					"name": "myGBBS4S"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "myS4SSalesOrders2021-01-18T09:28:03.3604797Z.csv",
+						"folderPath": "myS4S",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "BILLINGCOMPANYCODE",
+						"type": "String"
+					},
+					{
+						"name": "BILLINGDOCUMENTDATE",
+						"type": "String"
+					},
+					{
+						"name": "COUNTRY",
+						"type": "String"
+					},
+					{
+						"name": "CREATIONDATE",
+						"type": "String"
+					},
+					{
+						"name": "CREATIONTIME",
+						"type": "String"
+					},
+					{
+						"name": "CREDITCONTROLAREA",
+						"type": "String"
+					},
+					{
+						"name": "CUSTOMERGROUP",
+						"type": "String"
+					},
+					{
+						"name": "CUSTOMERNAME",
+						"type": "String"
+					},
+					{
+						"name": "DISTRIBUTIONCHANNEL",
+						"type": "String"
+					},
+					{
+						"name": "HEADERBILLINGBLOCKREASON",
+						"type": "String"
+					},
+					{
+						"name": "LASTCHANGEDATE",
+						"type": "String"
+					},
+					{
+						"name": "LASTCHANGEDATETIME",
+						"type": "String"
+					},
+					{
+						"name": "MANDT",
+						"type": "String"
+					},
+					{
+						"name": "ORGANIZATIONDIVISION",
+						"type": "String"
+					},
+					{
+						"name": "PRICINGDATE",
+						"type": "String"
+					},
+					{
+						"name": "PURCHASEORDERBYCUSTOMER",
+						"type": "String"
+					},
+					{
+						"name": "SALESDOCUMENT",
+						"type": "String"
+					},
+					{
+						"name": "SALESDOCUMENTPROCESSINGTYPE",
+						"type": "String"
+					},
+					{
+						"name": "SALESDOCUMENTTYPE",
+						"type": "String"
+					},
+					{
+						"name": "SALESGROUP",
+						"type": "String"
+					},
+					{
+						"name": "SALESOFFICE",
+						"type": "String"
+					},
+					{
+						"name": "SALESORGANIZATION",
+						"type": "String"
+					},
+					{
+						"name": "SDDOCUMENTCATEGORY",
+						"type": "String"
+					},
+					{
+						"name": "SOLDTOPARTY",
+						"type": "String"
+					},
+					{
+						"name": "TOTALNETAMOUNT",
+						"type": "String"
+					},
+					{
+						"name": "TRANSACTIONCURRENCY",
+						"type": "String"
+					},
+					{
+						"name": "CITYNAME",
+						"type": "String"
+					}
+				]
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4DCLNT100')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapTable",
+				"typeProperties": {
+					"clientId": "100",
+					"language": "EN",
+					"sncMode": false,
+					"userName": "ADFUSER",
+					"password": {
+						"type": "SecureString",
+						"value": "**********"
+					},
+					"server": "52.183.47.112",
+					"systemNumber": "40"
+				},
+				"connectVia": {
+					"referenceName": "SAPADFRti",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4D_SalesOrderHeaders')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4DCLNT100",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D"
+				},
+				"annotations": [],
+				"type": "SapTableResource",
+				"schema": [],
+				"typeProperties": {
+					"tableName": "ZBD_ISALESDOC_E"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/S4DCLNT100')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SalesOrderHeadersFromS4D')]",
@@ -1058,15 +1190,13 @@
 						"inputs": [
 							{
 								"referenceName": "S4D_SalesOrderHeaders",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "SynSalesOrderHeaders",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					}
@@ -1076,7 +1206,10 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/S4D_SalesOrderHeaders')]",
+				"[concat(variables('factoryId'), '/datasets/SynSalesOrderHeaders')]"
+			]
 		}
 	]
 }

@@ -53,6 +53,9 @@
 		"adfdatabricks_accessToken": {
 			"value": ""
 		},
+		"bdlSynapsAnalytics_connectionString": {
+			"value": ""
+		},
 		"bdldftutorial_connectionString": {
 			"value": ""
 		},
@@ -62,7 +65,7 @@
 		"myGBBDemoTableCon_password": {
 			"value": ""
 		},
-		"bdlSynapsAnalytics_connectionString": {
+		"S4DCLNT100_password": {
 			"value": ""
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
@@ -222,6 +225,18 @@
 			"value": "20.71.235.137"
 		},
 		"myGBBDemoTableCon_properties_typeProperties_systemNumber": {
+			"value": "40"
+		},
+		"S4DCLNT100_properties_typeProperties_clientId": {
+			"value": "100"
+		},
+		"S4DCLNT100_properties_typeProperties_userName": {
+			"value": "ADFUSER"
+		},
+		"S4DCLNT100_properties_typeProperties_server": {
+			"value": "52.183.47.112"
+		},
+		"S4DCLNT100_properties_typeProperties_systemNumber": {
 			"value": "40"
 		},
 		"containerUri": {

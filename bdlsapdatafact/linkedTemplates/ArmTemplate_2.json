@@ -7,18 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "bdlsapdatafact"
 		},
-		"NPLTable_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'NPLTable'"
-		},
-		"NPL_BWMDX_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'NPL_BWMDX'"
-		},
-		"NPL_BWOpenHub_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'NPL_BWOpenHub'"
-		},
 		"Persons_Incremental_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "@concat('Incremental-', pipeline().RunId, '.txt')"
@@ -26,54 +14,6 @@
 		"Persons_Incremental_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "adftutorial/persons"
-		},
-		"NPLTable_properties_typeProperties_clientId": {
-			"type": "string",
-			"defaultValue": "001"
-		},
-		"NPLTable_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "ADFUSER"
-		},
-		"NPLTable_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "10.6.1.6"
-		},
-		"NPLTable_properties_typeProperties_systemNumber": {
-			"type": "string",
-			"defaultValue": "00"
-		},
-		"NPL_BWMDX_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "137.117.134.161"
-		},
-		"NPL_BWMDX_properties_typeProperties_systemNumber": {
-			"type": "string",
-			"defaultValue": "00"
-		},
-		"NPL_BWMDX_properties_typeProperties_clientId": {
-			"type": "string",
-			"defaultValue": "001"
-		},
-		"NPL_BWMDX_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "MDXUSER"
-		},
-		"NPL_BWOpenHub_properties_typeProperties_clientId": {
-			"type": "string",
-			"defaultValue": "001"
-		},
-		"NPL_BWOpenHub_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "OPENHUB"
-		},
-		"NPL_BWOpenHub_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "137.117.134.161"
-		},
-		"NPL_BWOpenHub_properties_typeProperties_systemNumber": {
-			"type": "string",
-			"defaultValue": "00"
 		}
 	},
 	"variables": {
@@ -770,6 +710,299 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SynSalesOrderHeaders')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlSynapsAnalytics",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "BILLINGCOMPANYCODE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BILLINGDOCUMENTDATE",
+						"type": "date"
+					},
+					{
+						"name": "COUNTRY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREATIONDATE",
+						"type": "date"
+					},
+					{
+						"name": "CREATIONTIME",
+						"type": "time",
+						"scale": 7
+					},
+					{
+						"name": "CREDITCONTROLAREA",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERACCOUNTGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DISTRIBUTIONCHANNEL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "HEADERBILLINGBLOCKREASON",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LASTCHANGEDATE",
+						"type": "date"
+					},
+					{
+						"name": "LASTCHANGEDATETIME",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "MANDT",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ORGANIZATIONDIVISION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PRICINGDATE",
+						"type": "date"
+					},
+					{
+						"name": "PURCHASEORDERBYCUSTOMER",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDISTRICT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTPROCESSINGTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESOFFICE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESORGANIZATION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SDDOCUMENTCATEGORY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SOLDTOPARTY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TOTALNETAMOUNT",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 0
+					},
+					{
+						"name": "TRANSACTIONCURRENCY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CITYNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "POSTALCODE",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "SalesOrderHeaders"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SynSalesOrderHeaders2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlSynapsAnalytics",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "myGBBS4S"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "BILLINGCOMPANYCODE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BILLINGDOCUMENTDATE",
+						"type": "date"
+					},
+					{
+						"name": "COUNTRY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREATIONDATE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREATIONTIME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREDITCONTROLAREA",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERACCOUNTGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DISTRIBUTIONCHANNEL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LASTCHANGEDATE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LASTCHANGEDATETIME",
+						"type": "decimal",
+						"precision": 21,
+						"scale": 0
+					},
+					{
+						"name": "MANDT",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ORGANIZATIONDIVISION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PRICINGDATE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PURCHASEORDERBYCUSTOMER",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDISTRICT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTPROCESSINGTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESOFFICE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESORGANIZATION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SDDOCUMENTCATEGORY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SOLDTOPARTY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TOTALNETAMOUNT",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 2
+					},
+					{
+						"name": "TRANSACTIONCURRENCY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CITYNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "POSTALCODE",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "SalesOrderHeaders2"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/WaterMark_SQL')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -863,78 +1096,141 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/NPLTable')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/myS4SSalesOrdersIn')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"annotations": [],
-				"type": "SapTable",
-				"typeProperties": {
-					"clientId": "[parameters('NPLTable_properties_typeProperties_clientId')]",
-					"language": "EN",
-					"sncMode": false,
-					"userName": "[parameters('NPLTable_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('NPLTable_password')]"
-					},
-					"server": "[parameters('NPLTable_properties_typeProperties_server')]",
-					"systemNumber": "[parameters('NPLTable_properties_typeProperties_systemNumber')]"
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
 				},
-				"connectVia": {
-					"referenceName": "SAPADFRti",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPL_BWMDX')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
+				"folder": {
+					"name": "myGBBS4S"
+				},
 				"annotations": [],
-				"type": "SapBw",
+				"type": "DelimitedText",
 				"typeProperties": {
-					"server": "[parameters('NPL_BWMDX_properties_typeProperties_server')]",
-					"systemNumber": "[parameters('NPL_BWMDX_properties_typeProperties_systemNumber')]",
-					"clientId": "[parameters('NPL_BWMDX_properties_typeProperties_clientId')]",
-					"userName": "[parameters('NPL_BWMDX_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('NPL_BWMDX_password')]"
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "myS4SSalesOrders2021-01-18T09:28:03.3604797Z.csv",
+						"folderPath": "myS4S",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "BILLINGCOMPANYCODE",
+						"type": "String"
+					},
+					{
+						"name": "BILLINGDOCUMENTDATE",
+						"type": "String"
+					},
+					{
+						"name": "COUNTRY",
+						"type": "String"
+					},
+					{
+						"name": "CREATIONDATE",
+						"type": "String"
+					},
+					{
+						"name": "CREATIONTIME",
+						"type": "String"
+					},
+					{
+						"name": "CREDITCONTROLAREA",
+						"type": "String"
+					},
+					{
+						"name": "CUSTOMERGROUP",
+						"type": "String"
+					},
+					{
+						"name": "CUSTOMERNAME",
+						"type": "String"
+					},
+					{
+						"name": "DISTRIBUTIONCHANNEL",
+						"type": "String"
+					},
+					{
+						"name": "HEADERBILLINGBLOCKREASON",
+						"type": "String"
+					},
+					{
+						"name": "LASTCHANGEDATE",
+						"type": "String"
+					},
+					{
+						"name": "LASTCHANGEDATETIME",
+						"type": "String"
+					},
+					{
+						"name": "MANDT",
+						"type": "String"
+					},
+					{
+						"name": "ORGANIZATIONDIVISION",
+						"type": "String"
+					},
+					{
+						"name": "PRICINGDATE",
+						"type": "String"
+					},
+					{
+						"name": "PURCHASEORDERBYCUSTOMER",
+						"type": "String"
+					},
+					{
+						"name": "SALESDOCUMENT",
+						"type": "String"
+					},
+					{
+						"name": "SALESDOCUMENTPROCESSINGTYPE",
+						"type": "String"
+					},
+					{
+						"name": "SALESDOCUMENTTYPE",
+						"type": "String"
+					},
+					{
+						"name": "SALESGROUP",
+						"type": "String"
+					},
+					{
+						"name": "SALESOFFICE",
+						"type": "String"
+					},
+					{
+						"name": "SALESORGANIZATION",
+						"type": "String"
+					},
+					{
+						"name": "SDDOCUMENTCATEGORY",
+						"type": "String"
+					},
+					{
+						"name": "SOLDTOPARTY",
+						"type": "String"
+					},
+					{
+						"name": "TOTALNETAMOUNT",
+						"type": "String"
+					},
+					{
+						"name": "TRANSACTIONCURRENCY",
+						"type": "String"
+					},
+					{
+						"name": "CITYNAME",
+						"type": "String"
 					}
-				},
-				"connectVia": {
-					"referenceName": "SAPADFRti",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPL_BWOpenHub')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "NPL_BWOpenHub",
-				"annotations": [],
-				"type": "SapOpenHub",
-				"typeProperties": {
-					"clientId": "[parameters('NPL_BWOpenHub_properties_typeProperties_clientId')]",
-					"language": "EN",
-					"userName": "[parameters('NPL_BWOpenHub_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('NPL_BWOpenHub_password')]"
-					},
-					"server": "[parameters('NPL_BWOpenHub_properties_typeProperties_server')]",
-					"systemNumber": "[parameters('NPL_BWOpenHub_properties_typeProperties_systemNumber')]"
-				},
-				"connectVia": {
-					"referenceName": "SAPADFRti",
-					"type": "IntegrationRuntimeReference"
-				}
+				]
 			},
 			"dependsOn": []
 		}

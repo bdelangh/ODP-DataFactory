@@ -51,6 +51,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'adfdatabricks'"
 		},
+		"bdlSynapsAnalytics_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'bdlSynapsAnalytics'"
+		},
 		"bdldftutorial_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdldftutorial'"
@@ -58,10 +62,6 @@
 		"bdlsqldatadb_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
-		},
-		"bdlSynapsAnalytics_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'bdlSynapsAnalytics'"
 		},
 		"ADFTest_properties_typeProperties_functionAppUrl": {
 			"type": "string",
@@ -425,6 +425,19 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/bdlSynapsAnalytics')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('bdlSynapsAnalytics_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/bdldftutorial')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -458,19 +471,6 @@
 				"type": "SelfHosted",
 				"description": "Azure Data Factory runtime - SAP Connector",
 				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/bdlSynapsAnalytics')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDW",
-				"typeProperties": {
-					"connectionString": "[parameters('bdlSynapsAnalytics_connectionString')]"
-				}
 			},
 			"dependsOn": []
 		},
