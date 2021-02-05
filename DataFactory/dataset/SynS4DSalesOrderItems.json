@@ -1,0 +1,149 @@
+{
+	"name": "SynS4DSalesOrderItems",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "bdlSynapsAnalytics",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "S4D_MicroHack"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "SalesOrder",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalesOrderItem",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalesOrderItemText",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SoldToParty",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MaterialByCustomer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MaterialName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Material",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ShipToParty",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FullName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SDProcessStatus",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DeliveryStatus",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SDDocumentRejectionStatus",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalesDocumentRjcnReason",
+				"type": "nvarchar"
+			},
+			{
+				"name": "RequestedQuantity",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 3
+			},
+			{
+				"name": "RequestedQuantityUnit",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TransactionCurrency",
+				"type": "nvarchar"
+			},
+			{
+				"name": "NetAmount",
+				"type": "decimal",
+				"precision": 16,
+				"scale": 3
+			},
+			{
+				"name": "MaterialGroup",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Batch",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ProductionPlant",
+				"type": "nvarchar"
+			},
+			{
+				"name": "StorageLocation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ShippingPointName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ShippingPoint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalesOrderItemCategory",
+				"type": "nvarchar"
+			},
+			{
+				"name": "BillingBlockCriticality",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "ItemBillingBlockReason",
+				"type": "nvarchar"
+			},
+			{
+				"name": "OrderRelatedBillingStatus",
+				"type": "nvarchar"
+			},
+			{
+				"name": "RequestedDeliveryDate",
+				"type": "date"
+			},
+			{
+				"name": "HigherLevelItem",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalesOrderProcessingType",
+				"type": "nvarchar"
+			},
+			{
+				"name": "RequirementSegment",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "SalesOrderItems"
+		}
+	}
+}
