@@ -1817,7 +1817,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "SynSalesOrderHeaders2",
+								"referenceName": "SynSalesOrderHeaders",
 								"type": "DatasetReference",
 								"parameters": {}
 							}

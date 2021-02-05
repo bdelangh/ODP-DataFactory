@@ -4649,7 +4649,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "SynSalesOrderHeaders2",
+								"referenceName": "SynSalesOrderHeaders",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -4663,7 +4663,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/S4D_SalesOrderHeaders')]",
-				"[concat(variables('factoryId'), '/datasets/SynSalesOrderHeaders2')]",
+				"[concat(variables('factoryId'), '/datasets/SynSalesOrderHeaders')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
 			]
 		},
