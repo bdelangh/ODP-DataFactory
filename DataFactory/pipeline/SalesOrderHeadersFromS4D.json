@@ -30,14 +30,7 @@
 							"useTypeDefault": true
 						}
 					},
-					"enableStaging": true,
-					"stagingSettings": {
-						"linkedServiceName": {
-							"referenceName": "AzDataLakeGen2",
-							"type": "LinkedServiceReference"
-						},
-						"path": "synapsestaging"
-					},
+					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
