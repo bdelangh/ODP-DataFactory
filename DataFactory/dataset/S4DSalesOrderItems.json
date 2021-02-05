@@ -1,5 +1,5 @@
 {
-	"name": "SapEccResource1",
+	"name": "S4DSalesOrderItems",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "S4DCLNT100OData",
