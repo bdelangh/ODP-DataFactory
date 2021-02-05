@@ -43,6 +43,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4DCLNT100'"
 		},
+		"S4DCLNT100OData_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4DCLNT100OData'"
+		},
 		"S4HHANA_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'S4HHANA'"
@@ -242,6 +246,14 @@
 		"S4DCLNT100_properties_typeProperties_systemNumber": {
 			"type": "string",
 			"defaultValue": "40"
+		},
+		"S4DCLNT100OData_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://52.183.47.112:54000/sap/opu/odata/sap/sd_f1814_so_fs_srv/"
+		},
+		"S4DCLNT100OData_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "S4D_ODATA"
 		},
 		"S4HOData_properties_typeProperties_url": {
 			"type": "string",
@@ -3887,6 +3899,389 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/S4HSalesOrderItemsToSynapse')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "S4DSalesOrderItemsToSynapse",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapEccSource",
+								"httpRequestTimeout": "00:05:00"
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"allowPolyBase": true,
+								"polyBaseSettings": {
+									"rejectValue": 0,
+									"rejectType": "value",
+									"useTypeDefault": true
+								}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzDataLakeGen2",
+									"type": "LinkedServiceReference"
+								},
+								"path": "synapsestaging"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SalesOrder",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SalesOrder",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SalesOrderItem",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SalesOrderItem",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SalesOrderItemText",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SalesOrderItemText",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SoldToParty",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SoldToParty",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "MaterialByCustomer",
+											"type": "String"
+										},
+										"sink": {
+											"name": "MaterialByCustomer",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "MaterialName",
+											"type": "String"
+										},
+										"sink": {
+											"name": "MaterialName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Material",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Material",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ShipToParty",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ShipToParty",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "FullName",
+											"type": "String"
+										},
+										"sink": {
+											"name": "FullName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SDProcessStatus",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SDProcessStatus",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "DeliveryStatus",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DeliveryStatus",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SDDocumentRejectionStatus",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SDDocumentRejectionStatus",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SalesDocumentRjcnReason",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SalesDocumentRjcnReason",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "RequestedQuantity",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "RequestedQuantity",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"name": "RequestedQuantityUnit",
+											"type": "String"
+										},
+										"sink": {
+											"name": "RequestedQuantityUnit",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "TransactionCurrency",
+											"type": "String"
+										},
+										"sink": {
+											"name": "TransactionCurrency",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "NetAmount",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "NetAmount",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"name": "MaterialGroup",
+											"type": "String"
+										},
+										"sink": {
+											"name": "MaterialGroup",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Batch",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Batch",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ProductionPlant",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ProductionPlant",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "StorageLocation",
+											"type": "String"
+										},
+										"sink": {
+											"name": "StorageLocation",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ShippingPointName",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ShippingPointName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ShippingPoint",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ShippingPoint",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SalesOrderItemCategory",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SalesOrderItemCategory",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "BillingBlockCriticality",
+											"type": "Int16"
+										},
+										"sink": {
+											"name": "BillingBlockCriticality",
+											"type": "Byte"
+										}
+									},
+									{
+										"source": {
+											"name": "ItemBillingBlockReason",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ItemBillingBlockReason",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "OrderRelatedBillingStatus",
+											"type": "String"
+										},
+										"sink": {
+											"name": "OrderRelatedBillingStatus",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "RequestedDeliveryDate",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "RequestedDeliveryDate",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "HigherLevelItem",
+											"type": "String"
+										},
+										"sink": {
+											"name": "HigherLevelItem",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SalesOrderProcessingType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SalesOrderProcessingType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "RequirementSegment",
+											"type": "String"
+										},
+										"sink": {
+											"name": "RequirementSegment",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "S4DSalesOrderItems",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SynS4DSalesOrderItems",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/S4DSalesOrderItems')]",
+				"[concat(variables('factoryId'), '/datasets/SynS4DSalesOrderItems')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/S4SSalesOrderHeadersToMySynapse')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -6447,6 +6842,29 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/S4DSalesOrderItems')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4DCLNT100OData",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"schema": [],
+				"typeProperties": {
+					"path": "C_Salesorderitemfs"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/S4DCLNT100OData')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/S4D_SalesOrderHeaders')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -7104,6 +7522,160 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "Payments"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdlSynapsAnalytics')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SynS4DSalesOrderItems')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlSynapsAnalytics",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "SalesOrder",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SalesOrderItem",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SalesOrderItemText",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SoldToParty",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MaterialByCustomer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MaterialName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Material",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ShipToParty",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FullName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SDProcessStatus",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DeliveryStatus",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SDDocumentRejectionStatus",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SalesDocumentRjcnReason",
+						"type": "nvarchar"
+					},
+					{
+						"name": "RequestedQuantity",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 3
+					},
+					{
+						"name": "RequestedQuantityUnit",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TransactionCurrency",
+						"type": "nvarchar"
+					},
+					{
+						"name": "NetAmount",
+						"type": "decimal",
+						"precision": 16,
+						"scale": 3
+					},
+					{
+						"name": "MaterialGroup",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Batch",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ProductionPlant",
+						"type": "nvarchar"
+					},
+					{
+						"name": "StorageLocation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ShippingPointName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ShippingPoint",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SalesOrderItemCategory",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BillingBlockCriticality",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "ItemBillingBlockReason",
+						"type": "nvarchar"
+					},
+					{
+						"name": "OrderRelatedBillingStatus",
+						"type": "nvarchar"
+					},
+					{
+						"name": "RequestedDeliveryDate",
+						"type": "date"
+					},
+					{
+						"name": "HigherLevelItem",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SalesOrderProcessingType",
+						"type": "nvarchar"
+					},
+					{
+						"name": "RequirementSegment",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "SalesOrderItems"
 				}
 			},
 			"dependsOn": [
@@ -7935,6 +8507,24 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/SAPADFRti')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4DCLNT100OData')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapEcc",
+				"typeProperties": {
+					"url": "[parameters('S4DCLNT100OData_properties_typeProperties_url')]",
+					"username": "[parameters('S4DCLNT100OData_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('S4DCLNT100OData_password')]"
+					}
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/S4HHANA')]",

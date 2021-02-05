@@ -32,6 +32,9 @@
 		"S4DCLNT100_password": {
 			"value": ""
 		},
+		"S4DCLNT100OData_password": {
+			"value": ""
+		},
 		"S4HHANA_connectionString": {
 			"value": ""
 		},
@@ -181,6 +184,12 @@
 		},
 		"S4DCLNT100_properties_typeProperties_systemNumber": {
 			"value": "40"
+		},
+		"S4DCLNT100OData_properties_typeProperties_url": {
+			"value": "http://52.183.47.112:54000/sap/opu/odata/sap/sd_f1814_so_fs_srv/"
+		},
+		"S4DCLNT100OData_properties_typeProperties_username": {
+			"value": "S4D_ODATA"
 		},
 		"S4HOData_properties_typeProperties_url": {
 			"value": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"

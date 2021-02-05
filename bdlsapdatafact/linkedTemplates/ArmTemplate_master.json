@@ -43,6 +43,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'S4DCLNT100'"
 		},
+		"S4DCLNT100OData_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'S4DCLNT100OData'"
+		},
 		"S4HHANA_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'S4HHANA'"
@@ -243,6 +247,14 @@
 			"type": "string",
 			"defaultValue": "40"
 		},
+		"S4DCLNT100OData_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://52.183.47.112:54000/sap/opu/odata/sap/sd_f1814_so_fs_srv/"
+		},
+		"S4DCLNT100OData_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "S4D_ODATA"
+		},
 		"S4HOData_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "http://52.142.212.18:50000/sap/opu/odata/SAP/ZBDL_ODP_ODATA_SRV"
@@ -365,6 +377,9 @@
 					"ODPFunction_functionKey": {
 						"value": "[parameters('ODPFunction_functionKey')]"
 					},
+					"S4DCLNT100OData_password": {
+						"value": "[parameters('S4DCLNT100OData_password')]"
+					},
 					"S4HOData_password": {
 						"value": "[parameters('S4HOData_password')]"
 					},
@@ -427,6 +442,12 @@
 					},
 					"OData1_properties_typeProperties_url": {
 						"value": "[parameters('OData1_properties_typeProperties_url')]"
+					},
+					"S4DCLNT100OData_properties_typeProperties_url": {
+						"value": "[parameters('S4DCLNT100OData_properties_typeProperties_url')]"
+					},
+					"S4DCLNT100OData_properties_typeProperties_username": {
+						"value": "[parameters('S4DCLNT100OData_properties_typeProperties_username')]"
 					},
 					"S4HOData_properties_typeProperties_url": {
 						"value": "[parameters('S4HOData_properties_typeProperties_url')]"
@@ -689,6 +710,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'bdlsapdatafact_ArmTemplate_4')]"
+			]
+		},
+		{
+			"name": "bdlsapdatafact_ArmTemplate_6",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_6.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'bdlsapdatafact_ArmTemplate_5')]"
 			]
 		}
 	]

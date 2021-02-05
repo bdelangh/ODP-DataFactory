@@ -21,6 +21,39 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/MARAcsv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('mara_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "S4H",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/MaintenanceOrdersCsv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -425,6 +458,27 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/S4DSalesOrderItems')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4DCLNT100OData",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"schema": [],
+				"typeProperties": {
+					"path": "C_Salesorderitemfs"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/S4HRest_GetUpdatedSO')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -804,161 +858,6 @@
 				"type": "ODataResource",
 				"typeProperties": {
 					"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190828122610_000029000')/ChangesAfter"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SAPDevCenter_ProductSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SAPDevCenter",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "SAP Dev Center"
-				},
-				"annotations": [],
-				"type": "SapEccResource",
-				"structure": [
-					{
-						"name": "ProductID",
-						"type": "String"
-					},
-					{
-						"name": "TypeCode",
-						"type": "String"
-					},
-					{
-						"name": "Category",
-						"type": "String"
-					},
-					{
-						"name": "Name",
-						"type": "String"
-					},
-					{
-						"name": "NameLanguage",
-						"type": "String"
-					},
-					{
-						"name": "Description",
-						"type": "String"
-					},
-					{
-						"name": "DescriptionLanguage",
-						"type": "String"
-					},
-					{
-						"name": "SupplierID",
-						"type": "String"
-					},
-					{
-						"name": "SupplierName",
-						"type": "String"
-					},
-					{
-						"name": "TaxTarifCode",
-						"type": "Int16"
-					},
-					{
-						"name": "MeasureUnit",
-						"type": "String"
-					},
-					{
-						"name": "WeightMeasure",
-						"type": "Decimal"
-					},
-					{
-						"name": "WeightUnit",
-						"type": "String"
-					},
-					{
-						"name": "CurrencyCode",
-						"type": "String"
-					},
-					{
-						"name": "Price",
-						"type": "Decimal"
-					},
-					{
-						"name": "Width",
-						"type": "Decimal"
-					},
-					{
-						"name": "Depth",
-						"type": "Decimal"
-					},
-					{
-						"name": "Height",
-						"type": "Decimal"
-					},
-					{
-						"name": "DimUnit",
-						"type": "String"
-					},
-					{
-						"name": "CreatedAt",
-						"type": "DateTime"
-					},
-					{
-						"name": "ChangedAt",
-						"type": "DateTime"
-					}
-				],
-				"typeProperties": {
-					"path": "ProductSet"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SynPaymentsS4D')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdlSynapsAnalytics",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4D_MicroHack"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [
-					{
-						"name": "PaymentNr",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SalesOrderNr",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CustomerNr",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CustomerName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PaymentDate",
-						"type": "date"
-					},
-					{
-						"name": "PaymentValue",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Payments"
 				}
 			},
 			"dependsOn": []
