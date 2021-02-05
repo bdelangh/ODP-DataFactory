@@ -1493,7 +1493,7 @@
 								"type": "SapTableSource",
 								"partitionOption": "None",
 								"convertDateToDatetime": true,
-								"concertTimeToTimespan": true
+								"convertTimeToTimespan": true
 							},
 							"sink": {
 								"type": "SqlDWSink",
