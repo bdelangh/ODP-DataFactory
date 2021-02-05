@@ -17,7 +17,9 @@
 				"typeProperties": {
 					"source": {
 						"type": "SapTableSource",
-						"partitionOption": "None"
+						"partitionOption": "None",
+						"convertDateToDatetime": true,
+						"concertTimeToTimespan": true
 					},
 					"sink": {
 						"type": "SqlDWSink",
@@ -56,7 +58,7 @@
 								},
 								"sink": {
 									"name": "BILLINGDOCUMENTDATE",
-									"type": "String"
+									"type": "DateTime"
 								}
 							},
 							{
@@ -76,7 +78,7 @@
 								},
 								"sink": {
 									"name": "CREATIONDATE",
-									"type": "String"
+									"type": "DateTime"
 								}
 							},
 							{
@@ -146,7 +148,7 @@
 								},
 								"sink": {
 									"name": "LASTCHANGEDATE",
-									"type": "String"
+									"type": "DateTime"
 								}
 							},
 							{
@@ -186,7 +188,7 @@
 								},
 								"sink": {
 									"name": "PRICINGDATE",
-									"type": "String"
+									"type": "DateTime"
 								}
 							},
 							{
@@ -340,7 +342,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "SynSalesOrderHeaders",
+						"referenceName": "SynSalesOrderHeaders2",
 						"type": "DatasetReference"
 					}
 				]
