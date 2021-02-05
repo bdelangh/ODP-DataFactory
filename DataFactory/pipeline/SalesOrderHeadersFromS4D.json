@@ -192,8 +192,12 @@
 								}
 							},
 							{
+								"source": {
+									"name": "PURCHASEORDERBYCUSTOMER",
+									"type": "String"
+								},
 								"sink": {
-									"name": "tPURCHASEORDERBYCUSTOMER",
+									"name": "PURCHASEORDERBYCUSTOMER",
 									"type": "String"
 								}
 							},
