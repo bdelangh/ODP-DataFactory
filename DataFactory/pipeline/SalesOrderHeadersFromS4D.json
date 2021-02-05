@@ -88,7 +88,7 @@
 								},
 								"sink": {
 									"name": "CREATIONTIME",
-									"type": "String"
+									"type": "TimeSpan"
 								}
 							},
 							{
@@ -192,12 +192,8 @@
 								}
 							},
 							{
-								"source": {
-									"name": "PURCHASEORDERBYCUSTOMER",
-									"type": "String"
-								},
 								"sink": {
-									"name": "PURCHASEORDERBYCUSTOMER",
+									"name": "tPURCHASEORDERBYCUSTOMER",
 									"type": "String"
 								}
 							},
