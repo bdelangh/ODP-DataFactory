@@ -5539,7 +5539,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "myMicroHackCosmosPaymentData",
+								"referenceName": "CosmosS4D_Payments",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -5553,7 +5553,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/PaymentDataForUpload')]",
-				"[concat(variables('factoryId'), '/datasets/myMicroHackCosmosPaymentData')]"
+				"[concat(variables('factoryId'), '/datasets/CosmosS4D_Payments')]"
 			]
 		},
 		{

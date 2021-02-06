@@ -2826,7 +2826,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "myMicroHackCosmosPaymentData",
+								"referenceName": "CosmosS4D_Payments",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
