@@ -1,0 +1,57 @@
+{
+	"name": "UploadPaymentDataToCosmos",
+	"properties": {
+		"activities": [
+			{
+				"name": "UploadPaymentDataToCosmos",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "CosmosDbSqlApiSource",
+						"preferredRegions": []
+					},
+					"sink": {
+						"type": "CosmosDbSqlApiSink",
+						"writeBehavior": "insert"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "myMicroHackCosmosPaymentData",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "myMicroHackCosmosPaymentData",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "S4D_MicroHack"
+		},
+		"annotations": []
+	}
+}

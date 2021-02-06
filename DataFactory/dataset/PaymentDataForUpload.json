@@ -1,0 +1,60 @@
+{
+	"name": "PaymentDataForUpload",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzDataLakeGen2",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "S4D_MicroHack"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "paymentData.csv",
+				"folderPath": "paymentUpload",
+				"fileSystem": "microhack"
+			},
+			"columnDelimiter": ";",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Prop_0",
+				"type": "String"
+			},
+			{
+				"name": "PaymentNr",
+				"type": "String"
+			},
+			{
+				"name": "SalesOrderNr",
+				"type": "String"
+			},
+			{
+				"name": "CustomerNr",
+				"type": "String"
+			},
+			{
+				"name": "CustomerName",
+				"type": "String"
+			},
+			{
+				"name": "PaymentDate",
+				"type": "String"
+			},
+			{
+				"name": "Value",
+				"type": "String"
+			},
+			{
+				"name": "Currency",
+				"type": "String"
+			}
+		]
+	}
+}
