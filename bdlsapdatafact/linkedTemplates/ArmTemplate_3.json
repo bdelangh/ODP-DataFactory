@@ -409,8 +409,12 @@
 					{
 						"name": "PaymentValue",
 						"type": "decimal",
-						"precision": 18,
-						"scale": 0
+						"precision": 15,
+						"scale": 2
+					},
+					{
+						"name": "Currency",
+						"type": "nvarchar"
 					}
 				],
 				"typeProperties": {
