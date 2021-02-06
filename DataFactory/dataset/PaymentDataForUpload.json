@@ -24,10 +24,6 @@
 		},
 		"schema": [
 			{
-				"name": "Prop_0",
-				"type": "String"
-			},
-			{
 				"name": "PaymentNr",
 				"type": "String"
 			},
