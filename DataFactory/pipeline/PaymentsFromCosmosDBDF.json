@@ -87,6 +87,15 @@
 									"name": "Value",
 									"type": "String"
 								}
+							},
+							{
+								"source": {
+									"path": "$['Currency']"
+								},
+								"sink": {
+									"name": "Currency",
+									"type": "String"
+								}
 							}
 						]
 					}

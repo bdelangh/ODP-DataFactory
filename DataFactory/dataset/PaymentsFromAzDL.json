@@ -22,31 +22,6 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": [
-			{
-				"name": "PaymentNr",
-				"type": "String"
-			},
-			{
-				"name": "SalesOrderNr",
-				"type": "String"
-			},
-			{
-				"name": "CustomerNr",
-				"type": "String"
-			},
-			{
-				"name": "CustomerName",
-				"type": "String"
-			},
-			{
-				"name": "PaymentDate",
-				"type": "String"
-			},
-			{
-				"name": "Value",
-				"type": "String"
-			}
-		]
+		"schema": []
 	}
 }
