@@ -74,6 +74,9 @@
 		"myGBBDemoTableCon_password": {
 			"value": ""
 		},
+		"myMicroHackCosmosDB_connectionString": {
+			"value": ""
+		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"value": "Customers.csv"
 		},

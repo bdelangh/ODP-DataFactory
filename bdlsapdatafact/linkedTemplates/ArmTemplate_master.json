@@ -99,6 +99,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'myGBBDemoTableCon'"
 		},
+		"myMicroHackCosmosDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'myMicroHackCosmosDB'"
+		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "Customers.csv"
@@ -502,6 +506,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"myMicroHackCosmosDB_connectionString": {
+						"value": "[parameters('myMicroHackCosmosDB_connectionString')]"
 					},
 					"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 						"value": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName')]"

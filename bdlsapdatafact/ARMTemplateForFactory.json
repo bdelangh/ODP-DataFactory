@@ -99,6 +99,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'myGBBDemoTableCon'"
 		},
+		"myMicroHackCosmosDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'myMicroHackCosmosDB'"
+		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "Customers.csv"
@@ -5491,6 +5495,60 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/UploadPaymentDataToCosmos')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "UploadPaymentDataToCosmos",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "CosmosDbSqlApiSource",
+								"preferredRegions": []
+							},
+							"sink": {
+								"type": "CosmosDbSqlApiSink",
+								"writeBehavior": "insert"
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "myMicroHackCosmosPaymentData",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "myMicroHackCosmosPaymentData",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/myMicroHackCosmosPaymentData')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/myS4S_BD_ISALESDOC_A')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -6678,6 +6736,67 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SampleOData')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PaymentDataForUpload')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "paymentData.csv",
+						"folderPath": "paymentUpload",
+						"fileSystem": "microhack"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "PaymentNr",
+						"type": "String"
+					},
+					{
+						"name": "SalesOrderNr",
+						"type": "String"
+					},
+					{
+						"name": "CustomerNr",
+						"type": "String"
+					},
+					{
+						"name": "CustomerName",
+						"type": "String"
+					},
+					{
+						"name": "PaymentDate",
+						"type": "String"
+					},
+					{
+						"name": "Value",
+						"type": "String"
+					},
+					{
+						"name": "Currency",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
 			]
 		},
 		{
@@ -8058,6 +8177,29 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/myMicroHackCosmosPaymentData')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "myMicroHackCosmosDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "CosmosDbSqlApiCollection",
+				"schema": {},
+				"typeProperties": {
+					"collectionName": "Payments"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/myMicroHackCosmosDB')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/myS4SSalesOrders')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -8783,6 +8925,19 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/SAPADFRti')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/myMicroHackCosmosDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CosmosDb",
+				"typeProperties": {
+					"connectionString": "[parameters('myMicroHackCosmosDB_connectionString')]"
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SAPADFRti')]",

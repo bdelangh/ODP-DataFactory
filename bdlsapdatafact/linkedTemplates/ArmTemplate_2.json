@@ -21,6 +21,37 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/GameData_SQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlsqldatadb",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "player",
+						"type": "String"
+					},
+					{
+						"name": "time",
+						"type": "String"
+					},
+					{
+						"name": "points",
+						"type": "Int32"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[points]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/MARAcsv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -303,6 +334,65 @@
 				"typeProperties": {
 					"path": "Customers"
 				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PaymentDataForUpload')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "paymentData.csv",
+						"folderPath": "paymentUpload",
+						"fileSystem": "microhack"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "PaymentNr",
+						"type": "String"
+					},
+					{
+						"name": "SalesOrderNr",
+						"type": "String"
+					},
+					{
+						"name": "CustomerNr",
+						"type": "String"
+					},
+					{
+						"name": "CustomerName",
+						"type": "String"
+					},
+					{
+						"name": "PaymentDate",
+						"type": "String"
+					},
+					{
+						"name": "Value",
+						"type": "String"
+					},
+					{
+						"name": "Currency",
+						"type": "String"
+					}
+				]
 			},
 			"dependsOn": []
 		},
@@ -729,135 +819,6 @@
 				"schema": [],
 				"typeProperties": {
 					"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190723092859_000029000')/ChangesAfter"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4H_SalesOrdersSQL')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdlsqldatadb",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4H"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "SALESDOCUMENT",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SDDOCUMENTCATEGORY",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SALESDOCUMENTTYPE",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SALESDOCUMENTPROCESSINGTYPE",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CREATIONDATE",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "CREATIONTIME",
-						"type": "time",
-						"scale": 7
-					},
-					{
-						"name": "LASTCHANGEDATE",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "LASTCHANGEDATETIME",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "SALESORGANIZATION",
-						"type": "nvarchar"
-					},
-					{
-						"name": "DISTRIBUTIONCHANNEL",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ORGANIZATIONDIVISION",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SALESGROUP",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SALESOFFICE",
-						"type": "nvarchar"
-					},
-					{
-						"name": "TRANSACTIONCURRENCY",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PRICINGDATE",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "RETAILPROMOTION",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SALESDOCUMENTCONDITION",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ODQ_CHANGEMODE",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ODQ_ENTITYCNTR",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "[[dbo].[S4HSalesOrders]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HoData_getSalesOrdersByToken')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "S4HOData",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4H"
-				},
-				"annotations": [],
-				"type": "ODataResource",
-				"typeProperties": {
-					"path": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190828122610_000029000')/ChangesAfter"
 				}
 			},
 			"dependsOn": []
