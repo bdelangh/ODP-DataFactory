@@ -5514,8 +5514,15 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "CosmosDbSqlApiSource",
-								"preferredRegions": []
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
 							},
 							"sink": {
 								"type": "CosmosDbSqlApiSink",
@@ -5525,7 +5532,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "myMicroHackCosmosPaymentData",
+								"referenceName": "PaymentDataForUpload",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -5545,6 +5552,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/PaymentDataForUpload')]",
 				"[concat(variables('factoryId'), '/datasets/myMicroHackCosmosPaymentData')]"
 			]
 		},
