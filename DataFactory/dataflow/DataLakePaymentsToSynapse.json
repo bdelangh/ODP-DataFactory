@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "DataLakePaymentsToSynapse",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
