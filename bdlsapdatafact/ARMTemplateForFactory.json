@@ -2952,6 +2952,56 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PaymentDataFromCosmosDBDF2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "PaymentDataFromCosmosDB",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "ExtractPaymentsFromCosmosDB",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"PaymentDataCosmosDB": {},
+									"PaymentDateSynapse": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "AzDataLakeGen2",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "synapsestaging"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/ExtractPaymentsFromCosmosDB')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzDataLakeGen2')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PaymentsFromCosmosDB')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -3224,7 +3274,6 @@
 								"parameters": {},
 								"datasetParameters": {
 									"PaymentsAzDL": {},
-									"PaymentsCosmosDB": {},
 									"SynapePayments": {}
 								}
 							},
@@ -6202,6 +6251,9 @@
 						},
 						"Value": {
 							"type": "string"
+						},
+						"Currency": {
+							"type": "string"
 						}
 					}
 				},
@@ -8972,6 +9024,47 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ExtractPaymentsFromCosmosDB')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "MicroHack"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "CosmosS4D_Payments",
+								"type": "DatasetReference"
+							},
+							"name": "PaymentDataCosmosDB"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SynPaymentsS4D",
+								"type": "DatasetReference"
+							},
+							"name": "PaymentDateSynapse"
+						}
+					],
+					"transformations": [
+						{
+							"name": "DerivedColumn1"
+						}
+					],
+					"script": "source(output(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as string,\n\t\tValue as string,\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'document') ~> PaymentDataCosmosDB\nPaymentDataCosmosDB derive(PaymentDateD = toDate(PaymentDate , 'yyyy-MM-dd'),\n\t\tValueD = toDecimal(Value, 15, 2)) ~> DerivedColumn1\nDerivedColumn1 sink(input(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date,\n\t\tPaymentValue as decimal(15,2),\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tmapColumn(\n\t\tPaymentNr,\n\t\tSalesOrderNr,\n\t\tCustomerNr,\n\t\tCustomerName,\n\t\tPaymentDate = PaymentDateD,\n\t\tPaymentValue = ValueD,\n\t\tCurrency\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> PaymentDateSynapse"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/CosmosS4D_Payments')]",
+				"[concat(variables('factoryId'), '/datasets/SynPaymentsS4D')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -8985,13 +9078,6 @@
 								"type": "DatasetReference"
 							},
 							"name": "PaymentsAzDL"
-						},
-						{
-							"dataset": {
-								"referenceName": "CosmosS4D_Payments",
-								"type": "DatasetReference"
-							},
-							"name": "PaymentsCosmosDB"
 						}
 					],
 					"sinks": [
@@ -9004,12 +9090,11 @@
 						}
 					],
 					"transformations": [],
-					"script": "source(output(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date 'yyyy-MM-dd',\n\t\tValue as decimal(15,2) '000,000,000.000',\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdateFormats: ['yyyy-MM-dd']) ~> PaymentsAzDL\nsource(output(\n\t\tCustomerName as string,\n\t\tCustomerNr as string,\n\t\tPaymentDate as string,\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tValue as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'document') ~> PaymentsCosmosDB\nPaymentsAzDL sink(input(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date,\n\t\tPaymentValue as decimal(15,2),\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tmapColumn(\n\t\tPaymentNr,\n\t\tSalesOrderNr,\n\t\tCustomerNr,\n\t\tCustomerName,\n\t\tPaymentDate,\n\t\tPaymentValue = Value,\n\t\tCurrency\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SynapePayments"
+					"script": "source(output(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date 'yyyy-MM-dd',\n\t\tValue as decimal(15,2) '000,000,000.000',\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdateFormats: ['yyyy-MM-dd']) ~> PaymentsAzDL\nPaymentsAzDL sink(input(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date,\n\t\tPaymentValue as decimal(15,2),\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tmapColumn(\n\t\tPaymentNr,\n\t\tSalesOrderNr,\n\t\tCustomerNr,\n\t\tCustomerName,\n\t\tPaymentDate,\n\t\tPaymentValue = Value,\n\t\tCurrency\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SynapePayments"
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/PaymentsFromAzDL')]",
-				"[concat(variables('factoryId'), '/datasets/CosmosS4D_Payments')]",
 				"[concat(variables('factoryId'), '/datasets/SynPaymentsS4D')]"
 			]
 		}
