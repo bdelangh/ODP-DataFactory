@@ -30,6 +30,9 @@
 				},
 				"Value": {
 					"type": "string"
+				},
+				"Currency": {
+					"type": "string"
 				}
 			}
 		},
