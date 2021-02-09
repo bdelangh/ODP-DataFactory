@@ -134,7 +134,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "DataLakePaymentsToSynapse",
 						"type": "DataFlowReference"
 					},
 					"staging": {
