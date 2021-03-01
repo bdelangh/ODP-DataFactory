@@ -13,6 +13,65 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/UploadPaymentDataToCosmos')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "UploadPaymentDataToCosmos",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "CosmosDbSqlApiSink",
+								"writeBehavior": "insert"
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "PaymentDataForUpload",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "CosmosS4D_Payments",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/BW_NPL_MDX')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -49,6 +108,27 @@
 				"schema": [],
 				"typeProperties": {
 					"openHubDestinationName": "OH_NW_C01"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/COEPTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4DCLNT100",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "SapTableResource",
+				"schema": [],
+				"typeProperties": {
+					"tableName": "COEP"
 				}
 			},
 			"dependsOn": []
@@ -259,7 +339,7 @@
 						}
 					],
 					"transformations": [],
-					"script": "source(output(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date 'yyyy-MM-dd',\n\t\tValue as decimal(15,2) '000,000,000.000',\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdateFormats: ['yyyy-MM-dd']) ~> PaymentsAzDL\nPaymentsAzDL sink(input(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date,\n\t\tPaymentValue as decimal(15,2),\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tmapColumn(\n\t\tPaymentNr,\n\t\tSalesOrderNr,\n\t\tCustomerNr,\n\t\tCustomerName,\n\t\tPaymentDate,\n\t\tPaymentValue = Value,\n\t\tCurrency\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SynapePayments"
+					"script": "source(output(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date 'yyyy-MM-dd',\n\t\tValue as decimal(15,2) '000,000,000.000',\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdateFormats: ['yyyy-MM-dd']) ~> PaymentsAzDL\nPaymentsAzDL sink(input(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date,\n\t\tPaymentValue as decimal(15,2),\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tmapColumn(\n\t\tPaymentNr,\n\t\tSalesOrderNr,\n\t\tCustomerNr,\n\t\tCustomerName,\n\t\tPaymentDate,\n\t\tPaymentValue = Value,\n\t\tCurrency\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tallowCopyCommand: true) ~> SynapePayments"
 				}
 			},
 			"dependsOn": []
@@ -297,7 +377,7 @@
 							"name": "DerivedColumn1"
 						}
 					],
-					"script": "source(output(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as string,\n\t\tValue as string,\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'document') ~> PaymentDataCosmosDB\nPaymentDataCosmosDB derive(PaymentDateD = toDate(PaymentDate , 'yyyy-MM-dd'),\n\t\tValueD = toDecimal(Value, 15, 2)) ~> DerivedColumn1\nDerivedColumn1 sink(input(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date,\n\t\tPaymentValue as decimal(15,2),\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tmapColumn(\n\t\tPaymentNr,\n\t\tSalesOrderNr,\n\t\tCustomerNr,\n\t\tCustomerName,\n\t\tPaymentDate = PaymentDateD,\n\t\tPaymentValue = ValueD,\n\t\tCurrency\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> PaymentDateSynapse"
+					"script": "source(output(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as string,\n\t\tValue as string,\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'document') ~> PaymentDataCosmosDB\nPaymentDataCosmosDB derive(PaymentDateD = toDate(PaymentDate , 'yyyy-MM-dd'),\n\t\tValueD = toDecimal(Value, 15, 2)) ~> DerivedColumn1\nDerivedColumn1 sink(input(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date,\n\t\tPaymentValue as decimal(15,2),\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tmapColumn(\n\t\tPaymentNr,\n\t\tSalesOrderNr,\n\t\tCustomerNr,\n\t\tCustomerName,\n\t\tPaymentDate = PaymentDateD,\n\t\tPaymentValue = ValueD,\n\t\tCurrency\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tallowCopyCommand: true) ~> PaymentDateSynapse"
 				}
 			},
 			"dependsOn": []
@@ -423,6 +503,75 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/BW_NPL_OpenHub_NW_C01')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CopyCOEPTable')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CopyCOEPTable",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapTableSource",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "COEPTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "S4DCOEPData",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/COEPTable')]"
 			]
 		},
 		{
@@ -761,415 +910,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SAPOHDSource_Incremental')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/IncrementalCopyFromSAPTable')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "CopyFromSAPTable",
-						"description": "Copy incremental data from SAP table to AzureBlobStorage",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "LookupLastCopiedDate",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapTableSource",
-								"rfcTableOptions": {
-									"value": "@{concat(pipeline().parameters.SapTableDateColumn,' LE ',formatDateTime(adddays(pipeline().TriggerTime,-1),'yyyyMMdd'), ' AND ',pipeline().parameters.SapTableDateColumn,' GE ', formatDateTime(activity('LookupLastCopiedDate').output.firstRow.Prop_0, 'yyyyMMdd'))}",
-									"type": "Expression"
-								},
-								"customRfcReadTableFunctionModule": "",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "SAPTableSource_Incremental",
-								"type": "DatasetReference",
-								"parameters": {
-									"SapTableName": {
-										"value": "@pipeline().parameters.SapTableName",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DelimitedTextSink",
-								"type": "DatasetReference",
-								"parameters": {
-									"DelimitedTextSinkContainer": {
-										"value": "@pipeline().parameters.DelimitedTextSinkContainer",
-										"type": "Expression"
-									},
-									"DelimitedTextSinkDirectory": {
-										"value": "@pipeline().parameters.DelimitedTextSinkDirectory",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					},
-					{
-						"name": "LookupLastCopiedDate",
-						"description": "Copy incremental data from SAP table to AzureBlobStorage",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"dataset": {
-								"referenceName": "AzureBlobDelimitedDataset",
-								"type": "DatasetReference",
-								"parameters": {
-									"HighWatermarkBlobDirectory": {
-										"value": "@pipeline().parameters.HighWatermarkBlobDirectory",
-										"type": "Expression"
-									},
-									"HighWatermarkBlobName": {
-										"value": "@pipeline().parameters.HighWatermarkBlobName",
-										"type": "Expression"
-									},
-									"HighWatermarkBlobContainer": {
-										"value": "@pipeline().parameters.HighWatermarkBlobContainer",
-										"type": "Expression"
-									}
-								}
-							}
-						}
-					},
-					{
-						"name": "SetLastCopiedDate",
-						"description": "Store the last copied date into blob by calling Logic App",
-						"type": "WebActivity",
-						"dependsOn": [
-							{
-								"activity": "CopyFromSAPTable",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": {
-								"value": "@pipeline().parameters.LogicAppURL",
-								"type": "Expression"
-							},
-							"method": "POST",
-							"headers": {
-								"Content-Type": "application/json"
-							},
-							"body": {
-								"value": "{\"copiedDate\":\"@{pipeline().TriggerTime}\"",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"parameters": {
-					"HighWatermarkBlobDirectory": {
-						"type": "string"
-					},
-					"HighWatermarkBlobName": {
-						"type": "string"
-					},
-					"HighWatermarkBlobContainer": {
-						"type": "string"
-					},
-					"SapTableName": {
-						"type": "string"
-					},
-					"DelimitedTextSinkContainer": {
-						"type": "string"
-					},
-					"DelimitedTextSinkDirectory": {
-						"type": "string"
-					},
-					"LogicAppURL": {
-						"type": "string"
-					},
-					"SapTableDateColumn": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "NPLProducts"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SAPTableSource_Incremental')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPLProductsTable_To_DataLake2')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "NPLProductsTable",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapTableSource",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "NPLProductsTable",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "AzDataLakeGen2_NPLProducts_csv_Table",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "NPLProducts"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/NPLProductsTable')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPLProductsTable_To_DataLake2_Incr')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "NPLProductsTableIncr",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "LookupWaterMark",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapTableSource",
-								"rfcTableOptions": {
-									"value": "@{concat('LASTMODIFIED GE ', formatDateTime(activity('LookupWaterMark').output.firstRow.WatermarkValue, 'yyyyMMdd'))}",
-									"type": "Expression"
-								},
-								"customRfcReadTableFunctionModule": "",
-								"rfcTableFields": "",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "NPLProductsTable",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "AzDataLakeGen2_NPLProducts_csv_Table",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "LookupWaterMark",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlSource",
-								"sqlReaderQuery": "select * from watermarktable where TableName='NPLProductsTable';",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "WaterMark_SQL",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Update Watermark",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "NPLProductsTableIncr",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[sp_write_watermark]",
-							"storedProcedureParameters": {
-								"LastModifiedtime": {
-									"value": {
-										"value": "@utcnow()",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"TableName": {
-									"value": "NPLProductsTable",
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "bdlsqldatadb",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"folder": {
-					"name": "NPLProducts"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/NPLProductsTable')]"
 			]
 		}
 	]
