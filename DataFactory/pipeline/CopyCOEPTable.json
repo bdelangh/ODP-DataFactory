@@ -17,7 +17,15 @@
 				"typeProperties": {
 					"source": {
 						"type": "SapTableSource",
-						"partitionOption": "None"
+						"rfcTableOptions": "",
+						"customRfcReadTableFunctionModule": "",
+						"partitionOption": "PartitionOnCalendarYear",
+						"partitionSettings": {
+							"partitionColumnName": "GJAHR",
+							"partitionUpperBound": "",
+							"partitionLowerBound": "",
+							"maxPartitionsNumber": 5
+						}
 					},
 					"sink": {
 						"type": "DelimitedTextSink",
