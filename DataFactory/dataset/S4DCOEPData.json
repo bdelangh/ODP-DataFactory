@@ -5,6 +5,9 @@
 			"referenceName": "AzDataLakeGen2",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "S4D_MicroHack"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
