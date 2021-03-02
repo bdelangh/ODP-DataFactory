@@ -603,9 +603,9 @@
 								"partitionOption": "PartitionOnCalendarYear",
 								"partitionSettings": {
 									"partitionColumnName": "GJAHR",
-									"partitionUpperBound": "",
-									"partitionLowerBound": "",
-									"maxPartitionsNumber": 5
+									"partitionUpperBound": "2019",
+									"partitionLowerBound": "2016",
+									"maxPartitionsNumber": 4
 								}
 							},
 							"sink": {
