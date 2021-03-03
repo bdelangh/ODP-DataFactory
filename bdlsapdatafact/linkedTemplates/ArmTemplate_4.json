@@ -6,26 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "bdlsapdatafact"
-		},
-		"myGBBDemoTableCon_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'myGBBDemoTableCon'"
-		},
-		"myGBBDemoTableCon_properties_typeProperties_clientId": {
-			"type": "string",
-			"defaultValue": "100"
-		},
-		"myGBBDemoTableCon_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "ADFUSER"
-		},
-		"myGBBDemoTableCon_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "20.71.235.137"
-		},
-		"myGBBDemoTableCon_properties_typeProperties_systemNumber": {
-			"type": "string",
-			"defaultValue": "40"
 		}
 	},
 	"variables": {
@@ -33,27 +13,123 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/myGBBDemoTableCon')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/DataDestination')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"annotations": [],
-				"type": "SapTable",
-				"typeProperties": {
-					"clientId": "[parameters('myGBBDemoTableCon_properties_typeProperties_clientId')]",
-					"language": "EN",
-					"sncMode": false,
-					"userName": "[parameters('myGBBDemoTableCon_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('myGBBDemoTableCon_password')]"
-					},
-					"server": "[parameters('myGBBDemoTableCon_properties_typeProperties_server')]",
-					"systemNumber": "[parameters('myGBBDemoTableCon_properties_typeProperties_systemNumber')]"
+				"description": "Connection to your data destination store.",
+				"linkedServiceName": {
+					"referenceName": "bdldftutorial",
+					"type": "LinkedServiceReference"
 				},
-				"connectVia": {
-					"referenceName": "SAPADFRti",
-					"type": "IntegrationRuntimeReference"
+				"parameters": {
+					"Data_Destination_Container": {
+						"type": "String"
+					},
+					"Data_Destination_Directory": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@{dataset().Data_Destination_Directory}",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@{dataset().Data_Destination_Container}",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4DDataLakeFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"dirName": {
+						"type": "string",
+						"defaultValue": "dirName"
+					},
+					"fileName": {
+						"type": "string",
+						"defaultValue": "fileName"
+					}
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().dirName",
+							"type": "Expression"
+						},
+						"fileSystem": "sap/S4D"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ControlTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlsqldatadb",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "tableName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "fieldName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "filterValue",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Control"
 				}
 			},
 			"dependsOn": []
@@ -2198,648 +2274,6 @@
 				],
 				"folder": {
 					"name": "S4H"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HSO_To_DataLake')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "S4HSO_DataLake",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapEccSource"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "SALESDOCUMENT",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESDOCUMENT",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SDDOCUMENTCATEGORY",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SDDOCUMENTCATEGORY",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESDOCUMENTTYPE",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESDOCUMENTTYPE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESDOCUMENTPROCESSINGTYPE",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESDOCUMENTPROCESSINGTYPE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "CREATIONDATE",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "CREATIONDATE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "CREATIONTIME",
-											"type": "TimeSpan"
-										},
-										"sink": {
-											"name": "CREATIONTIME",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "LASTCHANGEDATE",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "LASTCHANGEDATE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "LASTCHANGEDATETIME",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "LASTCHANGEDATETIME",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESORGANIZATION",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESORGANIZATION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "DISTRIBUTIONCHANNEL",
-											"type": "String"
-										},
-										"sink": {
-											"name": "DISTRIBUTIONCHANNEL",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ORGANIZATIONDIVISION",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ORAGANIZATIONDIVISION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESGROUP",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESGROUP",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESOFFICE",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESOFFICE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "PURCHASEORDERBYCUSTOMER",
-											"type": "String"
-										},
-										"sink": {
-											"name": "PURCHASEORDERBYCUSTOMER",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "TRANSACTIONCURRENCY",
-											"type": "String"
-										},
-										"sink": {
-											"name": "TRANSACTIONCURRENCY",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "PRICINGDATE",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "PRICINGDATA",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "RETAILPROMOTION",
-											"type": "String"
-										},
-										"sink": {
-											"name": "RETAILPROMOTION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SALESDOCUMENTCONDITION",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SALESDOCUMENTCONDITION",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ODQ_CHANGEMODE",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ODQ_CHANGEMODE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ODQ_ENTITYCNTR",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "ODQ_ENTITYCNTR",
-											"type": "String"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "S4H_SalesOrders",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "S4HSO_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "S4H"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4HSalesOrderItemsToSynapse')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "S4DSalesOrderItemsToSynapse",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapEccSource",
-								"httpRequestTimeout": "00:05:00"
-							},
-							"sink": {
-								"type": "SqlDWSink",
-								"allowPolyBase": true,
-								"polyBaseSettings": {
-									"rejectValue": 0,
-									"rejectType": "value",
-									"useTypeDefault": true
-								}
-							},
-							"enableStaging": true,
-							"stagingSettings": {
-								"linkedServiceName": {
-									"referenceName": "AzDataLakeGen2",
-									"type": "LinkedServiceReference"
-								},
-								"path": "synapsestaging"
-							},
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "SalesOrder",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SalesOrder",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SalesOrderItem",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SalesOrderItem",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SalesOrderItemText",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SalesOrderItemText",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SoldToParty",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SoldToParty",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "MaterialByCustomer",
-											"type": "String"
-										},
-										"sink": {
-											"name": "MaterialByCustomer",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "MaterialName",
-											"type": "String"
-										},
-										"sink": {
-											"name": "MaterialName",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Material",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Material",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ShipToParty",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ShipToParty",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "FullName",
-											"type": "String"
-										},
-										"sink": {
-											"name": "FullName",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SDProcessStatus",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SDProcessStatus",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "DeliveryStatus",
-											"type": "String"
-										},
-										"sink": {
-											"name": "DeliveryStatus",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SDDocumentRejectionStatus",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SDDocumentRejectionStatus",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SalesDocumentRjcnReason",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SalesDocumentRjcnReason",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "RequestedQuantity",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "RequestedQuantity",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"name": "RequestedQuantityUnit",
-											"type": "String"
-										},
-										"sink": {
-											"name": "RequestedQuantityUnit",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "TransactionCurrency",
-											"type": "String"
-										},
-										"sink": {
-											"name": "TransactionCurrency",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "NetAmount",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "NetAmount",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"name": "MaterialGroup",
-											"type": "String"
-										},
-										"sink": {
-											"name": "MaterialGroup",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Batch",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Batch",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ProductionPlant",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ProductionPlant",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "StorageLocation",
-											"type": "String"
-										},
-										"sink": {
-											"name": "StorageLocation",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ShippingPointName",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ShippingPointName",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ShippingPoint",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ShippingPoint",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SalesOrderItemCategory",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SalesOrderItemCategory",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "BillingBlockCriticality",
-											"type": "Int16"
-										},
-										"sink": {
-											"name": "BillingBlockCriticality",
-											"type": "Byte"
-										}
-									},
-									{
-										"source": {
-											"name": "ItemBillingBlockReason",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ItemBillingBlockReason",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "OrderRelatedBillingStatus",
-											"type": "String"
-										},
-										"sink": {
-											"name": "OrderRelatedBillingStatus",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "RequestedDeliveryDate",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "RequestedDeliveryDate",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "HigherLevelItem",
-											"type": "String"
-										},
-										"sink": {
-											"name": "HigherLevelItem",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SalesOrderProcessingType",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SalesOrderProcessingType",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "RequirementSegment",
-											"type": "String"
-										},
-										"sink": {
-											"name": "RequirementSegment",
-											"type": "String"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "S4DSalesOrderItems",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "SynS4DSalesOrderItems",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "S4D_MicroHack"
 				},
 				"annotations": []
 			},
