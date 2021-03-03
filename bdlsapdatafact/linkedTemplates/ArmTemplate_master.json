@@ -592,15 +592,6 @@
 					"S4DCLNT100_password": {
 						"value": "[parameters('S4DCLNT100_password')]"
 					},
-					"S4HHANA_connectionString": {
-						"value": "[parameters('S4HHANA_connectionString')]"
-					},
-					"S4SGBBDemoTableCon_password": {
-						"value": "[parameters('S4SGBBDemoTableCon_password')]"
-					},
-					"myGBBDemoTableCon_password": {
-						"value": "[parameters('myGBBDemoTableCon_password')]"
-					},
 					"NPLTable_properties_typeProperties_clientId": {
 						"value": "[parameters('NPLTable_properties_typeProperties_clientId')]"
 					},
@@ -648,6 +639,35 @@
 					},
 					"S4DCLNT100_properties_typeProperties_systemNumber": {
 						"value": "[parameters('S4DCLNT100_properties_typeProperties_systemNumber')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'bdlsapdatafact_ArmTemplate_2')]"
+			]
+		},
+		{
+			"name": "bdlsapdatafact_ArmTemplate_4",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_4.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"S4HHANA_connectionString": {
+						"value": "[parameters('S4HHANA_connectionString')]"
+					},
+					"S4SGBBDemoTableCon_password": {
+						"value": "[parameters('S4SGBBDemoTableCon_password')]"
+					},
+					"myGBBDemoTableCon_password": {
+						"value": "[parameters('myGBBDemoTableCon_password')]"
 					},
 					"S4SGBBDemoTableCon_properties_typeProperties_clientId": {
 						"value": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_clientId')]"
@@ -672,26 +692,6 @@
 					},
 					"myGBBDemoTableCon_properties_typeProperties_systemNumber": {
 						"value": "[parameters('myGBBDemoTableCon_properties_typeProperties_systemNumber')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'bdlsapdatafact_ArmTemplate_2')]"
-			]
-		},
-		{
-			"name": "bdlsapdatafact_ArmTemplate_4",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2018-02-01",
-			"properties": {
-				"mode": "incremental",
-				"templateLink": {
-					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_4.json', parameters('containerSasToken'))]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"factoryName": {
-						"value": "[parameters('factoryName')]"
 					}
 				}
 			},
