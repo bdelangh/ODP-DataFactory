@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SapTableSource",
-						"rfcTableOptions": "",
+						"rfcTableOptions": "BUZEI EQ 2 AND PERIO EQ 3",
 						"customRfcReadTableFunctionModule": "",
 						"partitionOption": "PartitionOnCalendarYear",
 						"partitionSettings": {
