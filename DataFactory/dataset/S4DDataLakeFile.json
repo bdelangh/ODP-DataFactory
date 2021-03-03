@@ -1,5 +1,5 @@
 {
-	"name": "S4HDataLakeFile",
+	"name": "S4DDataLakeFile",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzDataLakeGen2",
@@ -16,7 +16,7 @@
 			}
 		},
 		"folder": {
-			"name": "S4H"
+			"name": "S4D_MicroHack"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
