@@ -1,0 +1,32 @@
+{
+	"name": "ControlTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "bdlsqldatadb",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "S4D_MicroHack"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "tableName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "fieldName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "filterValue",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Control"
+		}
+	}
+}
