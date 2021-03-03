@@ -1,9 +1,9 @@
 {
-	"name": "pipeline1",
+	"name": "RetrieveSAPTables",
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "Retrieve Table List",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -15,14 +15,105 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ControlTable",
+						"type": "DatasetReference"
+					},
 					"firstRowOnly": true
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "ForEachTable",
 				"type": "ForEach",
-				"dependsOn": [],
-				"userProperties": []
+				"dependsOn": [
+					{
+						"activity": "Retrieve Table List",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Retrieve Table List').output",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy SAP Table",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SapTableSource",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "S4DTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"tableName": {
+											"value": "@item().tableName",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "S4DDataLakeFile",
+									"type": "DatasetReference",
+									"parameters": {
+										"dirName": {
+											"value": "@item().tableName",
+											"type": "Expression"
+										},
+										"fileName": {
+											"value": "@concat(item().tablename,'_',pipeline().RunId,'.csv')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
 			}
 		],
 		"annotations": []
