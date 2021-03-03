@@ -41,7 +41,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Retrieve Table List').output",
+						"value": "@activity('Retrieve Table List').output.value",
 						"type": "Expression"
 					},
 					"activities": [
