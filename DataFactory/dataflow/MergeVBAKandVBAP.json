@@ -19,13 +19,21 @@
 					"name": "VBAPDL"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "S4DMergedSalesDataDL",
+						"type": "DatasetReference"
+					},
+					"name": "MergedSalesData"
+				}
+			],
 			"transformations": [
 				{
 					"name": "SalesData"
 				}
 			],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tmoveFiles: ['S4D/VBAK','S4D/VBAK/processed']) ~> VBAKDL\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tmoveFiles: ['/S4D/VBAP','S4D/VBAP/processed']) ~> VBAPDL\nVBAKDL, VBAPDL join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> SalesData"
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tmoveFiles: ['S4D/VBAK','S4D/VBAK/processed']) ~> VBAKDL\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tmoveFiles: ['/S4D/VBAP','S4D/VBAP/processed']) ~> VBAPDL\nVBAKDL, VBAPDL join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> SalesData\nSalesData sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> MergedSalesData"
 		}
 	}
 }

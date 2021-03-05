@@ -157,6 +157,12 @@
 									"value": "@pipeline().RunId",
 									"type": "Expression"
 								}
+							},
+							"MergedSalesData": {
+								"fileId": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								}
 							}
 						}
 					},
