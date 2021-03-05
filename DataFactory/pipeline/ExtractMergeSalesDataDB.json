@@ -1,9 +1,9 @@
 {
-	"name": "ExtractMergeSalesData",
+	"name": "ExtractMergeSalesDataDB",
 	"properties": {
 		"activities": [
 			{
-				"name": "ExtractVBAKData",
+				"name": "Extract VBAK to DL Parquet",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -20,14 +20,12 @@
 						"partitionOption": "None"
 					},
 					"sink": {
-						"type": "DelimitedTextSink",
+						"type": "ParquetSink",
 						"storeSettings": {
 							"type": "AzureBlobFSWriteSettings"
 						},
 						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
+							"type": "ParquetWriteSettings"
 						}
 					},
 					"enableStaging": false,
@@ -48,19 +46,13 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "S4DVBAKDataLake",
-						"type": "DatasetReference",
-						"parameters": {
-							"fileID": {
-								"value": "@pipeline().RunId",
-								"type": "Expression"
-							}
-						}
+						"referenceName": "S4DVBAKDLParquet",
+						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "ExtractVBAPData",
+				"name": "Extract VBAP To DL Parquet",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -77,14 +69,12 @@
 						"partitionOption": "None"
 					},
 					"sink": {
-						"type": "DelimitedTextSink",
+						"type": "ParquetSink",
 						"storeSettings": {
 							"type": "AzureBlobFSWriteSettings"
 						},
 						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
+							"type": "ParquetWriteSettings"
 						}
 					},
 					"enableStaging": false,
@@ -105,67 +95,10 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "S4DVBAPDataLake",
-						"type": "DatasetReference",
-						"parameters": {
-							"fileId": {
-								"value": "@pipeline().RunId",
-								"type": "Expression"
-							}
-						}
+						"referenceName": "S4DVBAPDLParquet",
+						"type": "DatasetReference"
 					}
 				]
-			},
-			{
-				"name": "MergeSalesDate and Write to DataLake",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "ExtractVBAKData",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "ExtractVBAPData",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "MergeVBAKandVBAP",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"VBAKDL": {
-								"fileID": {
-									"value": "@pipeline().RunId",
-									"type": "Expression"
-								}
-							},
-							"VBAPDL": {
-								"fileId": {
-									"value": "@pipeline().RunId",
-									"type": "Expression"
-								}
-							}
-						}
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					},
-					"traceLevel": "Fine"
-				}
 			}
 		],
 		"folder": {

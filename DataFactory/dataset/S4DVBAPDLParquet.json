@@ -1,0 +1,32 @@
+{
+	"name": "S4DVBAPDLParquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzDataLakeGen2",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"fileId": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "S4D_MicroHack"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@concat('vbap_',dataset().fileId,'.parquet')",
+					"type": "Expression"
+				},
+				"folderPath": "S4D/VBAP",
+				"fileSystem": "sap"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
