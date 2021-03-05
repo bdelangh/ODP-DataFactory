@@ -22,7 +22,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "S4DMergedSalesDataDL",
+						"referenceName": "S4DMergedSalesDataFolder",
 						"type": "DatasetReference"
 					},
 					"name": "MergedSalesData"
