@@ -579,21 +579,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"NPLTable_password": {
-						"value": "[parameters('NPLTable_password')]"
-					},
-					"NPLTable_properties_typeProperties_clientId": {
-						"value": "[parameters('NPLTable_properties_typeProperties_clientId')]"
-					},
-					"NPLTable_properties_typeProperties_userName": {
-						"value": "[parameters('NPLTable_properties_typeProperties_userName')]"
-					},
-					"NPLTable_properties_typeProperties_server": {
-						"value": "[parameters('NPLTable_properties_typeProperties_server')]"
-					},
-					"NPLTable_properties_typeProperties_systemNumber": {
-						"value": "[parameters('NPLTable_properties_typeProperties_systemNumber')]"
 					}
 				}
 			},
@@ -615,6 +600,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"NPLTable_password": {
+						"value": "[parameters('NPLTable_password')]"
+					},
 					"NPL_BWMDX_password": {
 						"value": "[parameters('NPL_BWMDX_password')]"
 					},
@@ -632,6 +620,18 @@
 					},
 					"myGBBDemoTableCon_password": {
 						"value": "[parameters('myGBBDemoTableCon_password')]"
+					},
+					"NPLTable_properties_typeProperties_clientId": {
+						"value": "[parameters('NPLTable_properties_typeProperties_clientId')]"
+					},
+					"NPLTable_properties_typeProperties_userName": {
+						"value": "[parameters('NPLTable_properties_typeProperties_userName')]"
+					},
+					"NPLTable_properties_typeProperties_server": {
+						"value": "[parameters('NPLTable_properties_typeProperties_server')]"
+					},
+					"NPLTable_properties_typeProperties_systemNumber": {
+						"value": "[parameters('NPLTable_properties_typeProperties_systemNumber')]"
 					},
 					"NPL_BWMDX_properties_typeProperties_server": {
 						"value": "[parameters('NPL_BWMDX_properties_typeProperties_server')]"
