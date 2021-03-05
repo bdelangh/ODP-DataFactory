@@ -3496,6 +3496,9 @@
 						}
 					}
 				],
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
