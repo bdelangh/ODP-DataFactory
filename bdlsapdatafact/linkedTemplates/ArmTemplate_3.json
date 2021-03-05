@@ -11,18 +11,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'NPLTable'"
 		},
-		"NPL_BWMDX_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'NPL_BWMDX'"
-		},
-		"NPL_BWOpenHub_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'NPL_BWOpenHub'"
-		},
-		"S4DCLNT100_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'S4DCLNT100'"
-		},
 		"NPLTable_properties_typeProperties_clientId": {
 			"type": "string",
 			"defaultValue": "001"
@@ -38,60 +26,173 @@
 		"NPLTable_properties_typeProperties_systemNumber": {
 			"type": "string",
 			"defaultValue": "00"
-		},
-		"NPL_BWMDX_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "137.117.134.161"
-		},
-		"NPL_BWMDX_properties_typeProperties_systemNumber": {
-			"type": "string",
-			"defaultValue": "00"
-		},
-		"NPL_BWMDX_properties_typeProperties_clientId": {
-			"type": "string",
-			"defaultValue": "001"
-		},
-		"NPL_BWMDX_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "MDXUSER"
-		},
-		"NPL_BWOpenHub_properties_typeProperties_clientId": {
-			"type": "string",
-			"defaultValue": "001"
-		},
-		"NPL_BWOpenHub_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "OPENHUB"
-		},
-		"NPL_BWOpenHub_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "137.117.134.161"
-		},
-		"NPL_BWOpenHub_properties_typeProperties_systemNumber": {
-			"type": "string",
-			"defaultValue": "00"
-		},
-		"S4DCLNT100_properties_typeProperties_clientId": {
-			"type": "string",
-			"defaultValue": "100"
-		},
-		"S4DCLNT100_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "ADFUSER"
-		},
-		"S4DCLNT100_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "52.183.47.112"
-		},
-		"S4DCLNT100_properties_typeProperties_systemNumber": {
-			"type": "string",
-			"defaultValue": "40"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/S4HRest_GetUpdatedSO')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4HRest",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": "DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190828122610_000029000')/ChangesAfter",
+					"requestMethod": "GET"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4HSO_Json')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SAPDataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "test.json",
+						"folderPath": "SalesOrders",
+						"fileSystem": "s4hana"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4HSO_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SAPDataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('test_',utcnow())",
+							"type": "Expression"
+						},
+						"folderPath": "SalesOrders",
+						"fileSystem": "s4hana"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "SALESDOCUMENT",
+						"type": "String"
+					},
+					{
+						"name": "SDDOCUMENTCATEGORY",
+						"type": "String"
+					},
+					{
+						"name": "SALESDOCUMENTTYPE",
+						"type": "String"
+					},
+					{
+						"name": "SALESDOCUMENTPROCESSINGTYPE",
+						"type": "String"
+					},
+					{
+						"name": "CREATIONDATE",
+						"type": "String"
+					},
+					{
+						"name": "CREATIONTIME",
+						"type": "String"
+					},
+					{
+						"name": "LASTCHANGEDATE",
+						"type": "String"
+					},
+					{
+						"name": "LASTCHANGEDATETIME",
+						"type": "String"
+					},
+					{
+						"name": "SALESORGANIZATION",
+						"type": "String"
+					},
+					{
+						"name": "DISTRIBUTIONCHANNEL",
+						"type": "String"
+					},
+					{
+						"name": "ORAGANIZATIONDIVISION",
+						"type": "String"
+					},
+					{
+						"name": "SALESGROUP",
+						"type": "String"
+					},
+					{
+						"name": "SALESOFFICE",
+						"type": "String"
+					},
+					{
+						"name": "PURCHASEORDERBYCUSTOMER",
+						"type": "String"
+					},
+					{
+						"name": "TRANSACTIONCURRENCY",
+						"type": "String"
+					},
+					{
+						"name": "PRICINGDATA",
+						"type": "String"
+					},
+					{
+						"name": "RETAILPROMOTION",
+						"type": "String"
+					},
+					{
+						"name": "SALESDOCUMENTCONDITION",
+						"type": "String"
+					},
+					{
+						"name": "ODQ_CHANGEMODE",
+						"type": "String"
+					},
+					{
+						"name": "ODQ_ENTITYCNTR",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/S4H_DeltaTokens')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -1190,82 +1291,6 @@
 					},
 					"server": "[parameters('NPLTable_properties_typeProperties_server')]",
 					"systemNumber": "[parameters('NPLTable_properties_typeProperties_systemNumber')]"
-				},
-				"connectVia": {
-					"referenceName": "SAPADFRti",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPL_BWMDX')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SapBw",
-				"typeProperties": {
-					"server": "[parameters('NPL_BWMDX_properties_typeProperties_server')]",
-					"systemNumber": "[parameters('NPL_BWMDX_properties_typeProperties_systemNumber')]",
-					"clientId": "[parameters('NPL_BWMDX_properties_typeProperties_clientId')]",
-					"userName": "[parameters('NPL_BWMDX_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('NPL_BWMDX_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "SAPADFRti",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NPL_BWOpenHub')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "NPL_BWOpenHub",
-				"annotations": [],
-				"type": "SapOpenHub",
-				"typeProperties": {
-					"clientId": "[parameters('NPL_BWOpenHub_properties_typeProperties_clientId')]",
-					"language": "EN",
-					"userName": "[parameters('NPL_BWOpenHub_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('NPL_BWOpenHub_password')]"
-					},
-					"server": "[parameters('NPL_BWOpenHub_properties_typeProperties_server')]",
-					"systemNumber": "[parameters('NPL_BWOpenHub_properties_typeProperties_systemNumber')]"
-				},
-				"connectVia": {
-					"referenceName": "SAPADFRti",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4DCLNT100')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SapTable",
-				"typeProperties": {
-					"clientId": "[parameters('S4DCLNT100_properties_typeProperties_clientId')]",
-					"language": "EN",
-					"sncMode": false,
-					"userName": "[parameters('S4DCLNT100_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('S4DCLNT100_password')]"
-					},
-					"server": "[parameters('S4DCLNT100_properties_typeProperties_server')]",
-					"systemNumber": "[parameters('S4DCLNT100_properties_typeProperties_systemNumber')]"
 				},
 				"connectVia": {
 					"referenceName": "SAPADFRti",

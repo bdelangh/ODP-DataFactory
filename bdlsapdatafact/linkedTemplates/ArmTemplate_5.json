@@ -13,6 +13,514 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/PaymentsFromCosmosDB')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "PaymentsFromCosmosDB",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "CosmosDbSqlApiSource",
+								"preferredRegions": []
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"allowPolyBase": true,
+								"polyBaseSettings": {
+									"rejectValue": 0,
+									"rejectType": "value",
+									"useTypeDefault": true
+								}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzDataLakeGen2",
+									"type": "LinkedServiceReference"
+								},
+								"path": "synapsestaging"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['PaymentNr']"
+										},
+										"sink": {
+											"name": "PaymentNr",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['SalesOrderNr']"
+										},
+										"sink": {
+											"name": "SalesOrderNr",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CustomerNr']"
+										},
+										"sink": {
+											"name": "CustomerNr",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CustomerName']"
+										},
+										"sink": {
+											"name": "CustomerName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['PaymentDate']"
+										},
+										"sink": {
+											"name": "PaymentDate",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Value']"
+										},
+										"sink": {
+											"name": "PaymentValue",
+											"type": "Decimal"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "CosmosS4D_Payments",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SynPaymentsS4D",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PaymentsToAzDL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CopyPaymentsToDLCSV",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "CosmosDbSqlApiSource",
+								"preferredRegions": []
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['PaymentNr']"
+										},
+										"sink": {
+											"name": "PaymentNr",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['SalesOrderNr']"
+										},
+										"sink": {
+											"name": "SalesOrderNr",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CustomerNr']"
+										},
+										"sink": {
+											"name": "CustomerNr",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CustomerName']"
+										},
+										"sink": {
+											"name": "CustomerName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['PaymentDate']"
+										},
+										"sink": {
+											"name": "PaymentDate",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Value']"
+										},
+										"sink": {
+											"name": "Value",
+											"type": "Decimal"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "CosmosS4D_Payments",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Payments_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4HRest_GetUpdatedSalesOrders')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetUpdatedSO_Rest",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"sqlWriterStoredProcedureName": "[[dbo].[spOverwriteS4HSOStr]",
+								"sqlWriterTableType": "S4HSalesOrderStr",
+								"storedProcedureTableTypeParameterName": "SalesOrders"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "d.results[0].SALESDOCUMENT"
+										},
+										"sink": {
+											"name": "SALESDOCUMENT",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SDDOCUMENTCATEGORY"
+										},
+										"sink": {
+											"name": "SDDOCUMENTCATEGORY",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESDOCUMENTTYPE"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTTYPE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESDOCUMENTPROCESSINGTYPE"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTPROCESSINGTYPE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].CREATIONDATE"
+										},
+										"sink": {
+											"name": "CREATIONDATE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].CREATIONTIME"
+										},
+										"sink": {
+											"name": "CREATIONTIME",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].LASTCHANGEDATE"
+										},
+										"sink": {
+											"name": "LASTCHANGEDATE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].LASTCHANGEDATETIME"
+										},
+										"sink": {
+											"name": "LASTCHANGEDATETIME",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESORGANIZATION"
+										},
+										"sink": {
+											"name": "SALESORGANIZATION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].DISTRIBUTIONCHANNEL"
+										},
+										"sink": {
+											"name": "DISTRIBUTIONCHANNEL",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].ORGANIZATIONDIVISION"
+										},
+										"sink": {
+											"name": "ORGANIZATIONDIVISION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESGROUP"
+										},
+										"sink": {
+											"name": "SALESGROUP",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESOFFICE"
+										},
+										"sink": {
+											"name": "SALESOFFICE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].PURCHASEORDERBYCUSTOMER"
+										},
+										"sink": {
+											"name": "PURCHASEORDERBYCUSTOMER",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].TRANSACTIONCURRENCY"
+										},
+										"sink": {
+											"name": "TRANSACTIONCURRENCY",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].PRICINGDATE"
+										},
+										"sink": {
+											"name": "PRICINGDATE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].RETAILPROMOTION"
+										},
+										"sink": {
+											"name": "RETAILPROMOTION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].SALESDOCUMENTCONDITION"
+										},
+										"sink": {
+											"name": "SALESDOCUMENTCONDITION",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].ODQ_CHANGEMODE"
+										},
+										"sink": {
+											"name": "ODQ_CHANGEMODE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "d.results[0].ODQ_ENTITYCNTR"
+										},
+										"sink": {
+											"name": "ODQ_ENTITYCNTR",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "S4HRest_GetUpdatedSO",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "S4H_SalesOrdersSQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "GetNextDeltaToken",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://52.142.196.143:50000/sap/opu/odata/SAP/ZBD_ODP_ODATA_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20190828122610_000029000')/ChangesAfter?$format=json",
+							"method": "GET",
+							"headers": {},
+							"authentication": {
+								"type": "Basic",
+								"username": "DEVELOPER",
+								"password": {
+									"type": "SecureString",
+									"value": "**********"
+								}
+							}
+						}
+					}
+				],
+				"folder": {
+					"name": "S4H"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/S4HSO_To_DataLake')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -900,6 +1408,27 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/S4DVBAPTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4DCLNT100",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "SapTableResource",
+				"schema": [],
+				"typeProperties": {
+					"tableName": "VBAP"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/S4D_SalesOrderHeaders')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1035,157 +1564,6 @@
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ZBD_ISALESDOC_E')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "myGBBDemoTableCon",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "myGBBS4S"
-				},
-				"annotations": [],
-				"type": "SapTableResource",
-				"schema": [],
-				"typeProperties": {
-					"tableName": "ZBD_ISALESDOC_E"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DataLakePaymentsToSynapse')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "PaymentsFromAzDL",
-								"type": "DatasetReference"
-							},
-							"name": "PaymentsAzDL"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "SynPaymentsS4D",
-								"type": "DatasetReference"
-							},
-							"name": "SynapePayments"
-						}
-					],
-					"transformations": [],
-					"script": "source(output(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date 'yyyy-MM-dd',\n\t\tValue as decimal(15,2) '000,000,000.000',\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdateFormats: ['yyyy-MM-dd']) ~> PaymentsAzDL\nPaymentsAzDL sink(input(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date,\n\t\tPaymentValue as decimal(15,2),\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tmapColumn(\n\t\tPaymentNr,\n\t\tSalesOrderNr,\n\t\tCustomerNr,\n\t\tCustomerName,\n\t\tPaymentDate,\n\t\tPaymentValue = Value,\n\t\tCurrency\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SynapePayments"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ExtractPaymentsFromCosmosDB')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "MicroHack"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "CosmosS4D_Payments",
-								"type": "DatasetReference"
-							},
-							"name": "PaymentDataCosmosDB"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "SynPaymentsS4D",
-								"type": "DatasetReference"
-							},
-							"name": "PaymentDateSynapse"
-						}
-					],
-					"transformations": [
-						{
-							"name": "DerivedColumn1"
-						}
-					],
-					"script": "source(output(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as string,\n\t\tValue as string,\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'document') ~> PaymentDataCosmosDB\nPaymentDataCosmosDB derive(PaymentDateD = toDate(PaymentDate , 'yyyy-MM-dd'),\n\t\tValueD = toDecimal(Value, 15, 2)) ~> DerivedColumn1\nDerivedColumn1 sink(input(\n\t\tPaymentNr as string,\n\t\tSalesOrderNr as string,\n\t\tCustomerNr as string,\n\t\tCustomerName as string,\n\t\tPaymentDate as date,\n\t\tPaymentValue as decimal(15,2),\n\t\tCurrency as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tmapColumn(\n\t\tPaymentNr,\n\t\tSalesOrderNr,\n\t\tCustomerNr,\n\t\tCustomerName,\n\t\tPaymentDate = PaymentDateD,\n\t\tPaymentValue = ValueD,\n\t\tCurrency\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> PaymentDateSynapse"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/BW MDX Test')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "BW MDX",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SapBwSource",
-								"query": "select {[Measures].[0D_NW_NETV], [Measures].[0D_NW_OORV]} on columns,\n   [0D_NW_CNTRY].[LEVEL01] on rows\nfrom [$0D_NW_C01]"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "BW_NPL_MDX",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "AzDataLakeGen2_NPLMDX",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "BW_NPL"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/BW_NPL_MDX')]"
-			]
 		}
 	]
 }

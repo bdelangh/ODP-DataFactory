@@ -583,15 +583,6 @@
 					"NPLTable_password": {
 						"value": "[parameters('NPLTable_password')]"
 					},
-					"NPL_BWMDX_password": {
-						"value": "[parameters('NPL_BWMDX_password')]"
-					},
-					"NPL_BWOpenHub_password": {
-						"value": "[parameters('NPL_BWOpenHub_password')]"
-					},
-					"S4DCLNT100_password": {
-						"value": "[parameters('S4DCLNT100_password')]"
-					},
 					"NPLTable_properties_typeProperties_clientId": {
 						"value": "[parameters('NPLTable_properties_typeProperties_clientId')]"
 					},
@@ -603,6 +594,44 @@
 					},
 					"NPLTable_properties_typeProperties_systemNumber": {
 						"value": "[parameters('NPLTable_properties_typeProperties_systemNumber')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'bdlsapdatafact_ArmTemplate_2')]"
+			]
+		},
+		{
+			"name": "bdlsapdatafact_ArmTemplate_4",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_4.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"NPL_BWMDX_password": {
+						"value": "[parameters('NPL_BWMDX_password')]"
+					},
+					"NPL_BWOpenHub_password": {
+						"value": "[parameters('NPL_BWOpenHub_password')]"
+					},
+					"S4DCLNT100_password": {
+						"value": "[parameters('S4DCLNT100_password')]"
+					},
+					"S4HHANA_connectionString": {
+						"value": "[parameters('S4HHANA_connectionString')]"
+					},
+					"S4SGBBDemoTableCon_password": {
+						"value": "[parameters('S4SGBBDemoTableCon_password')]"
+					},
+					"myGBBDemoTableCon_password": {
+						"value": "[parameters('myGBBDemoTableCon_password')]"
 					},
 					"NPL_BWMDX_properties_typeProperties_server": {
 						"value": "[parameters('NPL_BWMDX_properties_typeProperties_server')]"
@@ -639,35 +668,6 @@
 					},
 					"S4DCLNT100_properties_typeProperties_systemNumber": {
 						"value": "[parameters('S4DCLNT100_properties_typeProperties_systemNumber')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'bdlsapdatafact_ArmTemplate_2')]"
-			]
-		},
-		{
-			"name": "bdlsapdatafact_ArmTemplate_4",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2018-02-01",
-			"properties": {
-				"mode": "incremental",
-				"templateLink": {
-					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_4.json', parameters('containerSasToken'))]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"factoryName": {
-						"value": "[parameters('factoryName')]"
-					},
-					"S4HHANA_connectionString": {
-						"value": "[parameters('S4HHANA_connectionString')]"
-					},
-					"S4SGBBDemoTableCon_password": {
-						"value": "[parameters('S4SGBBDemoTableCon_password')]"
-					},
-					"myGBBDemoTableCon_password": {
-						"value": "[parameters('myGBBDemoTableCon_password')]"
 					},
 					"S4SGBBDemoTableCon_properties_typeProperties_clientId": {
 						"value": "[parameters('S4SGBBDemoTableCon_properties_typeProperties_clientId')]"
@@ -737,6 +737,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'bdlsapdatafact_ArmTemplate_5')]"
+			]
+		},
+		{
+			"name": "bdlsapdatafact_ArmTemplate_7",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_7.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'bdlsapdatafact_ArmTemplate_6')]"
 			]
 		}
 	]
