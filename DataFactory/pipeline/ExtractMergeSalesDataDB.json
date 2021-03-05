@@ -47,7 +47,13 @@
 				"outputs": [
 					{
 						"referenceName": "S4DVBAKDLParquet",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"fileId": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			},
@@ -96,7 +102,13 @@
 				"outputs": [
 					{
 						"referenceName": "S4DVBAPDLParquet",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"fileId": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
