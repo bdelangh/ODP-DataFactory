@@ -1,0 +1,35 @@
+{
+	"name": "S4DMergedSalesDataDL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzDataLakeGen2",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"fileId": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "S4D_MicroHack"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@concat('salesData',dataset().fileId,'.csv')",
+					"type": "Expression"
+				},
+				"folderPath": "S4D/MergedSalesData",
+				"fileSystem": "sap"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
