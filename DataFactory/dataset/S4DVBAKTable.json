@@ -1,5 +1,5 @@
 {
-	"name": "VBAKTable",
+	"name": "S4DVBAKTable",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "S4DCLNT100",
