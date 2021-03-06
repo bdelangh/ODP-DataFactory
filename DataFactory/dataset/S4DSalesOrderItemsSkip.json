@@ -1,5 +1,5 @@
 {
-	"name": "SAPSalesOrderItemsSkip",
+	"name": "S4DSalesOrderItemsSkip",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "S4DCLNT100OData",
