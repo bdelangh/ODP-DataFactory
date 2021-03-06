@@ -15,8 +15,45 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "SapEccSource",
+						"httpRequestTimeout": "00:05:00"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
 					"enableStaging": false
-				}
+				},
+				"inputs": [
+					{
+						"referenceName": "S4DSalesOrderItemsSkip",
+						"type": "DatasetReference",
+						"parameters": {
+							"top": "5",
+							"skip": "10"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "S4DVBAPDataLake",
+						"type": "DatasetReference",
+						"parameters": {
+							"fileId": {
+								"value": "@pipeline().RunIdpipeline().RunId",
+								"type": "Expression"
+							}
+						}
+					}
+				]
 			}
 		],
 		"folder": {
