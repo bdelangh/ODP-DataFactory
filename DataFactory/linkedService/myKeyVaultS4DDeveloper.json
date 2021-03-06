@@ -1,0 +1,10 @@
+{
+	"name": "myKeyVaultS4DDeveloper",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://mykeyvaultbdl.vault.azure.net/"
+		}
+	}
+}
