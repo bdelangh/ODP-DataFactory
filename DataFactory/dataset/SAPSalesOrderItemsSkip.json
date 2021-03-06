@@ -1,0 +1,31 @@
+{
+	"name": "SAPSalesOrderItemsSkip",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "S4DCLNT100OData",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"top": {
+				"type": "string",
+				"defaultValue": "5"
+			},
+			"skip": {
+				"type": "string",
+				"defaultValue": "10"
+			}
+		},
+		"folder": {
+			"name": "S4D_MicroHack"
+		},
+		"annotations": [],
+		"type": "SapEccResource",
+		"schema": [],
+		"typeProperties": {
+			"path": {
+				"value": "C_Salesorderitemfs?$top=2&$skip=3",
+				"type": "Expression"
+			}
+		}
+	}
+}
