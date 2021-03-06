@@ -23,7 +23,7 @@
 		"schema": [],
 		"typeProperties": {
 			"path": {
-				"value": "@C_Salesorderitemfs?$top=dataset().top&$skip=dataset().skip",
+				"value": "@C_Salesorderitemfs?$top=5&$skip=5",
 				"type": "Expression"
 			}
 		}
