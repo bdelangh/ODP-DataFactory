@@ -799,7 +799,7 @@
 				"schema": [],
 				"typeProperties": {
 					"path": {
-						"value": "@C_Salesorderitemfs?$top=5&$skip=5",
+						"value": "C_Salesorderitemfs",
 						"type": "Expression"
 					}
 				}
