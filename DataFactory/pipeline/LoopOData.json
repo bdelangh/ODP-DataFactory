@@ -30,28 +30,6 @@
 						}
 					}
 				}
-			},
-			{
-				"name": "SetBatchSize",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "GetODataCount",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": ""
-				}
-			},
-			{
-				"name": "ForEach1",
-				"type": "ForEach",
-				"dependsOn": [],
-				"userProperties": []
 			}
 		],
 		"folder": {
