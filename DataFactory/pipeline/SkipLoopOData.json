@@ -32,6 +32,17 @@
 				}
 			}
 		],
+		"parameters": {
+			"param": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"batchSize": {
+				"type": "String",
+				"defaultValue": "1000"
+			}
+		},
 		"folder": {
 			"name": "S4D_MicroHack"
 		},
