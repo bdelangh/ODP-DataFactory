@@ -5939,17 +5939,117 @@
 								}
 							}
 						}
+					},
+					{
+						"name": "getArray",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "getCount",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "range",
+							"value": {
+								"value": "@range(0, add(div(int(activity('getCount').output.Response),pipeline().parameters.batchSize),1))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ForEach",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "getArray",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@variables('range')",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "CopyToDataLake",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SapEccSource",
+											"httpRequestTimeout": "00:05:00"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "S4DSalesOrderItemsSkip",
+											"type": "DatasetReference",
+											"parameters": {
+												"top": {
+													"value": "@pipeline().parameters.batchSize",
+													"type": "Expression"
+												},
+												"skip": {
+													"value": "@mul(item(),pipeline().parameters.batchSize)",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "S4DVBAKDataLake",
+											"type": "DatasetReference",
+											"parameters": {
+												"fileID": {
+													"value": "@pipeline().RunId",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
 					}
 				],
 				"parameters": {
-					"param": {
-						"type": "string"
+					"batchSize": {
+						"type": "int",
+						"defaultValue": 1000
 					}
 				},
 				"variables": {
-					"batchSize": {
-						"type": "String",
-						"defaultValue": "1000"
+					"range": {
+						"type": "Array"
 					}
 				},
 				"folder": {
@@ -5958,7 +6058,9 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/mykeyvaultbdl')]"
+				"[concat(variables('factoryId'), '/linkedServices/mykeyvaultbdl')]",
+				"[concat(variables('factoryId'), '/datasets/S4DSalesOrderItemsSkip')]",
+				"[concat(variables('factoryId'), '/datasets/S4DVBAKDataLake')]"
 			]
 		},
 		{
