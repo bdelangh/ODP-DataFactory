@@ -16,15 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": "http://52.183.47.112:54000/sap/opu/odata/sap/sd_f1814_so_fs_srv/C_Salesorderitemfs/$count?sap-client=100",
-					"method": "GET",
-					"authentication": {
-						"type": "Basic",
-						"username": "ODATAUSER",
-						"password": {
-							"type": "SecureString",
-							"value": "**********"
-						}
-					}
+					"method": "GET"
 				}
 			}
 		],
