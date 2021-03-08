@@ -415,6 +415,9 @@
 					"bdldftutorial_connectionString": {
 						"value": "[parameters('bdldftutorial_connectionString')]"
 					},
+					"bdlsqldatadb_connectionString": {
+						"value": "[parameters('bdlsqldatadb_connectionString')]"
+					},
 					"ADFTest_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('ADFTest_properties_typeProperties_functionAppUrl')]"
 					},
@@ -507,9 +510,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"bdlsqldatadb_connectionString": {
-						"value": "[parameters('bdlsqldatadb_connectionString')]"
 					},
 					"myMicroHackCosmosDB_connectionString": {
 						"value": "[parameters('myMicroHackCosmosDB_connectionString')]"
