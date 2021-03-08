@@ -7,14 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "bdlsapdatafact"
 		},
-		"DailyGameData_Blob_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "@dataset().dsFileName"
-		},
-		"DailyGameData_Blob_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "adftutorial/gamedata/2016/test"
-		},
 		"Persons_Incremental_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "@concat('Incremental-', pipeline().RunId, '.txt')"
@@ -28,96 +20,6 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/DailyGameData_Blob')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdldftutorial",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"dsFileName": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "AzureBlob",
-				"structure": [
-					{
-						"name": "Player",
-						"type": "String"
-					},
-					{
-						"name": "Time",
-						"type": "String"
-					},
-					{
-						"name": "Points",
-						"type": "Int32"
-					}
-				],
-				"typeProperties": {
-					"format": {
-						"type": "TextFormat",
-						"columnDelimiter": ",",
-						"rowDelimiter": "",
-						"nullValue": "\\N",
-						"treatEmptyAsNull": true,
-						"skipLineCount": 0,
-						"firstRowAsHeader": true
-					},
-					"fileName": {
-						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_fileName')]",
-						"type": "Expression"
-					},
-					"folderPath": "[parameters('DailyGameData_Blob_properties_typeProperties_folderPath')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DataDestination')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Connection to your data destination store.",
-				"linkedServiceName": {
-					"referenceName": "bdldftutorial",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"Data_Destination_Container": {
-						"type": "String"
-					},
-					"Data_Destination_Directory": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": {
-							"value": "@{dataset().Data_Destination_Directory}",
-							"type": "Expression"
-						},
-						"container": {
-							"value": "@{dataset().Data_Destination_Container}",
-							"type": "Expression"
-						}
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DelimitedTextDataset')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -863,6 +765,57 @@
 					"quoteChar": "\""
 				},
 				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4DSalesOrderHeadersCSV')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "salesorderheaders.csv",
+						"folderPath": "salesorderheaders",
+						"fileSystem": "microhack"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4DSalesOrderItems')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4DCLNT100OData",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"schema": [],
+				"typeProperties": {
+					"path": "C_Salesorderitemfs"
+				}
 			},
 			"dependsOn": []
 		}

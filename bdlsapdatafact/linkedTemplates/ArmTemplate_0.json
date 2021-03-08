@@ -59,6 +59,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'adfdatabricks'"
 		},
+		"bdlSynapsAnalytics_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'bdlSynapsAnalytics'"
+		},
+		"bdldftutorial_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'bdldftutorial'"
+		},
 		"ADFTest_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://bdladf.azurewebsites.net"
@@ -66,14 +74,6 @@
 		"AzDataLakeGen2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://azdatalakegen2bdl.dfs.core.windows.net"
-		},
-		"AzureKeyVault1_properties_typeProperties_baseUrl": {
-			"type": "string",
-			"defaultValue": "https://datalakevaultbdl.vault.azure.net/"
-		},
-		"AzureKeyVault2_properties_typeProperties_baseUrl": {
-			"type": "string",
-			"defaultValue": "https://mykeyvaultbdl.vault.azure.net/"
 		},
 		"BdlAzDataLake_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
@@ -242,32 +242,6 @@
 						"type": "SecureString",
 						"value": "[parameters('AzDataLakeGen2_accountKey')]"
 					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureKeyVault1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureKeyVault",
-				"typeProperties": {
-					"baseUrl": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureKeyVault2')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureKeyVault",
-				"typeProperties": {
-					"baseUrl": "[parameters('AzureKeyVault2_properties_typeProperties_baseUrl')]"
 				}
 			},
 			"dependsOn": []
@@ -529,6 +503,32 @@
 						"value": "[parameters('adfdatabricks_accessToken')]"
 					},
 					"existingClusterId": "0702-145622-joust399"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/bdlSynapsAnalytics')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('bdlSynapsAnalytics_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/bdldftutorial')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('bdldftutorial_connectionString')]"
 				}
 			},
 			"dependsOn": []

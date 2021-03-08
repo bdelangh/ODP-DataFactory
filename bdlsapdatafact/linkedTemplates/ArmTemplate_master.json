@@ -151,14 +151,6 @@
 			"type": "string",
 			"defaultValue": "https://azdatalakegen2bdl.dfs.core.windows.net"
 		},
-		"AzureKeyVault1_properties_typeProperties_baseUrl": {
-			"type": "string",
-			"defaultValue": "https://datalakevaultbdl.vault.azure.net/"
-		},
-		"AzureKeyVault2_properties_typeProperties_baseUrl": {
-			"type": "string",
-			"defaultValue": "https://mykeyvaultbdl.vault.azure.net/"
-		},
 		"BdlAzDataLake_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
 			"defaultValue": "https://bldazdatalakeadls.azuredatalakestore.net/webhdfs/v1"
@@ -347,7 +339,7 @@
 			"type": "string",
 			"defaultValue": "40"
 		},
-		"myKeyVaultS4DDeveloper_properties_typeProperties_baseUrl": {
+		"mykeyvaultbdl_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://mykeyvaultbdl.vault.azure.net/"
 		},
@@ -417,17 +409,17 @@
 					"adfdatabricks_accessToken": {
 						"value": "[parameters('adfdatabricks_accessToken')]"
 					},
+					"bdlSynapsAnalytics_connectionString": {
+						"value": "[parameters('bdlSynapsAnalytics_connectionString')]"
+					},
+					"bdldftutorial_connectionString": {
+						"value": "[parameters('bdldftutorial_connectionString')]"
+					},
 					"ADFTest_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('ADFTest_properties_typeProperties_functionAppUrl')]"
 					},
 					"AzDataLakeGen2_properties_typeProperties_url": {
 						"value": "[parameters('AzDataLakeGen2_properties_typeProperties_url')]"
-					},
-					"AzureKeyVault1_properties_typeProperties_baseUrl": {
-						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
-					},
-					"AzureKeyVault2_properties_typeProperties_baseUrl": {
-						"value": "[parameters('AzureKeyVault2_properties_typeProperties_baseUrl')]"
 					},
 					"BdlAzDataLake_properties_typeProperties_dataLakeStoreUri": {
 						"value": "[parameters('BdlAzDataLake_properties_typeProperties_dataLakeStoreUri')]"
@@ -516,20 +508,14 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"bdlSynapsAnalytics_connectionString": {
-						"value": "[parameters('bdlSynapsAnalytics_connectionString')]"
-					},
-					"bdldftutorial_connectionString": {
-						"value": "[parameters('bdldftutorial_connectionString')]"
-					},
 					"bdlsqldatadb_connectionString": {
 						"value": "[parameters('bdlsqldatadb_connectionString')]"
 					},
 					"myMicroHackCosmosDB_connectionString": {
 						"value": "[parameters('myMicroHackCosmosDB_connectionString')]"
 					},
-					"myKeyVaultS4DDeveloper_properties_typeProperties_baseUrl": {
-						"value": "[parameters('myKeyVaultS4DDeveloper_properties_typeProperties_baseUrl')]"
+					"mykeyvaultbdl_properties_typeProperties_baseUrl": {
+						"value": "[parameters('mykeyvaultbdl_properties_typeProperties_baseUrl')]"
 					},
 					"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 						"value": "[parameters('AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName')]"
@@ -548,6 +534,12 @@
 					},
 					"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath": {
 						"value": "[parameters('BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath')]"
+					},
+					"DailyGameData_Blob_properties_typeProperties_fileName": {
+						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_fileName')]"
+					},
+					"DailyGameData_Blob_properties_typeProperties_folderPath": {
+						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_folderPath')]"
 					}
 				}
 			},
@@ -568,12 +560,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"DailyGameData_Blob_properties_typeProperties_fileName": {
-						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_fileName')]"
-					},
-					"DailyGameData_Blob_properties_typeProperties_folderPath": {
-						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_folderPath')]"
 					},
 					"Persons_Incremental_properties_typeProperties_fileName": {
 						"value": "[parameters('Persons_Incremental_properties_typeProperties_fileName')]"

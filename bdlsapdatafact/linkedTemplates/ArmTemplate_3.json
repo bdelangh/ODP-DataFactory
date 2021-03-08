@@ -13,57 +13,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/S4DSalesOrderHeadersCSV')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4D_MicroHack"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "salesorderheaders.csv",
-						"folderPath": "salesorderheaders",
-						"fileSystem": "microhack"
-					},
-					"columnDelimiter": ";",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4DSalesOrderItems')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "S4DCLNT100OData",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4D_MicroHack"
-				},
-				"annotations": [],
-				"type": "SapEccResource",
-				"schema": [],
-				"typeProperties": {
-					"path": "C_Salesorderitemfs"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/S4DSalesOrderItemsSkip')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1085,6 +1034,180 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "SalesOrderHeaders"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SynSalesOrderHeaders2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlSynapsAnalytics",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "BILLINGCOMPANYCODE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BILLINGDOCUMENTDATE",
+						"type": "date"
+					},
+					{
+						"name": "COUNTRY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREATIONDATE",
+						"type": "date"
+					},
+					{
+						"name": "CREATIONTIME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CREDITCONTROLAREA",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERACCOUNTGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CUSTOMERNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DISTRIBUTIONCHANNEL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LASTCHANGEDATE",
+						"type": "date"
+					},
+					{
+						"name": "LASTCHANGEDATETIME",
+						"type": "decimal",
+						"precision": 21,
+						"scale": 0
+					},
+					{
+						"name": "MANDT",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ORGANIZATIONDIVISION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PRICINGDATE",
+						"type": "date"
+					},
+					{
+						"name": "PURCHASEORDERBYCUSTOMER",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDISTRICT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTPROCESSINGTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESDOCUMENTTYPE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESGROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESOFFICE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SALESORGANIZATION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SDDOCUMENTCATEGORY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SOLDTOPARTY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TOTALNETAMOUNT",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 2
+					},
+					{
+						"name": "TRANSACTIONCURRENCY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CITYNAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "POSTALCODE",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "SalesOrderHeaders2"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/WaterMark_SQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "bdlsqldatadb",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "NPL"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "TableName",
+						"type": "String"
+					},
+					{
+						"name": "WatermarkValue",
+						"type": "DateTime"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[watermarktable]"
 				}
 			},
 			"dependsOn": []
