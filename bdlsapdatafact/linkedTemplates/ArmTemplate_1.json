@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "bdlsapdatafact"
 		},
+		"bdlSynapsAnalytics_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'bdlSynapsAnalytics'"
+		},
 		"bdldftutorial_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bdldftutorial'"
@@ -52,6 +56,19 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/bdlSynapsAnalytics')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('bdlSynapsAnalytics_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/bdldftutorial')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -112,46 +129,6 @@
 				"type": "SelfHosted",
 				"description": "Azure Data Factory runtime - SAP Connector",
 				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LoopOData')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "GetODataCount",
-						"type": "WebActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": "http://52.183.47.112:54000/sap/opu/odata/sap/sd_f1814_so_fs_srv/C_Salesorderitemfs/$count?sap-client=100",
-							"method": "GET",
-							"headers": {},
-							"authentication": {
-								"type": "Basic",
-								"username": "DEVELOPER",
-								"password": {
-									"type": "SecureString",
-									"value": "**********"
-								}
-							}
-						}
-					}
-				],
-				"folder": {
-					"name": "S4D_MicroHack"
-				},
-				"annotations": []
 			},
 			"dependsOn": []
 		},

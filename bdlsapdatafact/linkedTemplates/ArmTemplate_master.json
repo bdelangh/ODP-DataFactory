@@ -417,9 +417,6 @@
 					"adfdatabricks_accessToken": {
 						"value": "[parameters('adfdatabricks_accessToken')]"
 					},
-					"bdlSynapsAnalytics_connectionString": {
-						"value": "[parameters('bdlSynapsAnalytics_connectionString')]"
-					},
 					"ADFTest_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('ADFTest_properties_typeProperties_functionAppUrl')]"
 					},
@@ -518,6 +515,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"bdlSynapsAnalytics_connectionString": {
+						"value": "[parameters('bdlSynapsAnalytics_connectionString')]"
 					},
 					"bdldftutorial_connectionString": {
 						"value": "[parameters('bdldftutorial_connectionString')]"
