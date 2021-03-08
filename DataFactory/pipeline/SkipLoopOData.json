@@ -30,12 +30,36 @@
 						}
 					}
 				}
+			},
+			{
+				"name": "getArray",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "getCount",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "range",
+					"value": [
+						""
+					]
+				}
 			}
 		],
 		"parameters": {
 			"batchSize": {
 				"type": "int",
 				"defaultValue": 1000
+			}
+		},
+		"variables": {
+			"range": {
+				"type": "Array"
 			}
 		},
 		"folder": {
