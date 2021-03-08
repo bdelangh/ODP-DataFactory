@@ -21,6 +21,53 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedTextDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Blob to store the max copied request ID from SAP BW Open Hub table as high watermark",
+				"linkedServiceName": {
+					"referenceName": "bdldftutorial",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"HighWatermarkBlobContainer": {
+						"type": "String"
+					},
+					"HighWatermarkBlobDirectory": {
+						"type": "String"
+					},
+					"HighWatermarkBlobName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().HighWatermarkBlobName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().HighWatermarkBlobDirectory",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().HighWatermarkBlobContainer",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DelimitedTextSink')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -768,40 +815,6 @@
 				"schema": [],
 				"typeProperties": {
 					"path": "C_Salesorderitemfs"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S4DSalesOrderItemsSkip')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "S4DCLNT100OData",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"top": {
-						"type": "string",
-						"defaultValue": "5"
-					},
-					"skip": {
-						"type": "string",
-						"defaultValue": "10"
-					}
-				},
-				"folder": {
-					"name": "S4D_MicroHack"
-				},
-				"annotations": [],
-				"type": "SapEccResource",
-				"schema": [],
-				"typeProperties": {
-					"path": {
-						"value": "@C_Salesorderitemfs?$top=5&$skip=5",
-						"type": "Expression"
-					}
 				}
 			},
 			"dependsOn": []

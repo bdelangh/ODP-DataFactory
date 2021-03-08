@@ -1,0 +1,70 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "bdlsapdatafact"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/SkipLoopOData')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "getCount",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://52.183.47.112:54000/sap/opu/odata/sap/sd_f1814_so_fs_srv/C_Salesorderitemfs/$count?sap-client=100",
+							"method": "GET",
+							"authentication": {
+								"type": "Basic",
+								"username": "ODATAUSER",
+								"password": {
+									"type": "AzureKeyVaultSecret",
+									"store": {
+										"referenceName": "mykeyvaultbdl",
+										"type": "LinkedServiceReference"
+									},
+									"secretName": "oDataUser"
+								}
+							}
+						}
+					}
+				],
+				"parameters": {
+					"param": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"batchSize": {
+						"type": "String",
+						"defaultValue": "1000"
+					}
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		}
+	]
+}

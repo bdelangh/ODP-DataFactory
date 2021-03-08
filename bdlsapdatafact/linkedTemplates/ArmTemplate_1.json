@@ -124,6 +124,63 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SkipLoopOData')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "getCount",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://52.183.47.112:54000/sap/opu/odata/sap/sd_f1814_so_fs_srv/C_Salesorderitemfs/$count?sap-client=100",
+							"method": "GET",
+							"headers": {},
+							"authentication": {
+								"type": "Basic",
+								"username": "ODATAUSER",
+								"password": {
+									"type": "AzureKeyVaultSecret",
+									"store": {
+										"referenceName": "mykeyvaultbdl",
+										"type": "LinkedServiceReference"
+									},
+									"secretName": "oDataUser"
+								}
+							}
+						}
+					}
+				],
+				"parameters": {
+					"param": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"batchSize": {
+						"type": "String",
+						"defaultValue": "1000"
+					}
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/mykeyvaultbdl')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzDataLakeGen2_NPLMDX')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -639,53 +696,6 @@
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
 					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedTextDataset')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Blob to store the max copied request ID from SAP BW Open Hub table as high watermark",
-				"linkedServiceName": {
-					"referenceName": "bdldftutorial",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"HighWatermarkBlobContainer": {
-						"type": "String"
-					},
-					"HighWatermarkBlobDirectory": {
-						"type": "String"
-					},
-					"HighWatermarkBlobName": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().HighWatermarkBlobName",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().HighWatermarkBlobDirectory",
-							"type": "Expression"
-						},
-						"container": {
-							"value": "@dataset().HighWatermarkBlobContainer",
-							"type": "Expression"
-						}
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
 					"quoteChar": "\""
 				},
 				"schema": []
