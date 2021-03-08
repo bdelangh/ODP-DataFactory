@@ -45,9 +45,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "range",
-					"value": [
-						""
-					]
+					"value": {
+						"value": "@range(0, add(div(activity('getCount').output.Response,pipeline().parameters.batchSize),1))",
+						"type": "Expression"
+					}
 				}
 			}
 		],
