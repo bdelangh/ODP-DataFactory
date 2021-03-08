@@ -113,6 +113,12 @@
 		"AzDataLakeGen2_properties_typeProperties_url": {
 			"value": "https://azdatalakegen2bdl.dfs.core.windows.net"
 		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://datalakevaultbdl.vault.azure.net/"
+		},
+		"AzureKeyVault2_properties_typeProperties_baseUrl": {
+			"value": "https://mykeyvaultbdl.vault.azure.net/"
+		},
 		"BdlAzDataLake_properties_typeProperties_dataLakeStoreUri": {
 			"value": "https://bldazdatalakeadls.azuredatalakestore.net/webhdfs/v1"
 		},
@@ -253,6 +259,9 @@
 		},
 		"myGBBDemoTableCon_properties_typeProperties_systemNumber": {
 			"value": "40"
+		},
+		"myKeyVaultS4DDeveloper_properties_typeProperties_baseUrl": {
+			"value": "https://mykeyvaultbdl.vault.azure.net/"
 		},
 		"containerUri": {
 			"value": ""

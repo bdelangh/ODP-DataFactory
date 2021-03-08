@@ -151,6 +151,14 @@
 			"type": "string",
 			"defaultValue": "https://azdatalakegen2bdl.dfs.core.windows.net"
 		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://datalakevaultbdl.vault.azure.net/"
+		},
+		"AzureKeyVault2_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://mykeyvaultbdl.vault.azure.net/"
+		},
 		"BdlAzDataLake_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
 			"defaultValue": "https://bldazdatalakeadls.azuredatalakestore.net/webhdfs/v1"
@@ -338,6 +346,10 @@
 		"myGBBDemoTableCon_properties_typeProperties_systemNumber": {
 			"type": "string",
 			"defaultValue": "40"
+		},
+		"myKeyVaultS4DDeveloper_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://mykeyvaultbdl.vault.azure.net/"
 		}
 	},
 	"variables": {
@@ -7612,6 +7624,42 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/S4DSalesOrderItemsSkip')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4DCLNT100OData",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"top": {
+						"type": "string",
+						"defaultValue": "5"
+					},
+					"skip": {
+						"type": "string",
+						"defaultValue": "10"
+					}
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"schema": [],
+				"typeProperties": {
+					"path": {
+						"value": "@C_Salesorderitemfs?$top=5&$skip=5",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/S4DCLNT100OData')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/S4DTable')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -9308,6 +9356,32 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureKeyVault1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureKeyVault2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('AzureKeyVault2_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/BdlAzDataLake')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -9793,6 +9867,19 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/myKeyVaultS4DDeveloper')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('myKeyVaultS4DDeveloper_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/myMicroHackCosmosDB')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -9936,6 +10023,46 @@
 				"[concat(variables('factoryId'), '/datasets/S4DVBAPDataLake')]",
 				"[concat(variables('factoryId'), '/datasets/S4DMergedSalesDataFolder')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LoopOData')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetODataCount",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://52.183.47.112:54000/sap/opu/odata/sap/sd_f1814_so_fs_srv/C_Salesorderitemfs/$count",
+							"method": "GET",
+							"headers": {},
+							"authentication": {
+								"type": "Basic",
+								"username": "DEVELOPER",
+								"password": {
+									"type": "SecureString",
+									"value": "**********"
+								}
+							}
+						}
+					}
+				],
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
 		}
 	]
 }

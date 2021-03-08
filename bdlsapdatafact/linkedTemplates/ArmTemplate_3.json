@@ -13,6 +13,165 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/S4DSalesOrderHeadersCSV')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "salesorderheaders.csv",
+						"folderPath": "salesorderheaders",
+						"fileSystem": "microhack"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4DSalesOrderItems')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4DCLNT100OData",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"schema": [],
+				"typeProperties": {
+					"path": "C_Salesorderitemfs"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4DSalesOrderItemsSkip')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "S4DCLNT100OData",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"top": {
+						"type": "string",
+						"defaultValue": "5"
+					},
+					"skip": {
+						"type": "string",
+						"defaultValue": "10"
+					}
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "SapEccResource",
+				"schema": [],
+				"typeProperties": {
+					"path": {
+						"value": "@C_Salesorderitemfs?$top=5&$skip=5",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4DVBAKDLParquet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"fileId": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('vbak_',dataset().fileId,'.parquet')",
+							"type": "Expression"
+						},
+						"folderPath": "S4D/VBAK",
+						"fileSystem": "sap"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S4DVBAKDataLake')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzDataLakeGen2",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"fileID": {
+						"type": "string",
+						"defaultValue": "ec1ad6a8-4234-4d97-abd8-7f6ac0e47b42"
+					}
+				},
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('vbak_',dataset().fileID,'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "S4D/VBAK",
+						"fileSystem": "sap"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/S4DVBAPDLParquet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -927,264 +1086,6 @@
 					"schema": "dbo",
 					"table": "SalesOrderHeaders"
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SynSalesOrderHeaders2')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdlSynapsAnalytics",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4D_MicroHack"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [
-					{
-						"name": "BILLINGCOMPANYCODE",
-						"type": "nvarchar"
-					},
-					{
-						"name": "BILLINGDOCUMENTDATE",
-						"type": "date"
-					},
-					{
-						"name": "COUNTRY",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CREATIONDATE",
-						"type": "date"
-					},
-					{
-						"name": "CREATIONTIME",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CREDITCONTROLAREA",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CUSTOMERACCOUNTGROUP",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CUSTOMERGROUP",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CUSTOMERNAME",
-						"type": "nvarchar"
-					},
-					{
-						"name": "DISTRIBUTIONCHANNEL",
-						"type": "nvarchar"
-					},
-					{
-						"name": "LASTCHANGEDATE",
-						"type": "date"
-					},
-					{
-						"name": "LASTCHANGEDATETIME",
-						"type": "decimal",
-						"precision": 21,
-						"scale": 0
-					},
-					{
-						"name": "MANDT",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ORGANIZATIONDIVISION",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PRICINGDATE",
-						"type": "date"
-					},
-					{
-						"name": "PURCHASEORDERBYCUSTOMER",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SALESDISTRICT",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SALESDOCUMENT",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SALESDOCUMENTPROCESSINGTYPE",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SALESDOCUMENTTYPE",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SALESGROUP",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SALESOFFICE",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SALESORGANIZATION",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SDDOCUMENTCATEGORY",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SOLDTOPARTY",
-						"type": "nvarchar"
-					},
-					{
-						"name": "TOTALNETAMOUNT",
-						"type": "decimal",
-						"precision": 15,
-						"scale": 2
-					},
-					{
-						"name": "TRANSACTIONCURRENCY",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CITYNAME",
-						"type": "nvarchar"
-					},
-					{
-						"name": "POSTALCODE",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "SalesOrderHeaders2"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/WaterMark_SQL')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdlsqldatadb",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "NPL"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"structure": [
-					{
-						"name": "TableName",
-						"type": "String"
-					},
-					{
-						"name": "WatermarkValue",
-						"type": "DateTime"
-					}
-				],
-				"typeProperties": {
-					"tableName": "[[dbo].[watermarktable]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/myMicroHackCosmosPaymentData')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "myMicroHackCosmosDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "S4D_MicroHack"
-				},
-				"annotations": [],
-				"type": "CosmosDbSqlApiCollection",
-				"schema": {},
-				"typeProperties": {
-					"collectionName": "Payments"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/myS4SSalesOrders')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "myGBBS4S"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@concat('myS4SSalesOrders',utcnow(),'.csv')",
-							"type": "Expression"
-						},
-						"folderPath": "myS4S",
-						"fileSystem": "sap"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/myS4SSalesOrdersAll')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzDataLakeGen2",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "myGBBS4S"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "myS4SSalesOrdersAll.csv",
-						"folderPath": "myS4S",
-						"fileSystem": "sap"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
 			},
 			"dependsOn": []
 		}

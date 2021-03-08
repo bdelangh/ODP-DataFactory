@@ -7,9 +7,21 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "bdlsapdatafact"
 		},
+		"bdldftutorial_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'bdldftutorial'"
+		},
+		"bdlsqldatadb_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'bdlsqldatadb'"
+		},
 		"myMicroHackCosmosDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'myMicroHackCosmosDB'"
+		},
+		"myKeyVaultS4DDeveloper_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://mykeyvaultbdl.vault.azure.net/"
 		},
 		"AzureDataLakeStore_NWCustomers_properties_typeProperties_fileName": {
 			"type": "string",
@@ -34,20 +46,51 @@
 		"BdlAzDL_SAPDev_ProductSet_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "SAP/DevCenter"
-		},
-		"DailyGameData_Blob_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "@dataset().dsFileName"
-		},
-		"DailyGameData_Blob_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "adftutorial/gamedata/2016/test"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/bdldftutorial')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('bdldftutorial_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/bdlsqldatadb')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('bdlsqldatadb_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/myKeyVaultS4DDeveloper')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('myKeyVaultS4DDeveloper_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/myMicroHackCosmosDB')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -69,6 +112,46 @@
 				"type": "SelfHosted",
 				"description": "Azure Data Factory runtime - SAP Connector",
 				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LoopOData')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetODataCount",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://52.183.47.112:54000/sap/opu/odata/sap/sd_f1814_so_fs_srv/C_Salesorderitemfs/$count",
+							"method": "GET",
+							"headers": {},
+							"authentication": {
+								"type": "Basic",
+								"username": "DEVELOPER",
+								"password": {
+									"type": "SecureString",
+									"value": "**********"
+								}
+							}
+						}
+					}
+				],
+				"folder": {
+					"name": "S4D_MicroHack"
+				},
+				"annotations": []
 			},
 			"dependsOn": []
 		},
@@ -335,7 +418,9 @@
 				},
 				"schema": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdldftutorial')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStore_NWCustomers')]",
@@ -490,7 +575,9 @@
 					"table": "Control"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bdlsqldatadb')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/CosmosS4D_Payments')]",
@@ -535,184 +622,6 @@
 				"typeProperties": {
 					"collectionName": "paymentData"
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DailyGameData_Blob')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bdldftutorial",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"dsFileName": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "AzureBlob",
-				"structure": [
-					{
-						"name": "Player",
-						"type": "String"
-					},
-					{
-						"name": "Time",
-						"type": "String"
-					},
-					{
-						"name": "Points",
-						"type": "Int32"
-					}
-				],
-				"typeProperties": {
-					"format": {
-						"type": "TextFormat",
-						"columnDelimiter": ",",
-						"rowDelimiter": "",
-						"nullValue": "\\N",
-						"treatEmptyAsNull": true,
-						"skipLineCount": 0,
-						"firstRowAsHeader": true
-					},
-					"fileName": {
-						"value": "[parameters('DailyGameData_Blob_properties_typeProperties_fileName')]",
-						"type": "Expression"
-					},
-					"folderPath": "[parameters('DailyGameData_Blob_properties_typeProperties_folderPath')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DataDestination')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Connection to your data destination store.",
-				"linkedServiceName": {
-					"referenceName": "bdldftutorial",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"Data_Destination_Container": {
-						"type": "String"
-					},
-					"Data_Destination_Directory": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": {
-							"value": "@{dataset().Data_Destination_Directory}",
-							"type": "Expression"
-						},
-						"container": {
-							"value": "@{dataset().Data_Destination_Container}",
-							"type": "Expression"
-						}
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedTextDataset')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Blob to store the max copied request ID from SAP BW Open Hub table as high watermark",
-				"linkedServiceName": {
-					"referenceName": "bdldftutorial",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"HighWatermarkBlobContainer": {
-						"type": "String"
-					},
-					"HighWatermarkBlobDirectory": {
-						"type": "String"
-					},
-					"HighWatermarkBlobName": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().HighWatermarkBlobName",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().HighWatermarkBlobDirectory",
-							"type": "Expression"
-						},
-						"container": {
-							"value": "@dataset().HighWatermarkBlobContainer",
-							"type": "Expression"
-						}
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedTextSink')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "DelimitedText sink",
-				"linkedServiceName": {
-					"referenceName": "bdldftutorial",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"DelimitedTextSinkContainer": {
-						"type": "string"
-					},
-					"DelimitedTextSinkDirectory": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": {
-							"value": "@dataset().DelimitedTextSinkDirectory",
-							"type": "Expression"
-						},
-						"container": {
-							"value": "@dataset().DelimitedTextSinkContainer",
-							"type": "Expression"
-						}
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"nullValue": "\\N",
-					"quoteChar": "\""
-				},
-				"schema": []
 			},
 			"dependsOn": []
 		}
