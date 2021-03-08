@@ -121,7 +121,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"fileID": {
-											"value": "@pipeline().RunId",
+											"value": "@item()",
 											"type": "Expression"
 										}
 									}
