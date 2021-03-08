@@ -19,7 +19,7 @@
 					"method": "GET",
 					"authentication": {
 						"type": "Basic",
-						"username": "DEVELOPER",
+						"username": "ODATAUSER",
 						"password": {
 							"type": "SecureString",
 							"value": "**********"
